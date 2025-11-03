@@ -1,6 +1,7 @@
 {
     inputs = {
         nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+        impermanence.url = "github:nix-community/impermanence";
         proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
         vscode-server.url = "github:nix-community/nixos-vscode-server";
     };
@@ -18,6 +19,7 @@
             modules = [
                 inputs.vscode-server.nixosModules.default
                 inputs.proxmox-nixos.nixosModules.proxmox-ve
+                inputs.impermanence.nixosModules.impermanence
 
                 ./system/configuration.nix
             ];
