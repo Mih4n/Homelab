@@ -4,5 +4,6 @@
         wget
         btop
         nil
+        nixd
     ]; 
 }

@@ -1,6 +1,8 @@
 {
     inputs = {
+
         nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+        authentik.url = "github:nix-community/authentik-nix";
         impermanence.url = "github:nix-community/impermanence";
         proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
         vscode-server.url = "github:nix-community/nixos-vscode-server";
@@ -17,6 +19,7 @@
             specialArgs = { inherit inputs system; };
 
             modules = [
+                inputs.authentik.nixosModules.default
                 inputs.vscode-server.nixosModules.default
                 inputs.proxmox-nixos.nixosModules.proxmox-ve
                 inputs.impermanence.nixosModules.impermanence
