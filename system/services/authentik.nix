@@ -1,6 +1,6 @@
 {
-    services.authentik = {
-        enable = true;
-        # settings
-    };
+    # services.authentik = {
+    #     enable = true;
+    #     # settings = 
+    # };
 }
