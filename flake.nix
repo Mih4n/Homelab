@@ -4,7 +4,6 @@
         sops-nix.url = "github:Mic92/sops-nix";
         sops-nix.inputs.nixpkgs.follows = "nixpkgs";
         authentik.url = "github:nix-community/authentik-nix";
-        impermanence.url = "github:nix-community/impermanence";
         proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
         vscode-server.url = "github:nix-community/nixos-vscode-server";
     };
@@ -13,9 +12,16 @@
     let
         lib = nixpkgs.lib;
         system = "x86_64-linux";
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = import nixpkgs {
+            inherit system;
+            config = {
+                allowUnfree = true;
+            };
+        };
     in {
         nixosConfigurations.bytes = nixpkgs.lib.nixosSystem {
+            inherit lib;
+            inherit pkgs;
             inherit system;
             specialArgs = { inherit inputs system; };
 
@@ -24,7 +30,6 @@
                 inputs.authentik.nixosModules.default
                 inputs.vscode-server.nixosModules.default
                 inputs.proxmox-nixos.nixosModules.proxmox-ve
-                inputs.impermanence.nixosModules.impermanence
 
                 ./system/configuration.nix
             ];

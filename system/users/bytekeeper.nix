@@ -8,13 +8,13 @@
 
         protection =  lib.mkOption {
             type = lib.types.enum [ "strict" "relaxed" ];
-            default = "strict";
+            default = "relaxed";
             description = "Determines how many SSH keys the user can authenticate with";
         };
     };
 
-    config = lib.mkIf config.bytes.users.bytekeeper.enable {
-        users.users.bytekeeper = {
+    config = {
+        users.users.bytekeeper = lib.mkIf config.bytes.users.bytekeeper.enable {
             isNormalUser = true;
             description = "bytekeeper";
             extraGroups = [ "networkmanager" "wheel" ];
