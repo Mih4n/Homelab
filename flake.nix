@@ -2,6 +2,7 @@
     inputs = {
         nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
         sops-nix.url = "github:Mic92/sops-nix";
+        sops-nix.inputs.nixpkgs.follows = "nixpkgs";
         authentik.url = "github:nix-community/authentik-nix";
         impermanence.url = "github:nix-community/impermanence";
         proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";

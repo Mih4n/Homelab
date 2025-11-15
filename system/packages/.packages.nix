@@ -5,5 +5,7 @@
         btop
         nil
         nixd
+        sops
+        age
     ]; 
 }
