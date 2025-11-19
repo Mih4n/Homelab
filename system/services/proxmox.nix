@@ -3,7 +3,7 @@
         enable = true;
         bridges = [ 
             "vmbr0" 
-            # "vmbr1" 
+            "vmbrlo"
         ];
         ipAddress = "192.168.0.2";
     };
