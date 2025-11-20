@@ -25,14 +25,7 @@
             inherit system;
             specialArgs = { inherit inputs system; };
 
-            modules = [
-                inputs.sops-nix.nixosModules.sops
-                inputs.authentik.nixosModules.default
-                inputs.vscode-server.nixosModules.default
-                inputs.proxmox-nixos.nixosModules.proxmox-ve
-
-                ./system/configuration.nix
-            ];
+            modules = [ ./systems/bytes/configuration.nix ];
         };
     };
 }
