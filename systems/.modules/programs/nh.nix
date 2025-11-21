@@ -1,6 +1,6 @@
 { pkgs, lib, ... }: {
     programs.nh = {
-        enable = lib.mkDefault;
+        enable = lib.mkDefault true;
         clean.enable = true;
         clean.extraArgs = "--keep-since 4d --keep 3";
         flake = "/home/bytekeeper/nixos";
