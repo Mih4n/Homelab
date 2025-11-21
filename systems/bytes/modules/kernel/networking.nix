@@ -2,9 +2,10 @@
     networking.useNetworkd = true;
 
     networking.hostName = "bytes";
+    
     networking.firewall.enable = false;
-    networking.interfaces.enp4s0.useDHCP = false;
     networking.networkmanager.enable = false;
+    networking.interfaces.enp4s0.useDHCP = false;
 
     boot.kernelModules = [ "dummy" ];
 

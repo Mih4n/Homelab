@@ -8,6 +8,8 @@
             dbhost = "/run/postgresql";
             dbname = "nextcloud";
             dbuser = "nextcloud";
+
+            hostName = "0.0.0.0";
         };
 
         extraApps = {
