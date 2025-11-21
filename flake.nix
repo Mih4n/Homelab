@@ -1,6 +1,5 @@
 {
     inputs = {
-        colmena.url = "github:zhaofengli/colmena";
         nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
         authentik.url = "github:nix-community/authentik-nix";
         proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
@@ -17,7 +16,7 @@
         };
     };
  
-    outputs = { nixpkgs, colmena, ... } @inputs: 
+    outputs = { nixpkgs, ... } @inputs: 
     let
         lib = nixpkgs.lib;
         system = "x86_64-linux";
@@ -47,21 +46,13 @@
             modules = [ ./systems/bytes/configuration.nix ];
         };
 
-        colmenaHive = colmena.lib.makeHive {
-            meta = {
-                nixpkgs = import nixpkgs { inherit system; };
-            };
+        nixosConfigurations.nextcloud = nixpkgs.lib.nixosSystem {
+            inherit lib;
+            inherit pkgs;
+            inherit system;
+            specialArgs = { inherit inputs system; };
 
-            nextcloud = {
-                deployment = {
-                    targetUser = "byteshaker";
-                    targetHost = "192.168.192.75";
-                };
-
-                imports = [
-                    ./systems/nextcloud/configuration.nix
-                ];
-            };
-        };        
+            modules = [ ./systems/nextcloud/configuration.nix ];
+        };
     };
 }
