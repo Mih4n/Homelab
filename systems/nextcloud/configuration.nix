@@ -12,10 +12,10 @@
         local-networking = {
             enable = true;
             ip = "192.168.192.11";
+
+            hostName = "nextcloud";
         };
     };
-
-    nix.settings.require-sigs = false;
-
+ 
     system.stateVersion = "25.05";
 }

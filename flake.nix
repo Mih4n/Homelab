@@ -50,7 +50,9 @@
             modules = [ ./systems/bytes/configuration.nix ];
         };
 
-        colmenaHive = colmena.lib.makeHive {
+        colmenaHive = let 
+            user = "byteshaker";
+        in colmena.lib.makeHive {
             meta = {
                 nixpkgs = import nixpkgs { inherit system; };
                 specialArgs = { inherit inputs system; };
@@ -58,8 +60,8 @@
 
             nextcloud = {
                 deployment = {
-                    targetUser = "byteshaker";
-                    targetHost = "192.168.192.75";
+                    targetUser = user;
+                    targetHost = "192.168.192.11";
                 };
                 
                 imports = [
