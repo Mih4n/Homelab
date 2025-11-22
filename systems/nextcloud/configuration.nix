@@ -1,11 +1,21 @@
-{
+{ inputs, ... }: {
     imports = [ 
-        ../.modules
+        inputs.disko.nixosModules.default
 
+        ../.modules
         ../.modules/kernel/disko/standard.nix
 
         ./hardware-configuration.nix
     ];
+
+    bytes = {
+        local-networking = {
+            enable = true;
+            ip = "192.168.192.11";
+        };
+    };
+
+    nix.settings.require-sigs = false;
 
     system.stateVersion = "25.05";
 }

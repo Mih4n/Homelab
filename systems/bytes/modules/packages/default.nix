@@ -1,5 +1,5 @@
-{ pkgs, ... }: {
-    environment.systemPackages = with pkgs; [
-        colmena
+{ inputs, system, ... }: {
+    environment.systemPackages = [
+       inputs.colmena.packages.${system}.colmena
     ];
 }

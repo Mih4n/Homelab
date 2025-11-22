@@ -2,7 +2,7 @@
     options.bytes.local-networking = { 
         enable = lib.mkOption {
             type = lib.types.bool;
-            default = true; 
+            default = false; 
             description = "enables local networking";
         };
 
@@ -12,7 +12,7 @@
             description = "ip address in local network";
         };
     };
-    
+
     config = {
         networking = lib.mkIf config.bytes.local-networking.enable {
             useDHCP = lib.mkDefault false;
@@ -26,8 +26,9 @@
                     }
                 ];
 
-                defaultGateway = "192.168.192.5";
             };
+
+            defaultGateway = "192.168.192.5";
         };
     };
 }

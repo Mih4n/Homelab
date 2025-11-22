@@ -4,11 +4,11 @@
 
         "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"
 
-        ../.modules/users
-        ../.modules/kernel
-        ../.modules/packages
+        ../.modules
         ../.modules/kernel/disko/standard.nix
     ];
+
+    nix.settings.trusted-users = [ "root" "@wheel" "byteshaker" ];
 
     nixpkgs.hostPlatform = system;
 }
