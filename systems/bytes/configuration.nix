@@ -16,7 +16,10 @@
         ./hardware-configuration.nix
     ];
 
-    bytes.users.byteshaker.enable = false;
+    bytes = {
+        users.byteshaker.enable = false;
+        local-networking.enable = false;
+    };
 
     system.stateVersion = "25.05";
 }
