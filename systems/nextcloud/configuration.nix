@@ -1,11 +1,6 @@
 {
     imports = [ 
-        # ./modules/services
-
-        ../.modules/users
-        ../.modules/kernel
-        ../.modules/packages
-        ../.modules/programs
+        ../.modules
 
         ../.modules/kernel/disko/standard.nix
 

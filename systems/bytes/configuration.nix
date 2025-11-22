@@ -5,14 +5,10 @@
         inputs.vscode-server.nixosModules.default
         inputs.proxmox-nixos.nixosModules.proxmox-ve
 
-        ./modules/kernel
-        ./modules/services
-        ./modules/packages
-
-        ../.modules/users
-        ../.modules/kernel
-        ../.modules/packages
-        ../.modules/programs
+        
+        ./modules
+        ../.modules
+        
         ./hardware-configuration.nix
     ];
 
