@@ -17,19 +17,27 @@
             default = "nixos";
             description = "sets host name for the host";
         };
+
+        useDHCP = lib.mkOption {
+            type = lib.types.bool;
+            default = false;
+            description = "enables dhcp";
+        };
     };
 
-    config = {
-        networking = lib.mkIf config.bytes.local-networking.enable {
-            hostName = config.bytes.local-networking.hostName;
+    config = let 
+        networking = config.bytes.local-networking;
+    in {
+        networking = lib.mkIf networking.enable {
+            hostName = networking.hostName;
 
-            useDHCP = lib.mkDefault false;
+            useDHCP = networking.useDHCP;
 
             firewall.enable = false;
 
             interfaces.ens18 = {
-                useDHCP = false;
-                ipv4.addresses = [
+                useDHCP = networking.useDHCP;
+                ipv4.addresses = lib.mkIf (!networking.useDHCP) [
                     {
                         address = config.bytes.local-networking.ip;
                         prefixLength = 18;      
