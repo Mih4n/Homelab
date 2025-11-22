@@ -7,6 +7,7 @@
 
         ./modules/kernel
         ./modules/services
+        ./modules/packages
 
         ../.modules/users
         ../.modules/kernel

@@ -1,6 +1,6 @@
 {
     imports = [ 
-        ./modules/services
+        # ./modules/services
 
         ../.modules/users
         ../.modules/kernel
@@ -8,6 +8,8 @@
         ../.modules/programs
 
         ../.modules/kernel/disko/standard.nix
+
+        ./hardware-configuration.nix
     ];
 
     system.stateVersion = "25.05";

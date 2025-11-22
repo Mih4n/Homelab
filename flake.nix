@@ -35,7 +35,10 @@
             inherit system;
             specialArgs = { inherit inputs system; };
 
-            modules = [ ./systems/base/configuration.nix ];
+            modules = [ 
+                ./hardware-configuration.nix
+                ./systems/base/configuration.nix 
+            ];
         };
 
         nixosConfigurations.bytes = nixpkgs.lib.nixosSystem {
@@ -54,8 +57,8 @@
 
             nextcloud = {
                 deployment = {
-                    targetHost = "somehost.tld";
                     targetUser = "byteshaker";
+                    targetHost = "192.168.192.75";
                 };
                 
                 imports = [
