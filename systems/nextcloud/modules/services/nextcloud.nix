@@ -10,6 +10,9 @@
             dbuser = "nextcloud";
 
             hostName = "0.0.0.0";
+            settings = {
+                adminpassFile = config.sops.secrets."nextcloud/adminpass".path;
+            };
         };
 
         extraApps = {

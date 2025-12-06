@@ -1,6 +1,7 @@
 { inputs, ... }: {
     imports = [ 
         inputs.disko.nixosModules.default
+        inputs.sops-nix.nixosModules.sops
 
         ../.modules
         ../.modules/kernel/disko/standard.nix
