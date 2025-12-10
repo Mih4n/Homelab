@@ -11,6 +11,7 @@
 
             hostName = "0.0.0.0";
             settings = {
+                adminuser = config.sops.secrets."nextcloud/adminname".path; 
                 adminpassFile = config.sops.secrets."nextcloud/adminpass".path;
             };
         };
