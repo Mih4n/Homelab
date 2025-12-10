@@ -3,6 +3,8 @@
         inputs.disko.nixosModules.default
         inputs.sops-nix.nixosModules.sops
 
+        ./modules
+
         ../.modules
         ../.modules/kernel/disko/standard.nix
 
