@@ -28,8 +28,7 @@
             };
         };
     in {
-
-        nixosConfigurations.base = nixpkgs.lib.nixosSystem {
+        nixosConfigurations.vpn = lib.nixosSystem {
             inherit lib;
             inherit pkgs;
             inherit system;
@@ -37,11 +36,23 @@
 
             modules = [ 
                 ./hardware-configuration.nix
-                ./systems/base/configuration.nix 
+                ./systems/vpn/configuration.nix 
             ];
         };
 
-        nixosConfigurations.bytes = nixpkgs.lib.nixosSystem {
+        nixosConfigurations.base = lib.nixosSystem {
+            inherit lib;
+            inherit pkgs;
+            inherit system;
+            specialArgs = { inherit inputs system; };
+
+            modules = [ 
+                ./hardware-configuration.nix
+                ./systems/vpn/configuration.nix 
+            ];
+        };
+
+        nixosConfigurations.bytes = lib.nixosSystem {
             inherit lib;
             inherit pkgs;
             inherit system;
@@ -56,6 +67,17 @@
             meta = {
                 nixpkgs = import nixpkgs { inherit system; };
                 specialArgs = { inherit inputs system; };
+            };
+
+            vpn = {
+                deployment = {
+                    targetUser = user;
+                    targetHost = "79.137.205.90";
+                };
+                
+                imports = [
+                    ./systems/vpn/configuration.nix
+                ];
             };
 
             nextcloud = {
