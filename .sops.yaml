@@ -1,8 +1,12 @@
 keys:
   - &primary age14sn3gpjdncq6st6ypuagzk3p3zjgxwkkj07kkqqmaqhan7jn4y9seluagz
+  - &secondary age14qvn30w0486hvxds2yn6wpwkt0w8vz8cswrw6sh38qu4pukl6pfscxhuhl
+  - &nextcloud age152sv326zlf937m0w9l7c5hyea9vk8ua6e2f4cxvgnwct30ptrgtquwqp7v
 
 creation_rules:
   - path_regex: secrets/.*\.ya?ml$
     key_groups:
       - age:
         - *primary
+        - *secondary
+        - *nextcloud
