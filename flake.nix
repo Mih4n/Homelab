@@ -34,9 +34,7 @@
             inherit system;
             specialArgs = { inherit inputs system; };
 
-            modules = [ 
-                ./systems/vpn/configuration.nix 
-            ];
+            modules = [ ./systems/vpn/configuration.nix ];
         };
 
         nixosConfigurations.base = lib.nixosSystem {
@@ -45,10 +43,7 @@
             inherit system;
             specialArgs = { inherit inputs system; };
 
-            modules = [ 
-                ./hardware-configuration.nix
-                ./systems/vpn/configuration.nix 
-            ];
+            modules = [ ./systems/vpn/configuration.nix ];
         };
 
         nixosConfigurations.bytes = lib.nixosSystem {

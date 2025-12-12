@@ -1,7 +1,8 @@
 { inputs, ... }: {
-    imports = [ 
+    imports = [
         inputs.disko.nixosModules.default
         inputs.sops-nix.nixosModules.sops
+        inputs.vscode-server.nixosModules.default
 
         ./modules
 

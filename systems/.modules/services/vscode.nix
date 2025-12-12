@@ -1,9 +1,9 @@
 { config, lib, ... }: {
     options.bytes.vscode.enable = lib.mkEnableOption "vscode";
 
-    config = {
+    config = lib.mkIf config.bytes.vscode.enable {
         services.vscode-server = {
-            enable = config.bytes.vscode.enable;
+            enable = true;
         };
     };
 }

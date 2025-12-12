@@ -1,19 +1,20 @@
 { pkgs, config, ... }: {
     services.nextcloud = {                
         enable = true;                   
-        package = pkgs.nextcloud28;
+        package = pkgs.nextcloud32;
+
+        hostName = "0.0.0.0";
+
+        config = {
+            adminuser = config.sops.secrets."nextcloud/adminname".path;
+            adminpassFile = config.sops.secrets."nextcloud/adminpass".path;
+        };
         
         config = {
             dbtype = "pgsql";
             dbhost = "/run/postgresql";
             dbname = "nextcloud";
             dbuser = "nextcloud";
-
-            hostName = "0.0.0.0";
-            settings = {
-                adminuser = config.sops.secrets."nextcloud/adminname".path; 
-                adminpassFile = config.sops.secrets."nextcloud/adminpass".path;
-            };
         };
 
         extraApps = {

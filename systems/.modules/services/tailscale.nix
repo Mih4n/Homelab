@@ -1,9 +1,9 @@
 { config, lib, ... }: {
     options.bytes.tailscale.enable = lib.mkEnableOption "tailscale";
 
-    config = {
+    config = lib.mkIf config.bytes.tailscale.enable {
         services.tailscale = {
-            enable = config.bytes.tailscale.enable;
+            enable = true;
         };
     };
 }
