@@ -1,5 +1,6 @@
 {
     imports = [
+        ./kernel
         ./services
     ];
 }

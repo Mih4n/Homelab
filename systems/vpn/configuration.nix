@@ -11,7 +11,8 @@
 
     bytes = {
         disk.type = "vda";
-    };
+        boot.mode = "legacy-grub";
+    }; 
  
     system.stateVersion = "25.05";
 }
