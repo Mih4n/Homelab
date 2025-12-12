@@ -6,6 +6,8 @@
 
         ../.modules
         ../.modules/kernel/disko/standard.nix
+
+        ./hardware-configuration.nix
     ];
 
     nix.settings.trusted-users = [ "root" "@wheel" "byteshaker" ];

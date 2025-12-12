@@ -12,6 +12,9 @@
     ];
 
     bytes = {
+        vscode.enable = true;
+        tailscale.enable = true;
+        
         users.byteshaker.enable = false;
         local-networking.enable = false;
     };

@@ -1,6 +1,9 @@
 {
     networking.hostName = "vpn";
 
+    networking.firewall.allowedUDPPorts = [ 3478 ];
+    networking.firewall.allowedTCPPorts = [ 80 443 22 ];
+
     networking = {
         useDHCP = false;
 

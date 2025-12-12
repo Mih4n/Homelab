@@ -35,7 +35,6 @@
             specialArgs = { inherit inputs system; };
 
             modules = [ 
-                ./hardware-configuration.nix
                 ./systems/vpn/configuration.nix 
             ];
         };

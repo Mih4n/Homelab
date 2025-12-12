@@ -11,8 +11,4 @@
     nixpkgs.overlays = [
         inputs.proxmox-nixos.overlays.${system}
     ];
-
-    # environment.persistence."/persistent".directories = [
-    #     "/var/lib/pve-cluster"
-    # ];
 }
