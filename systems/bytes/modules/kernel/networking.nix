@@ -48,7 +48,7 @@
         ruleset = ''
             table ip nat {
                 chain postrouting {
-                    type nat hook postrouting priority 100; policy accept;
+                    type nat hook postrouting priority srcnat + 100; 
                     ip saddr 192.168.192.0/18 oifname "vmbr0" masquerade
                 }
             }

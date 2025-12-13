@@ -19,6 +19,8 @@
 
             hostName = "nextcloud";
         };
+
+        tailscale.enable = true;
     };
  
     system.stateVersion = "25.05";
