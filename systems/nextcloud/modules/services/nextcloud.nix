@@ -1,23 +1,14 @@
 { pkgs, config, ... }: {
-    services.nextcloud = {                
-        enable = true;                   
+    services.nextcloud = {
+        enable = true;
+        https = true;
         package = pkgs.nextcloud32;
-
         hostName = "localhost";
-
         config = {
-            adminuser = "mih4n";
+            dbtype = "sqlite";
             adminpassFile = config.sops.secrets."nextcloud/adminpass".path;
- 
-            dbtype = "pgsql";
-            dbhost = "/run/postgresql";
-            dbname = "nextcloud";
-            dbuser = "nextcloud";
         };
-
-        extraApps = {
-            inherit (config.services.nextcloud.package.packages.apps) news contacts calendar tasks;
-        };
-        extraAppsEnable = true;
+        datadir = "/byteshaker/media/nextcloud";
+        settings.trusted_domains = [ "nextcloud.mih4n.xyz" "192.168.192.11" ];
     };
 }
