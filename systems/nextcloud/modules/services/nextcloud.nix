@@ -3,14 +3,12 @@
         enable = true;                   
         package = pkgs.nextcloud32;
 
-        hostName = "0.0.0.0";
+        hostName = "localhost";
 
         config = {
-            adminuser = config.sops.secrets."nextcloud/adminname".path;
+            adminuser = "mih4n";
             adminpassFile = config.sops.secrets."nextcloud/adminpass".path;
-        };
-        
-        config = {
+ 
             dbtype = "pgsql";
             dbhost = "/run/postgresql";
             dbname = "nextcloud";
