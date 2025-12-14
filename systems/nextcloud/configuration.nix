@@ -13,11 +13,11 @@
     ];
 
     bytes = {
+        hostName = "nextcloud";
+        
         local-networking = {
             enable = true;
             ip = "192.168.192.11";
-
-            hostName = "nextcloud";
         };
 
         tailscale.enable = true;

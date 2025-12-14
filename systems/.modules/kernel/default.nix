@@ -7,5 +7,6 @@
         ./boot.nix
         ./security.nix
         ./networking.nix
+        ./local-networking.nix
     ];
 }

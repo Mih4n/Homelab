@@ -12,6 +12,8 @@
     ];
 
     bytes = {
+        hostName = "bytes";
+
         vscode.enable = true;
         tailscale.enable = true;
         

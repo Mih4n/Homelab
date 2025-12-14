@@ -13,6 +13,8 @@
     ];
 
     bytes = {
+        hostName = "vpn";
+        
         disk.type = "vda";
         boot.mode = "legacy-grub";
 

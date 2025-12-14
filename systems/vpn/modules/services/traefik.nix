@@ -38,17 +38,34 @@
             http.routers = {
                 headscale = {
                     rule = "Host(`vpn.mih4n.xyz`)";
-                    tls = {
-                        certResolver = "letsencrypt";
-                    };
+                    tls.certResolver = "letsencrypt";
                     service = "headscale";
                     entrypoints = "websecure";
                 }; 
+                nextcloud = {
+                    rule = "Host(`cloud.mih4n.xyz`)";
+                    entrypoints = "websecure";
+                    middlewares = ["nextcloud-redirectregex"];
+                    service = "nextcloud";
+                    tls.certResolver = "letsencrypt";
+                };
+            };
+            http.middlewares = {
+                nextcloud-redirectregex.redirectRegex = {
+                    permanent = true;
+                    regex = "https://(.*)/.well-known/(?:card|cal)dav";
+                    replacement = "https://\${1}/remote.php/dav";
+                };
             };
             http.services = {
                 headscale.loadBalancer.servers = [
                     {
                         url = "http://localhost:3009";
+                    }
+                ];
+                nextcloud.loadBalancer.servers = [
+                    {
+                        url = "http://100.64.0.8:80";
                     }
                 ];
             };

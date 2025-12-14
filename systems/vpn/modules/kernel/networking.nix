@@ -1,9 +1,4 @@
 {
-    networking.hostName = "vpn";
-
-    networking.firewall.allowedUDPPorts = [ 3478 ];
-    networking.firewall.allowedTCPPorts = [ 80 443 22 ];
-
     networking = {
         useDHCP = false;
 
@@ -37,7 +32,5 @@
             address = "10.0.0.1";
             interface = "ens3";
         };
-        
-        nameservers = [ "1.1.1.1" "8.8.8.8" ];
     };
 }

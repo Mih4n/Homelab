@@ -1,9 +1,6 @@
 {
     networking.useNetworkd = true;
 
-    networking.hostName = "bytes";
-    
-    networking.firewall.enable = false;
     networking.networkmanager.enable = false;
     networking.interfaces.enp4s0.useDHCP = false;
 
@@ -60,5 +57,5 @@
         interface = "vmbr0";
     };
     
-    networking.nameservers = [ "192.168.0.1" "8.8.8.8" "1.1.1.1" ];
+    networking.nameservers = [ "192.168.0.1" ];
 }
