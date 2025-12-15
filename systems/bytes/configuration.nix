@@ -1,4 +1,4 @@
-{ inputs, ... }: {
+{ inputs, config, ... }: {
     imports = [
         inputs.sops-nix.nixosModules.sops
         inputs.authentik.nixosModules.default
@@ -11,11 +11,17 @@
         ./hardware-configuration.nix
     ];
 
-    bytes = {
+    bytes = let 
+        secrets = config.secrets.sops;
+    in {
         hostName = "bytes";
 
         vscode.enable = true;
-        tailscale.enable = true;
+        tailscale = {
+            enable = true;
+            isExiteNode = true;
+            authKeyFile = secrets."headscale/bytes".path;
+        };
         
         users.byteshaker.enable = false;
         local-networking.enable = false;

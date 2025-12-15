@@ -3,6 +3,11 @@
     sops.defaultSopsFormat = "yaml";
 
     sops.secrets."bytes" = {};
+
+    sops.secrets."headscale/vpn" = {};
+    sops.secrets."headscale/bytes" = {};
+    sops.secrets."headscale/nextcloud" = {};
+
     sops.secrets."nextcloud/adminname" = {};    
     sops.secrets."nextcloud/adminpass" = {};    
 }

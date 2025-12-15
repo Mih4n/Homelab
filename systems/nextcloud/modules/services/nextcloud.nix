@@ -4,11 +4,12 @@
         https = true;
         package = pkgs.nextcloud32;
         hostName = "localhost";
+        configureRedis = true;
         config = {
             dbtype = "sqlite";
             adminpassFile = config.sops.secrets."nextcloud/adminpass".path;
         };
         datadir = "/byteshaker/media/nextcloud";
-        settings.trusted_domains = [ "nextcloud.mih4n.xyz" "192.168.192.11" "100.64.0.8" ];
+        settings.trusted_domains = [ "cloud.mih4n.xyz" "192.168.192.11" "100.64.0.8" ];
     };
 }

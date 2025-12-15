@@ -1,4 +1,4 @@
-{ inputs, ... }: {
+{ inputs, config, ... }: {
     imports = [ 
         inputs.disko.nixosModules.default
         inputs.sops-nix.nixosModules.sops
@@ -12,7 +12,9 @@
         ./hardware-configuration.nix
     ];
 
-    bytes = {
+    bytes = let 
+        secrets = config.sops.secrets;
+    in {
         hostName = "nextcloud";
         
         local-networking = {
@@ -20,7 +22,10 @@
             ip = "192.168.192.11";
         };
 
-        tailscale.enable = true;
+        tailscale = {
+            enable = true;
+            authKeyFile = secrets."headscale/nextcloud".path;
+        };
     };
  
     system.stateVersion = "25.05";

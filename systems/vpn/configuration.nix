@@ -1,4 +1,4 @@
-{ inputs, ... }: {
+{ inputs, config, ... }: {
     imports = [
         inputs.disko.nixosModules.default
         inputs.sops-nix.nixosModules.sops
@@ -12,13 +12,21 @@
         ./hardware-configuration.nix
     ];
 
-    bytes = {
+    bytes = let 
+        secrets = config.sops.secrets;
+    in {
         hostName = "vpn";
-        
+
         disk.type = "vda";
         boot.mode = "legacy-grub";
 
         vscode.enable = true;
+        
+        tailscale = {
+            enable = true;
+            isExiteNode = true;
+            authKeyFile = secrets."headscale/vpn".path;
+        };
     }; 
  
     system.stateVersion = "25.05";
