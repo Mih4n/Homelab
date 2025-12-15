@@ -12,7 +12,7 @@
     ];
 
     bytes = let 
-        secrets = config.secrets.sops;
+        secrets = config.sops.secrets;
     in {
         hostName = "bytes";
 
