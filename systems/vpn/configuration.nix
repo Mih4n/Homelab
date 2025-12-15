@@ -21,6 +21,12 @@
         boot.mode = "legacy-grub";
 
         vscode.enable = true;
+
+        headscale = {
+            subnetRouters = [
+                "bytes"
+            ];
+        };
         
         tailscale = {
             enable = true;

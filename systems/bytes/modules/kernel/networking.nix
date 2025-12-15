@@ -1,4 +1,6 @@
-{
+{ config, ... }: let 
+    locfg = config.bytes.local-networking;
+in {
     networking.useNetworkd = true;
 
     networking.networkmanager.enable = false;
@@ -34,7 +36,7 @@
             ipv4.addresses = [
                 {
                     address = "192.168.192.5";
-                    prefixLength = 18;
+                    prefixLength = locfg.mask;
                 }
             ];
         };
@@ -46,7 +48,7 @@
             table ip nat {
                 chain postrouting {
                     type nat hook postrouting priority srcnat + 100; 
-                    ip saddr 192.168.192.0/18 oifname "vmbr0" masquerade
+                    ip saddr 192.168.192.0/${toString locfg.mask} oifname "vmbr0" masquerade
                 }
             }
         '';

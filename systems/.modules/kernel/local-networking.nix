@@ -8,6 +8,12 @@
             description = "ip address in local network";
         };
 
+        mask = lib.mkOption {
+            type = lib.types.int;
+            default = 24;
+            description = "sets local network mask";
+        };
+
         useDHCP = lib.mkOption {
             type = lib.types.bool;
             default = false;
@@ -16,19 +22,19 @@
     };
 
     config = let 
-        local-network = config.bytes.local-networking;
+        cfg = config.bytes.local-networking;
     in {
-        networking = lib.mkIf local-network.enable {
-            useDHCP = local-network.useDHCP;
+        networking = lib.mkIf cfg.enable {
+            useDHCP = cfg.useDHCP;
 
             firewall.enable = false;
 
             interfaces.ens18 = {
-                useDHCP = local-network.useDHCP;
-                ipv4.addresses = lib.mkIf (!local-network.useDHCP) [
+                useDHCP = cfg.useDHCP;
+                ipv4.addresses = lib.mkIf (!cfg.useDHCP) [
                     {
-                        address = config.bytes.local-networking.ip;
-                        prefixLength = 18;      
+                        address = cfg.ip;
+                        prefixLength = cfg.mask;      
                     }
                 ];
 
