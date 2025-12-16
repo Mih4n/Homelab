@@ -2,6 +2,10 @@
     options.bytes.tailscale = {
         enable = lib.mkEnableOption "tailscale";
         isExiteNode = lib.mkEnableOption "exit node";
+        subnetRoutes = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [];
+        };
         loginServer = lib.mkOption {
             type = lib.types.str;
             default = "https://vpn.mih4n.xyz";
@@ -25,6 +29,8 @@
                 "--accept-routes"
             ] ++ lib.optionals cfg.isExiteNode [
                 "--advertise-exit-node"
+            ] ++ lib.optionals (lib.any (x: true) cfg.subnetRoutes) [
+                "--advertise-routes=${lib.concatStringsSep "," cfg.subnetRoutes}"
             ];
         };
 
