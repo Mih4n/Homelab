@@ -36,6 +36,12 @@
 
         dynamicConfigOptions = {
             http.routers = {
+                home = {
+                    rule = "Host(`home.mih4n.xyz`)";
+                    tls.certResolver = "letsencrypt";
+                    service = "homeassistant";
+                    entrypoints = "websecure";
+                };
                 headscale = {
                     rule = "Host(`vpn.mih4n.xyz`)";
                     tls.certResolver = "letsencrypt";
@@ -58,6 +64,11 @@
                 };
             };
             http.services = {
+                homeassistant.loadBalancer.servers = [
+                    {
+                        url = "http://192.168.192.10:8123";
+                    }
+                ];
                 headscale.loadBalancer.servers = [
                     {
                         url = "http://localhost:3009";
