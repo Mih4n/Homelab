@@ -18,6 +18,16 @@
                     asDefault = true;
                     http.tls.certResolver = "letsencrypt";
                 };
+
+                smtp = { address = ":25"; };
+                submission = { address = ":587"; };
+                smtps = { address = ":465"; };
+
+                imap = { address = ":143"; };
+                imaps = { address = ":993"; };
+
+                pop3 = { address = ":110"; };
+                pop3s = { address = ":995"; };
             };
 
             log = {
@@ -42,6 +52,14 @@
                     service = "homeassistant";
                     entrypoints = "websecure";
                 };
+                mail = {
+                    rule = "Host(`mail.mih4n.xyz`)";
+                    service = "mail";
+                    tls = {
+                        passthrough = true;
+                    };
+                    entrypoints = "websecure";
+                };
                 headscale = {
                     rule = "Host(`vpn.mih4n.xyz`)";
                     tls.certResolver = "letsencrypt";
@@ -56,6 +74,53 @@
                     tls.certResolver = "letsencrypt";
                 };
             };
+            tcp = {
+                routers = {
+                    smtp = {
+                        entryPoints = ["smtp"];
+                        rule = "HostSNI(`*`)";
+                        service = "smtp";
+                    };
+
+                    submission = {
+                        entryPoints = ["submission"];
+                        rule = "HostSNI(`mail.mih4n.xyz`)";
+                        service = "submission";
+                    };
+
+                    smtps = {
+                        entryPoints = ["smtps"];
+                        rule = "HostSNI(`mail.mih4n.xyz`)";
+                        service = "smtps";
+                        tls = { passthrough = true; };
+                    };
+
+                    imaps = {
+                        entryPoints = ["imaps"];
+                        rule = "HostSNI(`mail.mih4n.xyz`)";
+                        service = "imaps";
+                        tls = { passthrough = true; };
+                    };
+                };
+
+                services = {
+                    smtp.loadBalancer.servers = [
+                        { address = "100.64.0.3:25"; }
+                    ];
+
+                    submission.loadBalancer.servers = [
+                        { address = "100.64.0.3:587"; }
+                    ];
+
+                    smtps.loadBalancer.servers = [
+                        { address = "100.64.0.3:465"; }
+                    ];
+
+                    imaps.loadBalancer.servers = [
+                        { address = "100.64.0.3:993"; }
+                    ];
+                };
+            };
             http.middlewares = {
                 nextcloud-redirectregex.redirectRegex = {
                     permanent = true;
@@ -64,6 +129,11 @@
                 };
             };
             http.services = {
+                mail.loadBalancer.server = [
+                    {
+                        url = "http://100.64.0.3:80";
+                    }
+                ];
                 homeassistant.loadBalancer.servers = [
                     {
                         url = "http://192.168.192.10:8123";

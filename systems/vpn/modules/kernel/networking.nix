@@ -2,6 +2,8 @@
     networking = {
         useDHCP = false;
 
+        firewall = [ 25 465 993 587 ];
+
         interfaces.ens3 = {
             macAddress = "52:54:00:f1:e5:bd"; 
             

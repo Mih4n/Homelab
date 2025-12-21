@@ -1,10 +1,5 @@
-{ inputs, config, ... }: {
-    imports = [
-        inputs.sops-nix.nixosModules.sops
-        inputs.authentik.nixosModules.default
-        inputs.vscode-server.nixosModules.default
-        inputs.proxmox-nixos.nixosModules.proxmox-ve
-        
+{ config, ... }: {
+    imports = [ 
         ./modules
         ../.modules
         
@@ -15,6 +10,24 @@
         secrets = config.sops.secrets;
     in {
         hostName = "bytes";
+
+        mailserver = {
+            enable = true;
+            emails = [
+                {
+                    username = "auth";
+                    hashedPasswordFile = secrets."mail/auth-hash".path;
+                }
+                {
+                    username = "selfish";
+                    hashedPasswordFile = secrets."mail/selfish-hash".path;
+                }
+                {
+                    username = "no-reply";
+                    hashedPasswordFile = secrets."mail/no-reply-hash".path;
+                }
+            ];
+        };
 
         vscode.enable = true;
         tailscale = {

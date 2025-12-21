@@ -3,6 +3,7 @@
         colmena.url = "github:zhaofengli/colmena";
         nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
         authentik.url = "github:nix-community/authentik-nix";
+        mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-25.11";
         proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
         vscode-server.url = "github:nix-community/nixos-vscode-server";
 
@@ -59,7 +60,7 @@
             user = "byteshaker";
         in colmena.lib.makeHive {
             meta = {
-                nixpkgs = import nixpkgs { inherit system; };
+                nixpkgs = pkgs;
                 specialArgs = { inherit inputs system; };
             };
 
