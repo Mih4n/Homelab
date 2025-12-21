@@ -52,14 +52,6 @@
                     service = "homeassistant";
                     entrypoints = "websecure";
                 };
-                mail = {
-                    rule = "Host(`mail.mih4n.xyz`)";
-                    service = "mail";
-                    tls = {
-                        passthrough = true;
-                    };
-                    entrypoints = "websecure";
-                };
                 headscale = {
                     rule = "Host(`vpn.mih4n.xyz`)";
                     tls.certResolver = "letsencrypt";
@@ -74,17 +66,25 @@
                     tls.certResolver = "letsencrypt";
                 };
             };
+
             tcp = {
                 routers = {
+                    mail-https = {
+                        entryPoints = ["websecure"];
+                        rule = "HostSNI(`mail.mih4n.xyz`)";
+                        service = "mail-secure";
+                        tls = { passthrough = true; };
+                    };
+
                     smtp = {
                         entryPoints = ["smtp"];
-                        rule = "HostSNI(`*`)";
+                        rule = "HostSNI(`*`)"; 
                         service = "smtp";
                     };
 
                     submission = {
                         entryPoints = ["submission"];
-                        rule = "HostSNI(`mail.mih4n.xyz`)";
+                        rule = "HostSNI(`*`)";
                         service = "submission";
                     };
 
@@ -104,23 +104,14 @@
                 };
 
                 services = {
-                    smtp.loadBalancer.servers = [
-                        { address = "100.64.0.3:25"; }
-                    ];
-
-                    submission.loadBalancer.servers = [
-                        { address = "100.64.0.3:587"; }
-                    ];
-
-                    smtps.loadBalancer.servers = [
-                        { address = "100.64.0.3:465"; }
-                    ];
-
-                    imaps.loadBalancer.servers = [
-                        { address = "100.64.0.3:993"; }
-                    ];
+                    smtp.loadBalancer.servers = [{ address = "100.64.0.3:25"; }];
+                    smtps.loadBalancer.servers = [{ address = "100.64.0.3:465"; }];
+                    imaps.loadBalancer.servers = [{ address = "100.64.0.3:993"; }];
+                    submission.loadBalancer.servers = [{ address = "100.64.0.3:587"; }];
+                    mail-secure.loadBalancer.servers = [{ address = "100.64.0.3:443"; }];
                 };
             };
+
             http.middlewares = {
                 nextcloud-redirectregex.redirectRegex = {
                     permanent = true;
@@ -128,27 +119,11 @@
                     replacement = "https://\${1}/remote.php/dav";
                 };
             };
+
             http.services = {
-                mail.loadBalancer.server = [
-                    {
-                        url = "http://100.64.0.3:80";
-                    }
-                ];
-                homeassistant.loadBalancer.servers = [
-                    {
-                        url = "http://192.168.192.10:8123";
-                    }
-                ];
-                headscale.loadBalancer.servers = [
-                    {
-                        url = "http://localhost:3009";
-                    }
-                ];
-                nextcloud.loadBalancer.servers = [
-                    {
-                        url = "http://100.64.0.8:80";
-                    }
-                ];
+                headscale.loadBalancer.servers = [{ url = "http://localhost:3009"; }];
+                nextcloud.loadBalancer.servers = [{ url = "http://100.64.0.8:80"; }];
+                homeassistant.loadBalancer.servers = [{ url = "http://192.168.192.10:8123"; }];
             };
         };
     };
