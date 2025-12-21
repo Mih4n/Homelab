@@ -12,7 +12,7 @@
             hostName = config.bytes.hostName;
 
             firewall = {
-                allowedTCPPorts = [ 22 80 443 ];
+                allowedTCPPorts = [ 22 80 443 25 465 993 587 ];
             };
 
             nameservers = [ "1.1.1.1" "8.8.8.8" ];
