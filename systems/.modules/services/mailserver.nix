@@ -37,11 +37,12 @@
 
     config = let
         cfg = config.bytes.mailserver;
+        fqdn = "${cfg.subdomain}.${cfg.domain}";
     in lib.mkIf cfg.enable {
         mailserver = {
             enable = true;
             stateVersion = 3;
-            fqdn = "${cfg.subdomain}.${cfg.domain}";
+            fqdn = fqdn;
             domains = [ cfg.domain ];
 
             loginAccounts = lib.listToAttrs (
@@ -57,11 +58,15 @@
                 cfg.emails
             );
 
-
-            certificateScheme = "acme-nginx";
+            x509.useACMEHost = fqdn;
         };
 
-        security.acme.acceptTerms = true;
-        security.acme.defaults.email = "security@${cfg.domain}";
+        security.acme = {
+            acceptTerms = true;
+            defaults.email = "security@${cfg.domain}";
+            certs.${fqdn} = {
+                listenHTTP = ":8080";
+            };
+        };
     };
 }

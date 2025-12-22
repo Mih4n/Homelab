@@ -19,15 +19,11 @@
                     http.tls.certResolver = "letsencrypt";
                 };
 
-                smtp = { address = ":25"; };
-                submission = { address = ":587"; };
-                smtps = { address = ":465"; };
-
-                imap = { address = ":143"; };
-                imaps = { address = ":993"; };
-
-                pop3 = { address = ":110"; };
-                pop3s = { address = ":995"; };
+                # http = { address = ":80"; };
+                # smtp = { address = ":25"; };
+                # smtps = { address = ":465"; };
+                # imaps = { address = ":993"; };
+                # submission = { address = ":587"; };
             };
 
             log = {
@@ -67,50 +63,49 @@
                 };
             };
 
-            tcp = {
-                routers = {
-                    mail-https = {
-                        entryPoints = ["websecure"];
-                        rule = "HostSNI(`mail.mih4n.xyz`)";
-                        service = "mail-secure";
-                        tls = { passthrough = true; };
-                    };
+            # tcp = {
+            #     routers = {
+            #         mail-acme = {
+            #             entryPoints = ["http"];
+            #             rule = "HostSNI(`mail.mih4n.xyz`)";
+            #             tls.passthrough = true;
+            #         };
 
-                    smtp = {
-                        entryPoints = ["smtp"];
-                        rule = "HostSNI(`*`)"; 
-                        service = "smtp";
-                    };
+            #         smtp = {
+            #             entryPoints = ["smtp"];
+            #             rule = "HostSNI(`*`)"; 
+            #             service = "smtp";
+            #         };
 
-                    submission = {
-                        entryPoints = ["submission"];
-                        rule = "HostSNI(`*`)";
-                        service = "submission";
-                    };
+            #         submission = {
+            #             entryPoints = ["submission"];
+            #             rule = "HostSNI(`*`)";
+            #             service = "submission";
+            #         };
 
-                    smtps = {
-                        entryPoints = ["smtps"];
-                        rule = "HostSNI(`mail.mih4n.xyz`)";
-                        service = "smtps";
-                        tls = { passthrough = true; };
-                    };
+            #         smtps = {
+            #             entryPoints = ["smtps"];
+            #             rule = "HostSNI(`mail.mih4n.xyz`)";
+            #             service = "smtps";
+            #             tls.passthrough = true;
+            #         };
 
-                    imaps = {
-                        entryPoints = ["imaps"];
-                        rule = "HostSNI(`mail.mih4n.xyz`)";
-                        service = "imaps";
-                        tls = { passthrough = true; };
-                    };
-                };
+            #         imaps = {
+            #             entryPoints = ["imaps"];
+            #             rule = "HostSNI(`mail.mih4n.xyz`)";
+            #             service = "imaps";
+            #             tls.passthrough = true;
+            #         };
+            #     };
 
-                services = {
-                    smtp.loadBalancer.servers = [{ address = "100.64.0.3:25"; }];
-                    smtps.loadBalancer.servers = [{ address = "100.64.0.3:465"; }];
-                    imaps.loadBalancer.servers = [{ address = "100.64.0.3:993"; }];
-                    submission.loadBalancer.servers = [{ address = "100.64.0.3:587"; }];
-                    mail-secure.loadBalancer.servers = [{ address = "100.64.0.3:443"; }];
-                };
-            };
+            #     services = {
+            #         smtp.loadBalancer.servers = [{ address = "100.64.0.3:25"; }];
+            #         smtps.loadBalancer.servers = [{ address = "100.64.0.3:465"; }];
+            #         imaps.loadBalancer.servers = [{ address = "100.64.0.3:993"; }];
+            #         mail-acme.loadBalancer.servers = [{ address = "100.64.0.3:8080"; }];
+            #         submission.loadBalancer.servers = [{ address = "100.64.0.3:587"; }];
+            #     };
+            # };
 
             http.middlewares = {
                 nextcloud-redirectregex.redirectRegex = {

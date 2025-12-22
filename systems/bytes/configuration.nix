@@ -12,7 +12,7 @@
         hostName = "bytes";
 
         mailserver = {
-            enable = true;
+            enable = false;
             emails = [
                 {
                     username = "auth";
