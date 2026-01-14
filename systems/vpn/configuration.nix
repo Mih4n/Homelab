@@ -18,8 +18,6 @@
         disk.type = "vda";
         boot.mode = "legacy-grub";
 
-        vscode.enable = true;
-
         headscale = {
             subnetRouters = [
                 "bytes"

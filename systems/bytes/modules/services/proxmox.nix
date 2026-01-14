@@ -1,4 +1,4 @@
-{ system, inputs, ... }: {
+{ system, inputs, lib, ... }: {
     imports = [
         inputs.proxmox-nixos.nixosModules.proxmox-ve
     ];
@@ -15,4 +15,6 @@
     nixpkgs.overlays = [
         inputs.proxmox-nixos.overlays.${system}
     ];
+    
+    services.openssh.settings.AcceptEnv = lib.mkForce null;
 }

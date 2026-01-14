@@ -29,7 +29,6 @@
             ];
         };
 
-        vscode.enable = true;
         tailscale = {
             enable = true;
             isExiteNode = true;

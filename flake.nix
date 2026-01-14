@@ -16,9 +16,14 @@
             url = "github:nix-community/disko";
             inputs.nixpkgs.follows = "nixpkgs";
         };
+
+        home = {
+            url = "github:nix-community/home-manager";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
     };
  
-    outputs = { nixpkgs, colmena, ... } @inputs: 
+    outputs = { nixpkgs, colmena, home, ... } @inputs: 
     let
         lib = nixpkgs.lib;
         system = "x86_64-linux";
@@ -54,6 +59,13 @@
             specialArgs = { inherit inputs system; };
 
             modules = [ ./systems/bytes/configuration.nix ];
+        };
+
+        homeConfigurations.bytekeeper = home.lib.homeManagerConfiguration {
+            inherit pkgs;
+            extraSpecialArgs = { inherit inputs; inherit system; };
+
+            modules = [ ./homes/bytekeeper/home.nix ];
         };
 
         colmenaHive = let 
