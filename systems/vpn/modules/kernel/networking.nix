@@ -2,35 +2,17 @@
     networking = {
         useDHCP = false;
 
-        interfaces.ens3 = {
-            macAddress = "52:54:00:f1:e5:bd"; 
+        interfaces.ens18 = {
+            macAddress = "00:50:56:00:B7:51"; 
             
             ipv4.addresses = [
                 {
-                    address = "79.137.205.90";
-                    prefixLength = 32;
-                }
-            ];
-
-            ipv6.addresses = [
-                {
-                    address = "2a01:e5c0:4de6::2";
-                    prefixLength = 48;
-                }
-            ];
-            
-            ipv4.routes = [
-                {
-                    address = "10.0.0.1";
-                    prefixLength = 32;
-                    options = { scope = "link"; };
+                    address = "157.180.52.198";
+                    prefixLength = 26;
                 }
             ];
         };
 
-        defaultGateway = {
-            address = "10.0.0.1";
-            interface = "ens3";
-        };
+        defaultGateway = "157.180.52.193";
     };
 }

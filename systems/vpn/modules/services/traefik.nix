@@ -117,7 +117,7 @@
 
             http.services = {
                 headscale.loadBalancer.servers = [{ url = "http://localhost:3009"; }];
-                nextcloud.loadBalancer.servers = [{ url = "http://100.64.0.8:80"; }];
+                nextcloud.loadBalancer.servers = [{ url = "http://100.64.0.4:80"; }];
                 homeassistant.loadBalancer.servers = [{ url = "http://192.168.192.10:8123"; }];
             };
         };

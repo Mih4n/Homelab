@@ -15,7 +15,7 @@
     in {
         hostName = "vpn";
 
-        disk.type = "vda";
+        disk.type = "sda";
         boot.mode = "legacy-grub";
 
         headscale = {

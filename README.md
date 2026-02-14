@@ -8,6 +8,19 @@ ip route | grep default # let u get all devices that are connected to your virtu
 ip neigh show dev vmbrlo
 ```
 
+## Sops 
+
+```bash 
+sops updatekeys ./secrets/secrets.yaml
+```
+
+## Agekey generation
+
+```bash
+# generates key
+sudo nix run nixpkgs#ssh-to-age -- -private-key -i /etc/ssh/ssh_host_ed25519_key | nix shell nixpkgs#age -c age-keygen -y
+```
+
 ## ISO image generation
 
 ```bash

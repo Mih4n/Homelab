@@ -6,18 +6,9 @@ in {
     networking.networkmanager.enable = false;
     networking.interfaces.enp4s0.useDHCP = false;
 
-    boot.kernelModules = [ "dummy" ];
-
     networking.bridges = {
         vmbr0.interfaces = [ "enp4s0" ];
-        vmbrlo.interfaces = [ "dummy0" ];
-    };
-
-    systemd.network.netdevs."10-dummy0" = {
-        netdevConfig = {
-            Kind = "dummy";
-            Name = "dummy0";
-        };
+        vmbrlo.interfaces = [ ];
     };
 
     networking.interfaces = {

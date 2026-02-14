@@ -79,7 +79,7 @@
             vpn = {
                 deployment = {
                     targetUser = user;
-                    targetHost = "79.137.205.90";
+                    targetHost = "157.180.52.198";
                 };
                 
                 imports = [
