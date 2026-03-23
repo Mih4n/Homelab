@@ -327,6 +327,26 @@
         "type": "gitlab"
       }
     },
+    "minegrub-world-sel-theme": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1770377501,
+        "narHash": "sha256-pNRReDfR36MZd3X/zsT+qNzGtLvmg41mgjdiM/Rxtd8=",
+        "owner": "Lxtharia",
+        "repo": "minegrub-world-sel-theme",
+        "rev": "0527bf0bdd0bcad46f228e35ee6cf133cb436aec",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Lxtharia",
+        "repo": "minegrub-world-sel-theme",
+        "type": "github"
+      }
+    },
     "napalm": {
       "inputs": {
         "flake-utils": [
@@ -591,10 +611,12 @@
         "disko": "disko",
         "home": "home",
         "mailserver": "mailserver",
+        "minegrub-world-sel-theme": "minegrub-world-sel-theme",
         "nixpkgs": "nixpkgs_4",
         "proxmox-nixos": "proxmox-nixos",
         "sops-nix": "sops-nix",
-        "vscode-server": "vscode-server"
+        "vscode-server": "vscode-server",
+        "zen-browser": "zen-browser"
       }
     },
     "sops-nix": {
@@ -737,6 +759,26 @@
       "original": {
         "owner": "nix-community",
         "repo": "nixos-vscode-server",
+        "type": "github"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1773722260,
+        "narHash": "sha256-U8MsSiqqYZHR3oKE+cCZ2AJt3b4LcXs+oQuNLipaO78=",
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
+        "rev": "0e6e43342fb3e9a3439fafa777d8cdf98e4ffc49",
+        "type": "github"
+      },
+      "original": {
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
         "type": "github"
       }
     }
