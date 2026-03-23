@@ -7,6 +7,16 @@
         proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
         vscode-server.url = "github:nix-community/nixos-vscode-server";
 
+        zen-browser = {
+            url = "github:youwen5/zen-browser-flake";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+        
+        minegrub-world-sel-theme = {
+            url = "github:Lxtharia/minegrub-world-sel-theme";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+
         sops-nix = {
             url = "github:Mic92/sops-nix";
             inputs.nixpkgs.follows = "nixpkgs";
@@ -34,6 +44,15 @@
             };
         };
     in {
+        nixosConfigurations.desktop = lib.nixosSystem {
+            inherit lib;
+            inherit pkgs;
+            inherit system;
+            specialArgs = { inherit inputs system; };
+
+            modules = [ ./systems/desktop/configuration.nix ];
+        };
+
         nixosConfigurations.vpn = lib.nixosSystem {
             inherit lib;
             inherit pkgs;
@@ -68,6 +87,13 @@
             specialArgs = { inherit inputs system; };
 
             modules = [ ./systems/polygon/configuration.nix ];
+        };
+
+        homeConfigurations.mih4n = home.lib.homeManagerConfiguration {
+            inherit pkgs;
+            extraSpecialArgs = { inherit inputs; inherit system; };
+
+            modules = [ ./homes/mih4n/home.nix ];
         };
 
         homeConfigurations.bytekeeper = home.lib.homeManagerConfiguration {
