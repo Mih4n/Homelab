@@ -61,6 +61,15 @@
             modules = [ ./systems/bytes/configuration.nix ];
         };
 
+        nixosConfigurations.polygon = lib.nixosSystem {
+            inherit lib;
+            inherit pkgs;
+            inherit system;
+            specialArgs = { inherit inputs system; };
+
+            modules = [ ./systems/polygon/configuration.nix ];
+        };
+
         homeConfigurations.bytekeeper = home.lib.homeManagerConfiguration {
             inherit pkgs;
             extraSpecialArgs = { inherit inputs; inherit system; };
@@ -87,10 +96,21 @@
                 ];
             };
 
+            polygon = {
+                deployment = {
+                    targetUser = user;
+                    targetHost = "polygon.bytes";
+                };
+
+                imports = [
+                    ./systems/polygon/configuration.nix
+                ];
+            };
+
             nextcloud = {
                 deployment = {
                     targetUser = user;
-                    targetHost = "192.168.192.11";
+                    targetHost = "nextcloud.bytes";
                 };
                 
                 imports = [

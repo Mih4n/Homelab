@@ -2,8 +2,9 @@
     services.dnsmasq = {
         enable = true;
         settings = {
-            interface = "vmbrlo";
             port = 0;
+            interface = "vmbrlo";
+            bind-interfaces = true;
             
             dhcp-range = "192.168.192.50,192.168.192.100,255.255.255.0,12h";
         

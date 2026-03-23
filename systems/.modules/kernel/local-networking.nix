@@ -37,7 +37,6 @@
                         prefixLength = cfg.mask;      
                     }
                 ];
-
             };
 
             nameservers = [ "192.168.192.5" ];

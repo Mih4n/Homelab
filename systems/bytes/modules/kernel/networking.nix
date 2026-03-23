@@ -8,7 +8,7 @@ in {
 
     networking.bridges = {
         vmbr0.interfaces = [ "enp4s0" ];
-        vmbrlo.interfaces = [ ];
+        vmbrlo.interfaces = [];
     };
 
     networking.interfaces = {
@@ -23,13 +23,13 @@ in {
         };
 
         vmbrlo = {
-            useDHCP = false;
             ipv4.addresses = [
                 {
                     address = "192.168.192.5";
                     prefixLength = locfg.mask;
                 }
             ];
+            useDHCP = false;
         };
     };
 
