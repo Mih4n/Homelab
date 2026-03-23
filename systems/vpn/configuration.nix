@@ -13,6 +13,7 @@
     bytes = let 
         secrets = config.sops.secrets;
     in {
+        boot.enable = true;
         hostName = "vpn";
 
         disk.type = "sda";

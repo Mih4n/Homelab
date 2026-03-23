@@ -11,6 +11,8 @@
     in {
         hostName = "bytes";
 
+        boot.enable = true;
+
         mailserver = {
             enable = false;
             emails = [
