@@ -9,6 +9,8 @@
   boot.loader.grub = {
     enable = true;
     device = "nodev";
+    useOSProber = true;
+    gfxmodeEfi = "1920x1080";
     minegrub-world-sel = {
       enable = true;
       customIcons = with config.system; [
@@ -22,6 +24,7 @@
     };
     efiSupport = true;
   };
+  boot.loader.efi.efiSysMountPoint = "/boot";
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = false;
 
@@ -29,6 +32,12 @@
     nerd-fonts.jetbrains-mono
     dbeaver-bin
     libreoffice
+    tinymist
+    typst
+    typship
+    plantuml
+    dotnet-ef
+    alsa-scarlett-gui
     inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
@@ -77,7 +86,10 @@
     description = "Mikhail";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
-      dotnet-sdk_10
+      (with dotnetCorePackages; combinePackages [
+        sdk_9_0
+        sdk_10_0
+      ])
       git
       discord
       telegram-desktop
