@@ -1,5 +1,5 @@
 { inputs, config, ... }: {
-    imports = [
+    imports = [ 
         inputs.disko.nixosModules.default
 
         ./modules
@@ -10,28 +10,22 @@
         ./hardware-configuration.nix
     ];
 
-    networking.hostName = "vpn";
-
     bytes = let 
         secrets = config.sops.secrets;
     in {
         boot.enable = true;
-
-        disk.type = "sda";
-        boot.mode = "legacy-grub";
-
-        headscale = {
-            subnetRouters = [
-                "bytes"
-            ];
-        };
+        hostName = "nextcloud";
         
+        local-networking = {
+            enable = true;
+            ip = "192.168.192.11";
+        };
+
         tailscale = {
             enable = true;
-            isExiteNode = true;
-            authKeyFile = secrets."headscale/vpn".path;
+            authKeyFile = secrets."headscale/nextcloud".path;
         };
-    }; 
+    };
  
     system.stateVersion = "25.05";
 }

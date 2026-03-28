@@ -5,15 +5,7 @@
     isSystemdBoot = config.bytes.boot.mode == "uefi-systemd-boot";
 in
 {
-    options.bytes.boot = {
-        enable = lib.mkEnableOption "Enables standard boot";
-        mode = lib.mkOption {
-            type = lib.types.enum [ "uefi-grub" "legacy-grub" "uefi-systemd-boot" ];
-            default = "uefi-systemd-boot";
-        };
-    };
-
-    config = lib.mkIf config.bytes.boot.enable {
+    config = {
         boot.kernelPackages = pkgs.linuxPackages_latest;
         boot.supportedFilesystems = lib.mkForce [ "btrfs" "ext4" "vfat" "ntfs" "xfs" ];
 
