@@ -1,48 +1,47 @@
-{ config, ... }: {
-    imports = [ 
-        ./modules
-        ../.modules
-        
-        ./hardware-configuration.nix
-    ];
-
-    bytes = let 
+{ self, inputs, ... }: {
+    flake.nixosModules.hostBytes = { config, pkgs, ... }: let 
+        system = pkgs.stdenv.hostPlatform.system;
         secrets = config.sops.secrets;
     in {
-        hostName = "bytes";
+        imports = [
+            self.nixosModules.features
 
-        boot.enable = true;
+            # shared features
+            self.nixosModules.nix
+            self.nixosModules.sops
+            self.nixosModules.shell
+            self.nixosModules.locale
+            self.nixosModules.basicEnv
+            self.nixosModules.tailscale
+            self.nixosModules.bootEngine
+            self.nixosModules.networking
+            self.nixosModules.diskoStandard
+            self.nixosModules.noPasswordSudo
 
-        mailserver = {
-            enable = false;
-            emails = [
-                {
-                    username = "auth";
-                    hashedPasswordFile = secrets."mail/auth-hash".path;
-                }
-                {
-                    username = "selfish";
-                    hashedPasswordFile = secrets."mail/selfish-hash".path;
-                }
-                {
-                    username = "no-reply";
-                    hashedPasswordFile = secrets."mail/no-reply-hash".path;
-                }
-            ];
+            # host specific features
+            self.nixosModules.hostBytesBoot
+            self.nixosModules.hostBytesDhcp
+            self.nixosModules.hostBytesProxmox
+            self.nixosModules.hostBytesNetworking
+        ];
+
+        environment.systemPackages = [
+            inputs.colmena.packages.${system}.colmena
+        ];
+
+        networking.hostName = "bytes";
+
+        bytes = {
+            tailscale = {
+                enable = true;
+                isExiteNode = true;
+                subnetRoutes = [
+                    "192.168.192.0/24"
+                ];
+                authKeyFile = secrets."headscale/bytes".path;
+            };
         };
 
-        tailscale = {
-            enable = true;
-            isExiteNode = true;
-            subnetRoutes = [
-                "192.168.192.0/24"
-            ];
-            authKeyFile = secrets."headscale/bytes".path;
-        };
-        
-        users.byteshaker.enable = false;
-        local-networking.enable = false;
+        system.stateVersion = "25.05";
     };
-
-    system.stateVersion = "25.05";
 }

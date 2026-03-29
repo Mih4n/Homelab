@@ -1,7 +1,0 @@
-{
-    imports = [
-        ./kernel
-        ./packages
-        ./services
-    ];
-}

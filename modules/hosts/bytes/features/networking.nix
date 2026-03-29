@@ -1,0 +1,56 @@
+{ ... }: {
+    flake.nixosModules.hostBytesNetworking = { config, ... }: let 
+        cfg = config.bytes.networking.local;
+    in {
+        networking.useNetworkd = true;
+
+        networking.networkmanager.enable = false;
+        networking.interfaces.enp4s0.useDHCP = false;
+
+        networking.bridges = {
+            vmbr0.interfaces = [ "enp4s0" ];
+            vmbrlo.interfaces = [];
+        };
+
+        networking.interfaces = {
+            vmbr0 = {
+                ipv4.addresses = [
+                    {
+                        address = "192.168.0.2";
+                        prefixLength = 24;
+                    }
+                ];
+                useDHCP = false;
+            };
+
+            vmbrlo = {
+                ipv4.addresses = [
+                    {
+                        address = "192.168.192.5";
+                        prefixLength = cfg.mask;
+                    }
+                ];
+                useDHCP = false;
+            };
+        };
+
+        networking.nftables = {
+            enable = true;
+            ruleset = ''
+                table ip nat {
+                    chain postrouting {
+                        type nat hook postrouting priority srcnat + 100; 
+                        ip saddr 192.168.192.0/${toString cfg.mask} oifname "vmbr0" masquerade
+                    }
+                }
+            '';
+        };
+
+        networking.defaultGateway = {
+            address = "192.168.0.1";
+            interface = "vmbr0";
+        };
+        
+        networking.nameservers = [ "192.168.0.1" ];
+    };
+}
