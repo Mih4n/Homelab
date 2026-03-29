@@ -1,11 +1,17 @@
-{ self, pkgs, ... }: {
-    flake.nixosModules.hostDesktop = { ... }: {
+{ self, inputs, ... }: {
+    flake.nixosConfigurations.desktop = inputs.nixpkgs.lib.nixosSystem {
+        modules = [
+            self.nixosModules.hostDesktop
+        ];
+    };
+
+    flake.nixosModules.hostDesktop = { pkgs, ... }: {
         imports = [
             # features options
             self.nixosModules.features
 
             # users
-            self.nixosModules.mih4n
+            self.nixosModules.userMih4n
 
             # environment
             self.nixosModules.basicEnv
@@ -18,23 +24,18 @@
             self.nixosModules.shell
             self.nixosModules.locale
             self.nixosModules.tailscale
-            self.nixosModules.bootEngine
             self.nixosModules.networking
-            self.nixosModules.diskoStandard
             self.nixosModules.noPasswordSudo
 
             # host hardware
             self.nixosModules.hostDesktopHardware
         ]; 
 
+        boot.plymouth.enable = true;
         boot.kernelPackages = pkgs.linuxPackages_zen;
 
         networking.hostName = "desktop";
 
-        bytes = {
-            tailscale.enable = true;
-        };
-        
         programs.nh.flake =  "/home/mih4n/NixOs";
 
         boot.kernelModules = [ "bridge" "tun" "nft_chain_nat_ipv4" ];

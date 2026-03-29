@@ -2,7 +2,7 @@
     flake.nixosModules.userMih4n = { ... }: {
         users.users.mih4n = {
             isNormalUser = true;
-            description = "shackes the bytes";
+            description = "Mikhail";
             hashedPassword = "$6$INGxsfVqSAB.Il9c$8jOKz5AaQeCrfD8ivJj4Z4bSJFxPUnip1ibeTs07KHNLpkuFvl8pF45s8AZKt970I8pvFSSiGXKLnb5ZVW/3U1";
             extraGroups = [ "networkmanager" "wheel" ];
             openssh.authorizedKeys.keys = [ 

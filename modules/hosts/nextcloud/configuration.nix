@@ -1,11 +1,11 @@
-{ self, config, ... }: {
-    flake.nixosConfigurations.nextcloud = { ... }: {
+{ self, inputs, ... }: {
+    flake.nixosConfigurations.nextcloud = inputs.nixpkgs.lib.nixosSystem {
         imports = [
             self.nixosModules.hostNextcloud
         ];
     };
 
-    flake.nixosModules.hostNextcloud = { ... }: let 
+    flake.nixosModules.hostNextcloud = { config, ... }: let 
         secrets = config.sops.secrets;
     in {
         imports = [

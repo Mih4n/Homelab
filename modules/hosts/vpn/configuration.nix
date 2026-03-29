@@ -1,6 +1,6 @@
-{ self, ... }: {
-    flake.nixosConfigurations.vpn = { ... }: {
-        imports = [
+{ self, inputs, ... }: {
+    flake.nixosConfigurations.vpn = inputs.nixpkgs.lib.nixosSystem {
+        modules = [
             self.nixosModules.hostVpn
         ];
     };

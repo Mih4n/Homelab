@@ -1,6 +1,6 @@
-{ self, ... }: {
-    flake.nixosConfigurations.polygon = { ... }: {
-        imports = [
+{ self, inputs, ... }: {
+    flake.nixosConfigurations.polygon = inputs.nixpkgs.lib.nixosSystem {
+        modules = [
             self.nixosModules.hostPolygon
         ];
     };

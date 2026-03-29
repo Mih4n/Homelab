@@ -16,7 +16,7 @@
             inputs.nixpkgs.follows = "nixpkgs";
         };
 
-        sops-nix = {
+        sops = {
             url = "github:Mic92/sops-nix";
             inputs.nixpkgs.follows = "nixpkgs";
         };
@@ -36,7 +36,11 @@
         wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
     };
  
-    outputs = inputs: inputs.parts.lib.mkFlake
-        { inherit inputs; }
-        (inputs.import-tree ./modules);
+    outputs = inputs: inputs.parts.lib.mkFlake { inherit inputs; } {
+        systems = [ "x86_64-linux" "aarch64-linux" ]; 
+
+        imports = [
+            (inputs.import-tree ./modules)
+        ];
+    };
 }

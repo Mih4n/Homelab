@@ -1,6 +1,6 @@
 { self, inputs, ... }: {
-    flake.nixosConfigurations.bytes = { ... }: {
-        imports = [
+    flake.nixosConfigurations.bytes = inputs.nixpkgs.lib.nixosSystem {
+        modules = [
             self.nixosModules.hostBytes
         ];
     };

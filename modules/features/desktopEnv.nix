@@ -1,4 +1,4 @@
-{ ... }: {
+{ inputs, ... }: {
     flake.nixosModules.desktopEnv = { pkgs, ... }: {
         services.xserver.enable = true;
 
@@ -55,6 +55,7 @@
             # --- Development Tools (General) ---
             git
             wget
+            kitty
             direnv
             dbeaver-bin
             vscode-fhs
