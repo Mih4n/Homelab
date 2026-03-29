@@ -1,31 +1,58 @@
-{ inputs, config, ... }: {
-    imports = [ 
-        inputs.disko.nixosModules.default
+{ self, config, ... }: {
+    flake.nixosConfigurations.nextcloud = { ... }: {
+        imports = [
+            self.nixosModules.hostNextcloud
+        ];
+    };
 
-        ./modules
-
-        ../.modules
-        ../.modules/kernel/disko/standard.nix
-
-        ./hardware-configuration.nix
-    ];
-
-    bytes = let 
+    flake.nixosModules.hostNextcloud = { ... }: let 
         secrets = config.sops.secrets;
     in {
-        boot.enable = true;
-        hostName = "nextcloud";
-        
-        local-networking = {
-            enable = true;
-            ip = "192.168.192.11";
+        imports = [
+            # features options
+            self.nixosModules.features
+
+            # users
+            self.nixosModules.userByteshaker
+            self.nixosModules.userBytekeeper
+
+            # environment
+            self.nixosModules.basicEnv
+
+            # disks
+            self.nixosModules.diskoStandard
+
+            # shared features
+            self.nixosModules.nix
+            self.nixosModules.sops
+            self.nixosModules.shell
+            self.nixosModules.locale
+            self.nixosModules.tailscale
+            self.nixosModules.bootEngine
+            self.nixosModules.networking
+            self.nixosModules.networkingLocal
+            self.nixosModules.diskoStandard
+            self.nixosModules.noPasswordSudo
+
+            # host hardware
+            self.nixosModules.hostNextcloudHardware
+
+            # host specific features
+            self.nixosModules.nextcloudServer
+        ];
+
+        bytes = {
+            networking.local = {
+                ip = "192.168.192.11";
+            };
+
+            tailscale = {
+                authKeyFile = secrets."headscale/nextcloud".path;
+            };
         };
 
-        tailscale = {
-            enable = true;
-            authKeyFile = secrets."headscale/nextcloud".path;
-        };
+        networking.hostName = "nextcloud";
+
+        system.stateVersion = "25.05";
     };
- 
-    system.stateVersion = "25.05";
 }

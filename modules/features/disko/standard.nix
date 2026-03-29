@@ -1,8 +1,12 @@
-{ ... }: {
+{ inputs, ... }: {
     flake.nixosModules.diskoStandard = { lib, config, ... }: let
         bytesDisk = config.bytes.disk.type;
         isLegacy = config.bytes.boot.mode == "legacy-grub";
     in {
+        imports = [
+            inputs.disko.nixosModules.default
+        ];
+
         disko.devices = {
             disk = {
                 main = {
