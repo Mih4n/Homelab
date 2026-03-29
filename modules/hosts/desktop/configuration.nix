@@ -1,137 +1,65 @@
-{ config, lib, pkgs, inputs, ... }: 
+{ self, config, lib, pkgs, inputs, ... }: 
 let 
-  my-dotnet = with pkgs.dotnetCorePackages; combinePackages [
-    sdk_9_0
-    sdk_10_0
-  ];
-in {
-  imports = [ 
-    ../.modules
-
-    ./hardware-configuration.nix
-    inputs.minegrub-world-sel-theme.nixosModules.default
-  ];
-
-  boot.loader.grub = {
-    enable = true;
-    device = "nodev";
-    useOSProber = true;
-    gfxmodeEfi = "1920x1080";
-    minegrub-world-sel = {
-      enable = true;
-      customIcons = with config.system; [
-        {
-          inherit name;
-          lineTop = with nixos; distroName + " " + codeName + " (" + version + ")";
-          lineBottom = "Survival Mode, No Cheats, Version: " + nixos.release;
-          imgName = "nixos";
-        }
-      ];
-    };
-    efiSupport = true;
-  };
-
-  boot.kernelModules = [ "bridge" "tun" "nft_chain_nat_ipv4" ];
-
-  # Это заставит NixOS подтянуть нужные модули для iptables-совместимости
-  networking.firewall.enable = true;
-  networking.nftables.enable = true;
-
-  networking.firewall.trustedInterfaces = [ "waydroid0" ];
-
-  boot.loader.efi.efiSysMountPoint = "/boot";
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.enable = false;
-
-  programs.nix-ld.enable = true;
-  programs.nix-ld.libraries = with pkgs; [
-    stdenv.cc.cc
-    zlib
-    openssl
-    icu
-    curl
-  ];
-
-  environment.systemPackages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-    dbeaver-bin
-    libreoffice
-    tinymist
-    typst
-    typship
-    plantuml
-    dotnet-ef
-    alsa-scarlett-gui
-    inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-    my-dotnet
-    nodejs
-  ];
-
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
-  virtualisation.waydroid.enable = true;
-
-  programs.nh = {
-    flake = lib.mkForce "/home/mih4n/NixOs";
-  };
-
-  bytes = {
-    tailscale.enable = true;
-  };
-
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  bytes.hostName = "desktop";
-
-  networking.networkmanager.enable = true;
-
-  time.timeZone = "Europe/Minsk";
-
-  services.xserver.enable = true;
-
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
-
-  services.xserver.xkb = {
-    layout = "us,ru";
-    variant = "";
-  };
-  services.printing.enable = true;
-
-  services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
-  users.users.mih4n = {
-    isNormalUser = true;
-    description = "Mikhail";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      git
-      discord
-      telegram-desktop
-      kitty
-      vscode-fhs
+    my-dotnet = with pkgs.dotnetCorePackages; combinePackages [
+        sdk_9_0
+        sdk_10_0
     ];
-  };
+in {
+    imports = [ 
+      ../.modules
 
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-  };  
+      ./hardware-configuration.nix
+    ];
 
-  programs.fish.enable = true;
-  users.defaultUserShell = pkgs.fish;
+    flake.nixosModules.hostDesktop = { ... }: {
+        imports = [
+            # features options
+            self.nixosModules.features
 
-  system.stateVersion = "25.11";
+            # users
+            self.nixosModules.mih4n
 
+            # environment
+            self.nixosModules.basicEnv
+            self.nixosModules.desktopEnv
+            self.nixosModules.minecraftGrub
+
+            # shared features
+            self.nixosModules.nix
+            self.nixosModules.sops
+            self.nixosModules.shell
+            self.nixosModules.locale
+            self.nixosModules.tailscale
+            self.nixosModules.bootEngine
+            self.nixosModules.networking
+            self.nixosModules.diskoStandard
+            self.nixosModules.noPasswordSudo
+
+            # host hardware
+            self.nixosModules.hostDesktopHardware
+        ]; 
+
+        boot.kernelPackages = pkgs.linuxPackages_zen;
+
+        networking.hostName = "desktop";
+
+        bytes = {
+            tailscale.enable = true;
+        };
+        
+        programs.nh.flake =  "/home/mih4n/NixOs";
+
+        boot.kernelModules = [ "bridge" "tun" "nft_chain_nat_ipv4" ];
+
+        networking.firewall.enable = true;
+        networking.nftables.enable = true;
+
+        networking.firewall.trustedInterfaces = [ "waydroid0" ];
+        virtualisation.waydroid.enable = true;
+
+        services.displayManager.sddm.enable = true;
+        services.desktopManager.plasma6.enable = true; 
+
+        system.stateVersion = "25.11";
+    };
 }

@@ -1,6 +1,7 @@
 { self, ... }: {
     flake.homeConfigurations.bytekeeper = { 
         imports = [
+            self.homeModules.shell
             self.homeModules.vscodeServer
         ];
 

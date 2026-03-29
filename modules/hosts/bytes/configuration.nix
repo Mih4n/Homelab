@@ -1,4 +1,10 @@
 { self, inputs, ... }: {
+    flake.nixosConfigurations.bytes = { ... }: {
+        imports = [
+            self.nixosModules.hostBytes
+        ];
+    };
+
     flake.nixosModules.hostBytes = { config, pkgs, ... }: let 
         system = pkgs.stdenv.hostPlatform.system;
         secrets = config.sops.secrets;
@@ -7,12 +13,17 @@
             # features options
             self.nixosModules.features
 
+            # users
+            self.nixosModules.userBytekeeper
+
+            # environment
+            self.nixosModules.basicEnv
+
             # shared features
             self.nixosModules.nix
             self.nixosModules.sops
             self.nixosModules.shell
             self.nixosModules.locale
-            self.nixosModules.basicEnv
             self.nixosModules.tailscale
             self.nixosModules.bootEngine
             self.nixosModules.networking
