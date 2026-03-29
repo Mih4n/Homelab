@@ -41,6 +41,8 @@
             self.nixosModules.nextcloudServer
         ];
 
+        networking.hostName = "nextcloud";
+
         bytes = {
             networking.local = {
                 ip = "192.168.192.11";
@@ -50,8 +52,6 @@
                 authKeyFile = secrets."headscale/nextcloud".path;
             };
         };
-
-        networking.hostName = "nextcloud";
 
         system.stateVersion = "25.05";
     };

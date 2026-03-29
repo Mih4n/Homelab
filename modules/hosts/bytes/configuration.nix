@@ -39,12 +39,12 @@
             self.nixosModules.hostBytesProxmox
             self.nixosModules.hostBytesNetworking
         ];
+        
+        networking.hostName = "bytes";
 
         environment.systemPackages = [
             inputs.colmena.packages.${system}.colmena
         ];
-
-        networking.hostName = "bytes";
 
         bytes = {
             tailscale = {

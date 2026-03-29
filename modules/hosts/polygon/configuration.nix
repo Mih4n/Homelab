@@ -42,6 +42,8 @@
             self.nixosModules.hostPolygonSqlserver
         ];
 
+        networking.hostName = "polygon";
+
         virtualisation.docker.enable = true;
 
         virtualisation.oci-containers.backend = "docker";
