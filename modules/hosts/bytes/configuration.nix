@@ -4,6 +4,7 @@
         secrets = config.sops.secrets;
     in {
         imports = [
+            # features options
             self.nixosModules.features
 
             # shared features
@@ -17,6 +18,9 @@
             self.nixosModules.networking
             self.nixosModules.diskoStandard
             self.nixosModules.noPasswordSudo
+
+            # host hardware
+            self.nixosModules.hostBytesHardware
 
             # host specific features
             self.nixosModules.hostBytesBoot
