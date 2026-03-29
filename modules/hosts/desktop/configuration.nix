@@ -1,16 +1,4 @@
-{ self, config, lib, pkgs, inputs, ... }: 
-let 
-    my-dotnet = with pkgs.dotnetCorePackages; combinePackages [
-        sdk_9_0
-        sdk_10_0
-    ];
-in {
-    imports = [ 
-      ../.modules
-
-      ./hardware-configuration.nix
-    ];
-
+{ self, pkgs, ... }: {
     flake.nixosModules.hostDesktop = { ... }: {
         imports = [
             # features options
