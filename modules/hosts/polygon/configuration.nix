@@ -1,31 +1,59 @@
-{ inputs, config, ... }: {
-    imports = [ 
-        inputs.disko.nixosModules.default
+{ self, ... }: {
+    flake.nixosConfigurations.polygon = { ... }: {
+        imports = [
+            self.nixosModules.hostPolygon
+        ];
+    };
 
-        ./modules
-
-        ../.modules
-        ../.modules/kernel/disko/standard.nix
-
-        ./hardware-configuration.nix
-    ];
-
-    bytes = let 
-        secrets = config.sops.secrets;
+    flake.nixosModules.hostPolygon = { config, ... }: let 
+        secrets = config.sops.secrets;  
     in {
-        boot.enable = true;
-        hostName = "polygon";
-        
-        local-networking = {
-            enable = true;
+        imports = [
+            # features options
+            self.nixosModules.features
+
+            # users
+            self.nixosModules.userByteshaker
+            self.nixosModules.userBytekeeper
+
+            # environment
+            self.nixosModules.basicEnv
+
+            # disks
+            self.nixosModules.diskoStandard
+
+            # shared features
+            self.nixosModules.nix
+            self.nixosModules.sops
+            self.nixosModules.shell
+            self.nixosModules.locale
+            self.nixosModules.tailscale
+            self.nixosModules.bootEngine
+            self.nixosModules.networking
+            self.nixosModules.networkingLocal
+            self.nixosModules.diskoStandard
+            self.nixosModules.noPasswordSudo
+
+            # host hardware
+            self.nixosModules.hostPolygonHardware
+
+            # host specific features
+            self.nixosModules.hostPolygonPostgres
+            self.nixosModules.hostPolygonSqlserver
+        ];
+
+        virtualisation.docker.enable = true;
+
+        virtualisation.oci-containers.backend = "docker";
+
+        networking.local = {
             ip = "192.168.192.12";
         };
 
         tailscale = {
-            enable = true;
             authKeyFile = secrets."headscale/polygon".path;
         };
+
+        system.stateVersion = "25.05";
     };
- 
-    system.stateVersion = "25.05";
 }
