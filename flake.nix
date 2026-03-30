@@ -26,7 +26,7 @@
             inputs.nixpkgs.follows = "nixpkgs";
         };
 
-        home = {
+        homeManager = {
             url = "github:nix-community/home-manager";
             inputs.nixpkgs.follows = "nixpkgs";
         };
@@ -41,6 +41,7 @@
 
         imports = [
             (inputs.import-tree ./modules)
+            inputs.homeManager.flakeModules.home-manager
         ];
     };
 }
