@@ -37,6 +37,7 @@
             self.nixosModules.hostPolygonHardware
 
             # host specific features
+            self.nixosModules.hostPolygonMySql
             self.nixosModules.hostPolygonPostgres
             self.nixosModules.hostPolygonSqlserver
         ];
