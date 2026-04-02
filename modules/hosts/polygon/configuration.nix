@@ -30,9 +30,9 @@
             self.nixosModules.tailscale
             self.nixosModules.bootEngine
             self.nixosModules.networking
-            self.nixosModules.networkingLocal
             self.nixosModules.diskoStandard
             self.nixosModules.noPasswordSudo
+            self.nixosModules.localNetworking
 
             # host hardware
             self.nixosModules.hostPolygonHardware
