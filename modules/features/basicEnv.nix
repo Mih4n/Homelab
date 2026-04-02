@@ -8,6 +8,7 @@
             nixd
             sops
             age
+            kitty.terminfo
         ];
 
         programs.nh = {
