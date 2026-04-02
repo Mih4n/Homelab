@@ -31,6 +31,11 @@
             inputs.nixpkgs.follows = "nixpkgs";
         };
 
+        winapps = {
+            url = "github:winapps-org/winapps";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+
         parts.url = "github:hercules-ci/flake-parts";
         import-tree.url = "github:vic/import-tree";
         wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";

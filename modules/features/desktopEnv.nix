@@ -43,6 +43,7 @@
         environment.systemPackages = with pkgs; [
             # --- Communication & Social ---
             discord
+            obs-studio
             thunderbird
             telegram-desktop
 

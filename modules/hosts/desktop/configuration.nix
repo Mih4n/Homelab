@@ -29,10 +29,18 @@
 
             # host hardware
             self.nixosModules.hostDesktopHardware
-        ]; 
+        ];
+
+        environment.systemPackages = [
+            inputs.winapps.packages."${pkgs.system}".winapps
+            inputs.winapps.packages."${pkgs.system}".winapps-launcher # optional
+        ];
 
         boot.plymouth.enable = true;
         boot.kernelPackages = pkgs.linuxPackages_zen;
+
+        virtualisation.podman.enable = true;
+        virtualisation.docker.enable = true;
 
         networking.hostName = "desktop";
 
