@@ -19,6 +19,9 @@
             # environment
             self.nixosModules.basicEnv
 
+            # disks
+            self.nixosModules.diskoStandard
+
             # shared features
             self.nixosModules.nix
             self.nixosModules.sops
@@ -27,7 +30,6 @@
             self.nixosModules.tailscale
             self.nixosModules.bootEngine
             self.nixosModules.networking
-            self.nixosModules.diskoStandard
             self.nixosModules.noPasswordSudo
 
             # host hardware
