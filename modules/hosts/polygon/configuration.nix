@@ -45,15 +45,18 @@
         networking.hostName = "polygon";
 
         virtualisation.docker.enable = true;
-
         virtualisation.oci-containers.backend = "docker";
 
-        networking.local = {
-            ip = "192.168.192.12";
-        };
+        bytes = {
+            boot.mode = "legacy-grub";
 
-        tailscale = {
-            authKeyFile = secrets."headscale/polygon".path;
+            networking.local = {
+                ip = "192.168.192.12";
+            };
+
+            tailscale = {
+                authKeyFile = secrets."headscale/polygon".path;
+            };
         };
 
         system.stateVersion = "25.05";
