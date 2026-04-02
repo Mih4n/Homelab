@@ -48,7 +48,7 @@
 
         bytes = {
             disk.type = "sda";
-            boot.mode = "legacy-grub";
+            boot.mode = "uefi-systemd-boot";
 
             networking.local = {
                 ip = "192.168.192.12";
