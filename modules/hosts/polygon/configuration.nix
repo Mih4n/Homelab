@@ -47,6 +47,7 @@
         virtualisation.oci-containers.backend = "docker";
 
         bytes = {
+            disk.type = "sda";
             boot.mode = "legacy-grub";
 
             networking.local = {
