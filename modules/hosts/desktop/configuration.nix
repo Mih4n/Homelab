@@ -5,7 +5,9 @@
         ];
     };
 
-    flake.nixosModules.hostDesktop = { pkgs, ... }: {
+    flake.nixosModules.hostDesktop = { pkgs, ... }: let 
+        selfpkgs = self.packages."${pkgs.system}";
+    in {
         imports = [
             # features options
             self.nixosModules.features
@@ -29,12 +31,16 @@
 
             # host hardware
             self.nixosModules.hostDesktopHardware
+            self.nixosModules.hostDesktopGraphics
         ];
 
-        environment.systemPackages = [
-            inputs.winapps.packages."${pkgs.system}".winapps
-            inputs.winapps.packages."${pkgs.system}".winapps-launcher # optional
+        environment.systemPackages = with pkgs; [
+            lmstudio
         ];
+
+        services.flatpak.enable = true;
+
+        hardware.cpu.amd.updateMicrocode = true;
 
         boot.plymouth.enable = true;
         boot.kernelPackages = pkgs.linuxPackages_zen;

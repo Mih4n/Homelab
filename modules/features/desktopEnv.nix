@@ -77,6 +77,9 @@
             dotnet-ef
             # Node.js
             nodejs
+            # python
+            uv
+            python314
 
             # --- Document Processing (Typst) ---
             typst
