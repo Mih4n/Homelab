@@ -9,9 +9,6 @@
         secrets = config.sops.secrets;  
     in {
         imports = [
-            # features options
-            self.nixosModules.features
-
             # users
             self.nixosModules.userByteshaker
             self.nixosModules.userBytekeeper

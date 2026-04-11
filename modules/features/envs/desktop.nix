@@ -1,17 +1,18 @@
-{ inputs, ... }: {
+{ self, inputs, ... }: {
     flake.nixosModules.desktopEnv = { pkgs, ... }: {
-        services.xserver.enable = true;
+        imports = [
+            self.nixosModules.ld
+            self.nixosModules.nh
+            self.nixosModules.git
+            self.nixosModules.steam
+            self.nixosModules.gnupg
+            self.nixosModules.xserver
+            self.nixosModules.openssh
+
+            self.nixosModules.basicEnv
+        ];
 
         networking.networkmanager.enable = true;
-
-        programs.nix-ld.enable = true;
-        programs.nix-ld.libraries = with pkgs; [
-            stdenv.cc.cc
-            zlib
-            openssl
-            icu
-            curl
-        ];
 
         services.pulseaudio.enable = false;
         security.rtkit.enable = true;
@@ -20,22 +21,6 @@
             alsa.enable = true;
             alsa.support32Bit = true;
             pulse.enable = true;
-        };
-
-        programs.steam = {
-            enable = true;
-            remotePlay.openFirewall = true;
-            dedicatedServer.openFirewall = true;
-        };  
-
-        services.xserver.xkb = {
-            layout = "us,ru";
-            variant = "";
-        };
-
-        programs.gnupg.agent = {
-            enable = true;
-            enableSSHSupport = true;
         };
 
         services.printing.enable = true;
@@ -103,7 +88,12 @@
             inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
 
             # --- Empty category for future use ---
-            # 
+            kdePackages.ark
+            kdePackages.elisa
+            kdePackages.okular
+            kdePackages.dolphin
+            kdePackages.kdenlive
+            kdePackages.spectacle
         ];
     };
 }

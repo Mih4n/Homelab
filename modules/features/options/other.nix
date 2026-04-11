@@ -1,5 +1,5 @@
 { ... }: {
-    flake.nixosModules.features = { lib, ... }: {
+    flake.nixosModules.base = { lib, ... }: {
         options.bytes = {
             disk.type = lib.mkOption { type = lib.types.str; };
             boot.mode = lib.mkOption { 
@@ -25,5 +25,5 @@
                 };
             };
         };
-    };  
+    }; 
 }

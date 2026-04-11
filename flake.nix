@@ -43,13 +43,19 @@
         wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
     };
  
-    outputs = inputs: inputs.parts.lib.mkFlake { inherit inputs; } {
-        systems = [ "x86_64-linux" "aarch64-linux" ]; 
+    outputs = inputs: let
+        inherit (inputs.nixpkgs) lib;
+        inherit (lib.fileset) toList fileFilter;
 
-        imports = [
-            (inputs.import-tree ./modules)
-            inputs.wrapper-modules.flakeModules.wrappers
-            inputs.homeManager.flakeModules.home-manager
-        ];
-    };
+        isNixModule = file:
+            file.hasExt "nix"
+            && file.name != "flake.nix"
+            && !lib.hasPrefix "_" file.name;
+
+        importTree = path:
+            toList (fileFilter isNixModule path);
+
+        mkFlake = inputs.parts.lib.mkFlake {inherit inputs;};
+    in
+        mkFlake {imports = importTree ./.;};
 }

@@ -9,7 +9,6 @@
 
         sops.secrets."bytes" = {};
 
-
         sops.secrets."headscale/vpn" = {};
         sops.secrets."headscale/bytes" = {};
         sops.secrets."headscale/polygon" = {};

@@ -6,16 +6,13 @@
     };
 
     flake.nixosModules.hostDesktop = { pkgs, ... }: let 
-        selfpkgs = self.packages."${pkgs.system}";
     in {
         imports = [
-            # features options
-            self.nixosModules.features
-
             # users
             self.nixosModules.userMih4n
 
             # environment
+            self.nixosModules.niriEnv
             self.nixosModules.basicEnv
             self.nixosModules.desktopEnv
             self.nixosModules.minecraftGrub
@@ -61,7 +58,7 @@
         virtualisation.waydroid.enable = true;
 
         services.displayManager.sddm.enable = true;
-        services.desktopManager.plasma6.enable = true; 
+        services.desktopManager.plasma6.enable = false; 
 
         system.stateVersion = "25.11";
     };
