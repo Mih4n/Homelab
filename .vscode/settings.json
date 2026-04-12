@@ -9,6 +9,8 @@
         "niri",
         "noctalia",
         "pkgs",
+        "stdenv",
+        "xwayland",
         "yubikey"
     ]
 }

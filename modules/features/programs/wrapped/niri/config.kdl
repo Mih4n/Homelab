@@ -33,6 +33,11 @@ input {
     }
 }
 
+hotkey-overlay {
+    skip-at-startup
+    hide-not-bound
+}
+
 binds {
     "Mod+Q" { close-window; }
     "Mod+M" { maximize-column; }

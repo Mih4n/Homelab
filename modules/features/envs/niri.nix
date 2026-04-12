@@ -5,6 +5,7 @@
         programs.niri = {
             enable = true;
             package = selfpkgs.niri;
+            useNautilus = true;
         };
 
         xdg.portal = {
@@ -15,28 +16,23 @@
             ];
             config.common = {
                 default = [ "gtk" ];
-                "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
             };
         };        
 
         environment.systemPackages = with pkgs; [
-            kdePackages.polkit-kde-agent-1
+            selfpkgs.niri
+            selfpkgs.noctaliaShell
         ];
-
 
         services = {
             gvfs.enable = true;
             udisks2.enable = true;
-            hardware.openrgb.enable = true;
-            flatpak.enable = true;
         };
 
         security.polkit.enable = true;
 
         environment.sessionVariables = {
             "NIXOS_OZON_WL" = "1";
-            "QT_QPA_PLATFORM" = "wayland";
-            "QT_QPA_PLATFORMTHEME" = "kde";
         };
 
         services.gnome.gnome-keyring.enable = true;

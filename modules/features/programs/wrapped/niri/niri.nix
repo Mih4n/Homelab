@@ -7,6 +7,9 @@
     };
 
     flake.wrappedModules.niri = { config, lib, pkgs, ... }: let
+        xwayland = lib.getExe config.pkgs.xwayland-satellite;
+        noctalia = lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctaliaShell;
+
         externalConfig = pkgs.writeText "external-config.kdl" (builtins.readFile ./config.kdl);
         internalConfig = ''
             include "${externalConfig}" 
@@ -21,10 +24,15 @@
 
             binds {
                 "Mod+T" { spawn "kitty"; } 
+                "Mod+Return" { spawn "kitty"; } 
+                "Mod+D" { spawn-sh "${noctalia} ipc call launcher toggle"; }
             }
-            
-            spawn-at-startup "${lib.getExe config.pkgs.xwayland-satellite}" ":" "12"
-            spawn-at-startup "${lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctaliaShell}"
+
+            xwayland-satellite {
+                path "${xwayland}"
+            }
+
+            spawn-at-startup "${noctalia}"
         '';
     in {
         config = {

@@ -23,10 +23,16 @@
             pulse.enable = true;
         };
 
+        services = {
+            flatpak.enable = true;
+            hardware.openrgb.enable = true;
+        };
+
         services.printing.enable = true;
 
         environment.systemPackages = with pkgs; [
             # --- Communication & Social ---
+            vesktop
             discord
             obs-studio
             thunderbird
