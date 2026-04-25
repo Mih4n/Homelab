@@ -38,7 +38,6 @@
             winboat
             polkit_gnome 
             nautilus
-            lxqt.lxqt-policykit
         ];
 
         services.flatpak.enable = true;
