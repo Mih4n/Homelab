@@ -26,6 +26,14 @@
                 "Mod+T" { spawn "kitty"; } 
                 "Mod+Return" { spawn "kitty"; } 
                 "Mod+D" { spawn-sh "${noctalia} ipc call launcher toggle"; }
+                "Mod+Shift+S" { spawn-sh "${lib.getExe (config.pkgs.writeShellApplication {
+                        name = "screenshot";
+                        text = ''
+                            ${lib.getExe config.pkgs.grim} -g "$(${lib.getExe config.pkgs.slurp} -w 0)" - \
+                            | ${config.pkgs.wl-clipboard}/bin/wl-copy
+                        '';
+                    })}"; 
+                }
             }
 
             xwayland-satellite {

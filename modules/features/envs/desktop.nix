@@ -1,9 +1,10 @@
 { self, inputs, ... }: {
     flake.nixosModules.desktopEnv = { pkgs, ... }: {
-        imports = [
+        imports = [            
             self.nixosModules.ld
             self.nixosModules.nh
             self.nixosModules.git
+            self.nixosModules.gtk
             self.nixosModules.steam
             self.nixosModules.gnupg
             self.nixosModules.xserver
@@ -29,6 +30,12 @@
         };
 
         services.printing.enable = true;
+
+        fonts.packages = with pkgs; [
+            corefonts
+            vista-fonts
+            nerd-fonts.jetbrains-mono
+        ];
 
         environment.systemPackages = with pkgs; [
             # --- Communication & Social ---
@@ -80,7 +87,7 @@
 
             # --- Compatibility & Virtualization ---
             docker
-            bottles
+            # bottles
             steam-run # Run binaries not compiled for NixOS
 
             # --- Archive & Fonts ---

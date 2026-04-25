@@ -1,6 +1,7 @@
 {inputs, ...}: {
     imports = [
         inputs.wrapper-modules.flakeModules.wrappers
+        inputs.homeManager.flakeModules.default
     ];
 
     options = {

@@ -32,7 +32,13 @@
         ];
 
         environment.systemPackages = with pkgs; [
+            spotify
+            yubioath-flutter
             lmstudio
+            winboat
+            polkit_gnome 
+            nautilus
+            lxqt.lxqt-policykit
         ];
 
         services.flatpak.enable = true;
@@ -53,6 +59,13 @@
 
         networking.firewall.enable = true;
         networking.nftables.enable = true;
+
+        services.tlp = {
+            enable = true;
+            settings = {
+                USB_AUTOSUSPEND = 0;
+            };
+        };
 
         networking.firewall.trustedInterfaces = [ "waydroid0" ];
         virtualisation.waydroid.enable = true;
