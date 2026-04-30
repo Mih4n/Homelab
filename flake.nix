@@ -1,10 +1,15 @@
 {
     inputs = {
-        colmena.url = "github:zhaofengli/colmena";
+        deploy.url = "github:serokell/deploy-rs";
         nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
         authentik.url = "github:nix-community/authentik-nix";
         proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
         vscode-server.url = "github:nix-community/nixos-vscode-server";
+        
+        hardware = { 
+            url = "github:NixOS/nixos-hardware/master";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
 
         zen-browser = {
             url = "github:youwen5/zen-browser-flake";

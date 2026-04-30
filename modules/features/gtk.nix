@@ -11,7 +11,7 @@
         icon-theme-name = "Gruvbox-Plus-Dark";
         icon-theme-package = pkgs.gruvbox-plus-icons;
 
-        cursor-theme-name = "capitaine-cursors-gruvbox";
+        cursor-theme-name = "capitaine-cursors";
         cursor-theme-package = pkgs.capitaine-cursors;
 
         gtksettings = ''
@@ -32,10 +32,16 @@
             };
         };
 
-        environment.variables = {
+        environment.sessionVariables = {
             GTK_THEME = theme-name;
+            QT_QPA_PLATFORMTHEME = "gtk3"; 
+            
+            XDG_DATA_DIRS = [
+                "$XDG_DATA_DIRS"
+                "${pkgs.gruvbox-plus-icons}/share"
+            ];
 
-            XCURSOR_SIZE = 24;
+            XCURSOR_SIZE = "24";
             XCURSOR_THEME = cursor-theme-name;
         };
 

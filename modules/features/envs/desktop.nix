@@ -5,8 +5,8 @@
             self.nixosModules.nh
             self.nixosModules.git
             self.nixosModules.gtk
-            self.nixosModules.steam
             self.nixosModules.gnupg
+            self.nixosModules.gaming
             self.nixosModules.xserver
             self.nixosModules.openssh
 
@@ -47,6 +47,7 @@
 
             # --- Productivity & Office ---
             obsidian
+            super-productivity
             libreoffice-qt6-fresh
             gimp
             mission-center # System monitor

@@ -10,17 +10,13 @@
         secrets = config.sops.secrets;
     in {
         imports = [
-            # features options
-            self.nixosModules.features
+            self.nixosModules.base
 
             # users
             self.nixosModules.userBytekeeper
 
             # environment
             self.nixosModules.basicEnv
-
-            # disks
-            self.nixosModules.diskoStandard
 
             # shared features
             self.nixosModules.nix

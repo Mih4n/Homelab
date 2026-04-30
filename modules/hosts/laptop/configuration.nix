@@ -1,11 +1,11 @@
 { self, inputs, ... }: {
-    flake.nixosConfigurations.desktop = inputs.nixpkgs.lib.nixosSystem {
+    flake.nixosConfigurations.laptop = inputs.nixpkgs.lib.nixosSystem {
         modules = [
-            self.nixosModules.hostDesktop
+            self.nixosModules.hostLaptop
         ];
     };
 
-    flake.nixosModules.hostDesktop = { pkgs, ... }: let 
+    flake.nixosModules.hostLaptop = { pkgs, ... }: let 
     in {
         imports = [
             self.nixosModules.base
@@ -29,25 +29,19 @@
             self.nixosModules.noPasswordSudo
 
             # host hardware
-            self.nixosModules.hostDesktopHardware
-            self.nixosModules.hostDesktopGraphics
+            self.nixosModules.hostLaptopHardware
+            self.nixosModules.hostLaptopGraphics
         ];
 
-        networking.hostName = "desktop";
+        networking.hostName = "laptop";
 
         environment.systemPackages = with pkgs; [
-            spotify
-            yubioath-flutter
-            lmstudio
-            winboat
-            polkit_gnome 
             nautilus
+            polkit_gnome 
         ];
-
 
         virtualisation.podman.enable = true;
         virtualisation.docker.enable = true;
-        virtualisation.waydroid.enable = true;
 
         programs.nh.flake =  "/home/mih4n/NixOs";
 
@@ -63,22 +57,12 @@
                     enable = true;
                 };
             };
-            tlp = {
-                enable = true;
-                settings = {
-                    USB_AUTOSUSPEND = 0;
-                };
-            };
         };
 
         boot.plymouth.enable = true;
 
-        boot.kernelParams = [ "usbcore.autosuspend=-1" ];
-        boot.kernelPackages = pkgs.linuxPackages_zen;
-        boot.kernelModules = [ "bridge" "tun" "nft_chain_nat_ipv4" ];
-
         hardware.bluetooth.enable = true;
-        hardware.cpu.amd.updateMicrocode = true;
+        hardware.cpu.intel.updateMicrocode = true;
 
         system.stateVersion = "25.11";
     };

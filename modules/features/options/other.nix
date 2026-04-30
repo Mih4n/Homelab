@@ -2,9 +2,7 @@
     flake.nixosModules.base = { lib, ... }: {
         options.bytes = {
             disk.type = lib.mkOption { type = lib.types.str; };
-            boot.mode = lib.mkOption { 
-                type = lib.types.enum [ "legacy-grub" "uefi-grub" "uefi-systemd-boot" ]; 
-            };
+            boot.mode = lib.mkOption { type = lib.types.enum [ "legacy-grub" "uefi-grub" "uefi-systemd-boot" ]; };
             networking.local = { 
                 ip = lib.mkOption {
                     type = lib.types.str;

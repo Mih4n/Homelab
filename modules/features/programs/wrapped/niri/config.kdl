@@ -12,6 +12,11 @@ output "HDMI-A-1" {
     position x=1920 y=-420
 }
 
+cursor {
+    xcursor-theme "capitaine-cursors"
+    xcursor-size 32
+}
+
 input {
     focus-follows-mouse
     
