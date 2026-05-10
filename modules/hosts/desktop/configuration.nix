@@ -36,6 +36,9 @@
         networking.hostName = "desktop";
 
         environment.systemPackages = with pkgs; [
+            ollama-rocm
+            roslyn
+            roslyn-ls
             spotify
             yubioath-flutter
             lmstudio

@@ -5,9 +5,15 @@
             gamescope.enable = true;
             steam = {
                 enable = true;
+                package = pkgs.millennium-steam;
+
                 protontricks.enable = true;
                 remotePlay.openFirewall = true;
                 dedicatedServer.openFirewall = true;
+
+                extraCompatPackages = with pkgs; [
+                    proton-ge-bin
+                ];
             };
         };  
 

@@ -3,6 +3,7 @@
         deploy.url = "github:serokell/deploy-rs";
         nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
         authentik.url = "github:nix-community/authentik-nix";
+        millennium.url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
         proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
         vscode-server.url = "github:nix-community/nixos-vscode-server";
         

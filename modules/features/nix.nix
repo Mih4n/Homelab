@@ -16,7 +16,5 @@
                 "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
             ];
         };
-
-        nixpkgs.config.allowUnfree = true;
     }; 
 }
