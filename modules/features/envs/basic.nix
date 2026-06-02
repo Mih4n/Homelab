@@ -14,6 +14,7 @@
             nixd
             sops
             age
+            ffmpeg
             kitty.terminfo
         ];
     };

@@ -26,11 +26,19 @@
                 "Mod+T" { spawn "kitty"; } 
                 "Mod+Return" { spawn "kitty"; } 
                 "Mod+D" { spawn-sh "${noctalia} ipc call launcher toggle"; }
-                "Mod+Shift+S" { spawn-sh "${lib.getExe (config.pkgs.writeShellApplication {
+                "Mod+Shift+C" { spawn-sh "${lib.getExe (pkgs.writeShellApplication {
+                        name = "colorPicker";
+                        text = ''
+                            ${lib.getExe pkgs.hyprpicker} \
+                            | ${pkgs.wl-clipboard}/bin/wl-copy
+                        '';
+                    })}";
+                }
+                "Mod+Shift+S" { spawn-sh "${lib.getExe (pkgs.writeShellApplication {
                         name = "screenshot";
                         text = ''
-                            ${lib.getExe config.pkgs.grim} -g "$(${lib.getExe config.pkgs.slurp} -w 0)" - \
-                            | ${config.pkgs.wl-clipboard}/bin/wl-copy
+                            ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp} -w 0)" - \
+                            | ${pkgs.wl-clipboard}/bin/wl-copy
                         '';
                     })}"; 
                 }

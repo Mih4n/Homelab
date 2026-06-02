@@ -19,5 +19,12 @@
                 ];
             };
         };
+
+
+        systemd.services.dnsmasq = {
+            requires = [ "network.target" "systemd-networkd.service" ];
+            after = [ "network.target" "systemd-networkd.service" "vmbrlo-nic.service" ];
+            wants = [ "vmbrlo-nic.service" ];
+        };
     };
 }

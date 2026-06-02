@@ -35,13 +35,6 @@
             };
 
             boot.kernelModules = [ "udp_tunnel" "ip6_udp_tunnel" ];
-            boot.kernel.sysctl = {
-                "net.core.default_qdisc" = "fq";
-                "net.ipv4.tcp_congestion_control" = "bbr";
-                
-                "net.core.rmem_max" = 8388608;
-                "net.core.wmem_max" = 8388608;
-            };
 
             services.networkd-dispatcher = lib.mkIf config.services.tailscale.enable {
                 enable = true;

@@ -8,16 +8,8 @@
             useNautilus = true;
         };
 
-        xdg.portal = {
-            enable = true;
-            extraPortals = with pkgs; [
-                xdg-desktop-portal-gtk
-                kdePackages.xdg-desktop-portal-kde
-            ];
-            config.common = {
-                default = [ "gtk" ];
-            };
-        };        
+        xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
+        xdg.portal.enable = true;       
 
         environment.systemPackages = with pkgs; [
             selfpkgs.niri

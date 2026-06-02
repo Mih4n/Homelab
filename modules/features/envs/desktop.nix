@@ -102,6 +102,7 @@
             inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
 
             # --- Empty category for future use ---
+            pandoc
             kdePackages.ark
             kdePackages.elisa
             kdePackages.okular

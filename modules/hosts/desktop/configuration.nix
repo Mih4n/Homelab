@@ -21,6 +21,7 @@
 
             # shared features
             self.nixosModules.nix
+            self.nixosModules.qmk
             self.nixosModules.sops
             self.nixosModules.shell
             self.nixosModules.locale
@@ -54,9 +55,6 @@
 
         programs.nh.flake =  "/home/mih4n/NixOs";
 
-        networking.firewall.enable = false;
-        networking.nftables.enable = true;
-
         services = {
             flatpak.enable = true;
             displayManager = {
@@ -66,21 +64,21 @@
                     enable = true;
                 };
             };
-            tlp = {
-                enable = true;
-                settings = {
-                    USB_AUTOSUSPEND = 0;
-                };
-            };
+        };
+
+        hardware.graphics.enable32Bit = true;
+
+        services.printing = {
+            enable = true;
+            drivers = [ pkgs.canon-cups-ufr2 pkgs.gutenprintBin ]; # Добавляет фильтры в пути CUPS
         };
 
         boot.plymouth.enable = true;
 
-        boot.kernelParams = [ "usbcore.autosuspend=-1" ];
         boot.kernelPackages = pkgs.linuxPackages_zen;
         boot.kernelModules = [ "bridge" "tun" "nft_chain_nat_ipv4" ];
 
-        hardware.bluetooth.enable = true;
+        # hardware.bluetooth.enable = true;
         hardware.cpu.amd.updateMicrocode = true;
 
         system.stateVersion = "25.11";

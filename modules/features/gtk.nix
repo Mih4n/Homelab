@@ -34,6 +34,7 @@
 
         environment.sessionVariables = {
             GTK_THEME = theme-name;
+            QS_ICON_THEME =  icon-theme-name;
             QT_QPA_PLATFORMTHEME = "gtk3"; 
             
             XDG_DATA_DIRS = [
