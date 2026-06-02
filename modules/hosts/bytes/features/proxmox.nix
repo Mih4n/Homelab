@@ -1,7 +1,5 @@
 { inputs, ... }: {
-    flake.nixosModules.hostBytesProxmox = { lib, pkgs, ... }: let
-        system = pkgs.stdenv.hostPlatform.system;
-    in {
+    flake.nixosModules.hostBytesProxmox = { lib, ... }: {
         imports = [
             inputs.proxmox-nixos.nixosModules.proxmox-ve
         ];
@@ -16,7 +14,7 @@
         };
 
         nixpkgs.overlays = [
-            inputs.proxmox-nixos.overlays.${system}
+            inputs.proxmox-nixos.overlays.x86_64-linux
         ];
         
         services.openssh.settings.AcceptEnv = lib.mkForce null;
