@@ -1,5 +1,9 @@
-{ ... }: {
+{ inputs, ... }: {
     flake.nixosModules.authentik = { config, ... }: {
+        imports = [
+            inputs.authentik.nixosModules.default
+        ];
+
         services.authentik = {
             enable = true;
             environmentFile = config.sops.templates."authentik.env".path;
