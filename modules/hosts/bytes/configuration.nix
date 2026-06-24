@@ -41,6 +41,7 @@
         networking.hostName = "bytes";
 
         bytes = {
+            boot.mode = "uefi-systemd-boot";
             tailscale = {
                 isExiteNode = true;
                 subnetRoutes = [
