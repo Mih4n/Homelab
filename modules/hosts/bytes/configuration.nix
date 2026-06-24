@@ -5,8 +5,7 @@
         ];
     };
 
-    flake.nixosModules.hostBytes = { config, pkgs, ... }: let 
-        system = pkgs.stdenv.hostPlatform.system;
+    flake.nixosModules.hostBytes = { config, ... }: let 
         secrets = config.sops.secrets;
     in {
         imports = [
@@ -32,6 +31,7 @@
             self.nixosModules.hostBytesHardware
 
             # host specific features
+            self.nixosModules.authentik
             self.nixosModules.hostBytesBoot
             self.nixosModules.hostBytesDhcp
             self.nixosModules.hostBytesProxmox
@@ -39,10 +39,6 @@
         ];
         
         networking.hostName = "bytes";
-
-        environment.systemPackages = [
-            inputs.colmena.packages.${system}.colmena
-        ];
 
         bytes = {
             tailscale = {

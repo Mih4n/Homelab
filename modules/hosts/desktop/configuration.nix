@@ -52,6 +52,8 @@
         virtualisation.podman.enable = true;
         virtualisation.docker.enable = true;
         virtualisation.waydroid.enable = true;
+        virtualisation.virtualbox.host.enable = true;
+        users.extraGroups.vboxusers.members = [ "mih4n" ];
 
         programs.nh.flake =  "/home/mih4n/NixOs";
 
