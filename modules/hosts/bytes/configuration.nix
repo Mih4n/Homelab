@@ -42,7 +42,6 @@
 
         bytes = {
             tailscale = {
-                enable = true;
                 isExiteNode = true;
                 subnetRoutes = [
                     "192.168.192.0/24"
