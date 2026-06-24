@@ -80,10 +80,17 @@
 
                 http.services = {
                     auth.loadBalancer.servers = [{ url = "http://bytes.bytes:9000"; }];
-                    proxmox.loadBalancer.servers = [{ url = "http://bytes.bytes:8006"; }];
+                    proxmox.loadBalancer.servers = [{ 
+                        url = "http://bytes.bytes:8006"; 
+                        serversTransport = "proxmox-transport";
+                    }];
                     headscale.loadBalancer.servers = [{ url = "http://localhost:3009"; }];
                     nextcloud.loadBalancer.servers = [{ url = "http://nextcloud.bytes:80"; }];
                     homeassistant.loadBalancer.servers = [{ url = "http://192.168.192.10:8123"; }];
+                };
+
+                http.serversTransports.proxmox-transport = {
+                    insecureSkipVerify = true;
                 };
             };
         };
