@@ -59,13 +59,13 @@
                     proxmox = {
                         rule = "Host(`proxmox.mih4n.xyz`)";
                         tls.certResolver = "letsencrypt";
-                        service = "homeassistant";
+                        service = "proxmox";
                         entrypoints = "websecure";
                     };
                     auth = {
                         rule = "Host(`auth.mih4n.xyz`)";
                         tls.certResolver = "letsencrypt";
-                        service = "homeassistant";
+                        service = "auth";
                         entrypoints = "websecure";
                     };
                 };
