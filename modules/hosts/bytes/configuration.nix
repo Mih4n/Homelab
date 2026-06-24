@@ -40,6 +40,11 @@
         
         networking.hostName = "bytes";
 
+        swapDevices = [{
+            device = "/swapfile";
+            size = 8 * 1024;
+        }];
+
         bytes = {
             boot.mode = "uefi-systemd-boot";
             tailscale = {
