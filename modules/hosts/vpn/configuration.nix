@@ -43,11 +43,6 @@
 
         networking.hostName = "vpn";
 
-        documentation.man.enable = false;
-        documentation.man.generateCaches = false;
-        programs.fish.vendor.completions.enable = false;
-        programs.fish.vendor.functions.enable = false;
-
         bytes = {
             disk.type = "sda";
             boot.mode = "legacy-grub";
