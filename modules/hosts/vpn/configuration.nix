@@ -30,7 +30,6 @@
             self.nixosModules.bootEngine
             self.nixosModules.networking
             self.nixosModules.localNetworking
-            self.nixosModules.diskoStandard
             self.nixosModules.noPasswordSudo
 
             # host hardware
