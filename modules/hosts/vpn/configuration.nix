@@ -29,7 +29,6 @@
             self.nixosModules.tailscale
             self.nixosModules.bootEngine
             self.nixosModules.networking
-            self.nixosModules.localNetworking
             self.nixosModules.noPasswordSudo
 
             # host hardware
