@@ -29,7 +29,7 @@
             self.nixosModules.tailscale
             self.nixosModules.bootEngine
             self.nixosModules.networking
-            self.nixosModules.networkingLocal
+            self.nixosModules.localNetworking
             self.nixosModules.diskoStandard
             self.nixosModules.noPasswordSudo
 
