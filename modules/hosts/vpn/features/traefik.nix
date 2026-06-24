@@ -28,7 +28,7 @@
                 };
 
                 certificatesResolvers.letsencrypt.acme = {
-                    email = "imih4ni@gmail.com";
+                    email = "lmih4nl@gmail.com";
                     storage = "${config.services.traefik.dataDir}/acme.json";
                     httpChallenge.entryPoint = "web";
                 };
@@ -56,6 +56,18 @@
                         service = "nextcloud";
                         tls.certResolver = "letsencrypt";
                     };
+                    proxmox = {
+                        rule = "Host(`proxmox.mih4n.xyz`)";
+                        tls.certResolver = "letsencrypt";
+                        service = "homeassistant";
+                        entrypoints = "websecure";
+                    };
+                    auth = {
+                        rule = "Host(`auth.mih4n.xyz`)";
+                        tls.certResolver = "letsencrypt";
+                        service = "homeassistant";
+                        entrypoints = "websecure";
+                    };
                 };
 
                 http.middlewares = {
@@ -67,6 +79,8 @@
                 };
 
                 http.services = {
+                    auth.loadBalancer.servers = [{ url = "http://bytes.bytes:9000"; }];
+                    proxmox.loadBalancer.servers = [{ url = "http://bytes.bytes:8006"; }];
                     headscale.loadBalancer.servers = [{ url = "http://localhost:3009"; }];
                     nextcloud.loadBalancer.servers = [{ url = "http://nextcloud.bytes:80"; }];
                     homeassistant.loadBalancer.servers = [{ url = "http://192.168.192.10:8123"; }];
