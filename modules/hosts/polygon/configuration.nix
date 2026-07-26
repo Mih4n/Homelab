@@ -39,6 +39,7 @@
             self.nixosModules.hostPolygonMySql
             self.nixosModules.hostPolygonPostgres
             self.nixosModules.hostPolygonSqlserver
+            self.nixosModules.hostPolygonWebsites
         ];
 
         networking.hostName = "polygon";
