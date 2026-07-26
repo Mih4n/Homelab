@@ -68,6 +68,12 @@
                         service = "auth";
                         entrypoints = "websecure";
                     };
+                    takeapunch = {
+                        rule = "Host(`takeapunch.mih4n.xyz`)";
+                        tls.certResolver = "letsencrypt";
+                        service = "takeapunch";
+                        entrypoints = "websecure";
+                    };
                 };
 
                 http.middlewares = {
@@ -86,6 +92,7 @@
                     };
                     headscale.loadBalancer.servers = [{ url = "http://localhost:3009"; }];
                     nextcloud.loadBalancer.servers = [{ url = "http://nextcloud.bytes:80"; }];
+                    takeapunch.loadBalancer.servers = [{ url = "http://polygon.bytes:3001"; }];
                     homeassistant.loadBalancer.servers = [{ url = "http://192.168.192.10:8123"; }];
                 };
 
