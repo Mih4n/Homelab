@@ -1,6 +1,6 @@
 { ... }: {
     flake.nixosModules.hostPolygonWebsites = { ... }: {
-        virtualisation.oci-containers.container."takeapunch" = {
+        virtualisation.oci-containers.containers."takeapunch" = {
             image = "ghcr.io/mih4n/takeapunch:main";
             ports = [ "3001:3000" ];
         };
