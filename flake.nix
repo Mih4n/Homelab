@@ -1,5 +1,6 @@
 {
     inputs = {
+        nvf.url = "github:notashelf/nvf";
         deploy.url = "github:serokell/deploy-rs";
         nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
         authentik.url = "github:nix-community/authentik-nix";

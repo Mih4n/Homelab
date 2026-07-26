@@ -1,15 +1,16 @@
 prefer-no-csd
 
 output "DP-1" {
-    mode "1920x1080@143.981"
+    mode "2560x1440@239.970"
+    scale 1.33
     position x=0 y=0
     focus-at-startup
 }
 
-output "HDMI-A-1" {
+output "DP-2" {
     mode "1920x1080@143.981"
     transform "270"
-    position x=1920 y=-420
+    position x=2560 y=-420
 }
 
 cursor {
@@ -94,9 +95,3 @@ window-rule {
     clip-to-geometry true
     geometry-corner-radius 10
 }
-
-workspace "w0"
-workspace "w1"
-workspace "w2"
-workspace "w3"
-workspace "w4"

@@ -14,6 +14,7 @@
             self.nixosModules.userMih4n
 
             # environment
+            self.nixosModules.nvf
             self.nixosModules.niriEnv
             self.nixosModules.basicEnv
             self.nixosModules.desktopEnv
