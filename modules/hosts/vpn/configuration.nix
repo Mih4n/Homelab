@@ -41,6 +41,7 @@
             self.nixosModules.hostVpnNetworking
         ];
 
+        theme.hostIcon = "󰖂";
         networking.hostName = "vpn";
 
         bytes = {

@@ -33,6 +33,7 @@
             self.nixosModules.hostLaptopGraphics
         ];
 
+        theme.hostIcon = " ";
         networking.hostName = "laptop";
 
         environment.systemPackages = with pkgs; [

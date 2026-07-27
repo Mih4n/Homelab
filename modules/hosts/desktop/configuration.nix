@@ -35,6 +35,7 @@
             self.nixosModules.hostDesktopGraphics
         ];
 
+        theme.hostIcon = "󰟀";
         networking.hostName = "desktop";
 
         environment.systemPackages = with pkgs; [

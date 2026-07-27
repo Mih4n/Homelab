@@ -13,6 +13,8 @@
                 function fish_mode_prompt
                 end
 
+                set -g fish_greeting ""
+
                 function rerender_on_bind_mode_change --on-variable fish_bind_mode
                     if test "$fish_bind_mode" != "paste" -a "$fish_bind_mode" != "$FISH__BIND_MODE"
                         set -gx FISH__BIND_MODE $fish_bind_mode
@@ -31,7 +33,7 @@
         programs.oh-my-posh = {
             enable = true;
             enableFishIntegration = true;
-            useTheme = "gruvbox";
+            configFile = ./themes/gruvbox.json;
         };
     };
 }

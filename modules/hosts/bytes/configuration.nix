@@ -38,6 +38,7 @@
             self.nixosModules.hostBytesNetworking
         ];
         
+        theme.hostIcon = "󰒋";
         networking.hostName = "bytes";
 
         swapDevices = [{

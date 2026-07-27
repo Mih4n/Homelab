@@ -42,6 +42,7 @@
             self.nixosModules.hostPolygonWebsites
         ];
 
+        theme.hostIcon = "󰙨";
         networking.hostName = "polygon";
 
         virtualisation.docker.enable = true;

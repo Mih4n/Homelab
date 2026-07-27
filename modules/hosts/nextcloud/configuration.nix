@@ -39,6 +39,7 @@
             self.nixosModules.nextcloudServer
         ];
 
+        theme.hostIcon = "";
         networking.hostName = "nextcloud";
 
         bytes = {
