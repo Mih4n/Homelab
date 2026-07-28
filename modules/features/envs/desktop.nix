@@ -60,6 +60,7 @@
             dbeaver-bin
             vscode-fhs
             zed-editor
+            devenv
             
             # --- Compilers & Runtimes ---
             # Rust
