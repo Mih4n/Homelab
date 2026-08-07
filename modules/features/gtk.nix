@@ -1,12 +1,6 @@
-{
+{ inputs, ... }: {
     flake.nixosModules.gtk = { pkgs, lib, ... }: let
         theme-name = "Gruvbox-Teal-Dark-Medium";
-        theme-package = pkgs.gruvbox-gtk-theme.override {
-            colorVariants = ["dark"];
-            sizeVariants = ["standard"];
-            themeVariants = ["teal"];
-            tweakVariants = ["medium"];
-        };
 
         icon-theme-name = "Gruvbox-Plus-Dark";
         icon-theme-package = pkgs.gruvbox-plus-icons;
@@ -21,6 +15,10 @@
             gtk-cursor-theme-name = ${cursor-theme-name}
         '';
     in {
+        imports = [
+            inputs.stylix.nixosModules.stylix
+        ];
+
         environment = {
             etc = {
                 "xdg/gtk-3.0/settings.ini".text = gtksettings;
@@ -32,16 +30,15 @@
             };
         };
 
-        environment.sessionVariables = {
-            GTK_THEME = theme-name;
-            QS_ICON_THEME =  icon-theme-name;
-            QT_QPA_PLATFORMTHEME = "gtk3"; 
-            
-            XDG_DATA_DIRS = [
-                "$XDG_DATA_DIRS"
-                "${pkgs.gruvbox-plus-icons}/share"
-            ];
+        stylix = {
+            enable = true;
+            base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
+            targets = {
+                grub.enable = false;
+            };
+        };
 
+        environment.sessionVariables = {
             XCURSOR_SIZE = "24";
             XCURSOR_THEME = cursor-theme-name;
         };
@@ -70,7 +67,6 @@
         };
 
         environment.systemPackages = [
-            theme-package
             icon-theme-package
             cursor-theme-package
 

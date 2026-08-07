@@ -8,6 +8,11 @@
         proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
         vscode-server.url = "github:nix-community/nixos-vscode-server";
         
+        stylix = {
+            url = "github:nix-community/stylix";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+
         hardware = { 
             url = "github:NixOS/nixos-hardware/master";
             inputs.nixpkgs.follows = "nixpkgs";

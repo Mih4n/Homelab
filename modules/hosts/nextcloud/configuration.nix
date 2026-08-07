@@ -1,6 +1,6 @@
 { self, inputs, ... }: {
     flake.nixosConfigurations.nextcloud = inputs.nixpkgs.lib.nixosSystem {
-        imports = [
+        modules = [
             self.nixosModules.hostNextcloud
         ];
     };
@@ -43,6 +43,8 @@
         networking.hostName = "nextcloud";
 
         bytes = {
+            boot.mode = "uefi-systemd-boot";
+
             networking.local = {
                 ip = "192.168.192.11";
             };

@@ -61,6 +61,7 @@
             vscode-fhs
             zed-editor
             devenv
+            deploy-rs
             
             # --- Compilers & Runtimes ---
             # Rust
