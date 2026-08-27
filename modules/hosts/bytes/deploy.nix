@@ -3,8 +3,8 @@
         deploy.nodes.bytes = {
             hostname = "bytes.bytes";
             profiles.system = {
-                user = "root";
-                sshUser = "bytekeeper";
+                user = "byteshaker";
+                sshUser = "byteshaker";
                 interactiveSudo = true;
 
                 path =

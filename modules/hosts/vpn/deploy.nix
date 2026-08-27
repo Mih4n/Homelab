@@ -3,7 +3,7 @@
         deploy.nodes.vpn = {
             hostname = "vpn.bytes";
             profiles.system = {
-                user = "root";
+                user = "byteshaker";
                 sshUser = "byteshaker";
                 interactiveSudo = true;
 

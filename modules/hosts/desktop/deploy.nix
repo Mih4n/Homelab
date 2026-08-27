@@ -3,7 +3,7 @@
         deploy.nodes.desktop = {
             hostname = "desktop.bytes";
             profiles.system = {
-                user = "root";
+                user = "mih4n";
                 sshUser = "mih4n";
                 interactiveSudo = true;
 

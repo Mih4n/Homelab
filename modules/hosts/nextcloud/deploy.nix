@@ -3,7 +3,7 @@
         deploy.nodes.nextcloud = {
             hostname = "nextcloud.bytes";
             profiles.system = {
-                user = "root";
+                user = "byteshaker";
                 sshUser = "byteshaker";
                 interactiveSudo = true;
 

@@ -3,7 +3,7 @@
         deploy.nodes.polygon = {
             hostname = "polygon.bytes";
             profiles.system = {
-                user = "root";
+                user = "byteshaker";
                 sshUser = "byteshaker";
                 interactiveSudo = true;
 

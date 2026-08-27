@@ -1,6 +1,6 @@
 { self, inputs, ... }: {
     flake.nixosModules.desktopEnv = { pkgs, ... }: {
-        imports = [            
+        imports = [
             self.nixosModules.ld
             self.nixosModules.nh
             self.nixosModules.git
@@ -46,6 +46,7 @@
             telegram-desktop
 
             # --- Productivity & Office ---
+            claude-code
             obsidian
             super-productivity
             libreoffice-qt6-fresh
@@ -62,7 +63,7 @@
             zed-editor
             devenv
             deploy-rs
-            
+
             # --- Compilers & Runtimes ---
             # Rust
             cargo
