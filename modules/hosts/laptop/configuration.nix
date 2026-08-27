@@ -30,7 +30,6 @@
 
             # host hardware
             self.nixosModules.hostLaptopHardware
-            self.nixosModules.hostLaptopGraphics
         ];
 
         theme.hostIcon = " ";
@@ -63,7 +62,7 @@
         boot.plymouth.enable = true;
 
         hardware.bluetooth.enable = true;
-        hardware.cpu.intel.updateMicrocode = true;
+        hardware.cpu.amd.updateMicrocode = true;
 
         system.stateVersion = "25.11";
     };
