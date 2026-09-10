@@ -1,5 +1,5 @@
 { self, ... }: {
-    flake.nixosModules.niriEnv = { pkgs, ... }: let 
+    flake.nixosModules.niriEnv = { pkgs, lib, ... }: let
         selfpkgs = self.packages."${pkgs.stdenv.hostPlatform.system}";
     in {
         programs.niri = {
@@ -8,12 +8,23 @@
             useNautilus = true;
         };
 
-        xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
-        xdg.portal.enable = true;       
+        xdg.portal = {
+            enable = true;
+            extraPortals = [
+              pkgs.xdg-desktop-portal-gnome
+            ];
+            config.common.default = "*";
+        };
 
-        environment.systemPackages = with pkgs; [
+        qt = {
+            enable = true;
+            platformTheme = lib.mkForce "gnome";
+        };
+
+        environment.systemPackages = [
             selfpkgs.niri
             selfpkgs.noctaliaShell
+            pkgs.qgnomeplatform
         ];
 
         services = {
@@ -24,7 +35,9 @@
         security.polkit.enable = true;
 
         environment.sessionVariables = {
-            "NIXOS_OZON_WL" = "1";
+            NIXOS_OZON_WL = "1";
+            XDG_CURRENT_DESKTOP = "niri";
+            QT_QPA_PLATFORMTHEME = "gnome";
         };
 
         services.gnome.gnome-keyring.enable = true;
