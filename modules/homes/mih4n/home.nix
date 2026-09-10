@@ -17,6 +17,6 @@
 			username = "mih4n";
 			homeDirectory = "/home/mih4n";
 			stateVersion = "25.11";
-		}; 	
+		};
 	};
 }

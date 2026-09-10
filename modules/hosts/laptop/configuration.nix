@@ -5,8 +5,7 @@
         ];
     };
 
-    flake.nixosModules.hostLaptop = { pkgs, ... }: let 
-    in {
+    flake.nixosModules.hostLaptop = { pkgs, ... }: {
         imports = [
             self.nixosModules.base
 
@@ -30,18 +29,22 @@
 
             # host hardware
             self.nixosModules.hostLaptopHardware
+            inputs.hardware.nixosModules.framework-amd-ai-300-series
         ];
 
         theme.hostIcon = " ";
         networking.hostName = "laptop";
 
         environment.systemPackages = with pkgs; [
+            scilab-bin
             nautilus
-            polkit_gnome 
+            polkit_gnome
         ];
 
         virtualisation.podman.enable = true;
         virtualisation.docker.enable = true;
+        virtualisation.virtualbox.host.enable = true;
+        users.extraGroups.vboxusers.members = [ "mih4n" ];
 
         programs.nh.flake =  "/home/mih4n/NixOs";
 
