@@ -7,6 +7,7 @@
     options = {
         flake = inputs.parts.lib.mkSubmoduleOptions {
             wrappedModules = inputs.nixpkgs.lib.mkOption {
+                type = inputs.nixpkgs.lib.types.lazyAttrsOf inputs.nixpkgs.lib.types.raw;
                 default = {};
             };
         };

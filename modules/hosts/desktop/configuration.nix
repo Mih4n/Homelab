@@ -38,6 +38,21 @@
         theme.hostIcon = "󰟀";
         networking.hostName = "desktop";
 
+        bytes.niri.monitors = {
+            "DP-1" = {
+                mode = "2560x1440@239.970";
+                scale = 1.33;
+                position = { x = 0; y = 0; };
+                focusAtStartup = true;
+            };
+
+            "DP-2" = {
+                mode = "1920x1080@143.981";
+                transform = "270";
+                position = { x = 2560; y = -420; };
+            };
+        };
+
         environment.systemPackages = with pkgs; [
             ollama-rocm
             roslyn

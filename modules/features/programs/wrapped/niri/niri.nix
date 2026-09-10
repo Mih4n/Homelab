@@ -1,58 +1,44 @@
 { self, inputs, ... }: {
-    perSystem = {pkgs, ...}: {
+    perSystem = { pkgs, ... }: {
         packages.niri = inputs.wrapper-modules.wrappers.niri.wrap {
             inherit pkgs;
-            imports = [self.wrappedModules.niri];
+            imports = [ self.wrappedModules.niri ];
         };
     };
 
-    flake.wrappedModules.niri = { config, lib, pkgs, ... }: let
-        xwayland = lib.getExe config.pkgs.xwayland-satellite;
-        noctalia = lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctaliaShell;
+    flake.wrappedModules.niri = { config, lib, pkgs, ... }: {
+        imports = [
+            self.wrappedModules.niriBinds
+            self.wrappedModules.niriScripts
+            self.wrappedModules.niriSettings
+        ];
 
-        externalConfig = pkgs.writeText "external-config.kdl" (builtins.readFile ./config.kdl);
-        internalConfig = ''
-            include "${externalConfig}" 
+        config.scripts = {
+            colorPicker = {
+                bind = "Mod+Shift+C";
+                packages = with pkgs; [ hyprpicker wl-clipboard ];
+                text = ''
+                    hyprpicker | wl-copy
+                '';
+            };
 
-            layout {
-                gaps 10
-                focus-ring {
-                    width 2
-                    active-color "${self.palette.blue}"
-                }
-            }
+            screenshotRegion = {
+                bind = "Mod+Shift+S";
+                packages = with pkgs; [ grim slurp wl-clipboard ];
+                text = ''
+                    grim -g "$(slurp -w 0)" - | wl-copy
+                '';
+            };
 
-            binds {
-                "Mod+T" { spawn "kitty"; } 
-                "Mod+Return" { spawn "kitty"; } 
-                "Mod+D" { spawn-sh "${noctalia} ipc call launcher toggle"; }
-                "Mod+Shift+C" { spawn-sh "${lib.getExe (pkgs.writeShellApplication {
-                        name = "colorPicker";
-                        text = ''
-                            ${lib.getExe pkgs.hyprpicker} \
-                            | ${pkgs.wl-clipboard}/bin/wl-copy
-                        '';
-                    })}";
-                }
-                "Mod+Shift+S" { spawn-sh "${lib.getExe (pkgs.writeShellApplication {
-                        name = "screenshot";
-                        text = ''
-                            ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp} -w 0)" - \
-                            | ${pkgs.wl-clipboard}/bin/wl-copy
-                        '';
-                    })}"; 
-                }
-            }
-
-            xwayland-satellite {
-                path "${xwayland}"
-            }
-
-            spawn-at-startup "${noctalia}"
-        '';
-    in {
-        config = {
-            "config.kdl".content = internalConfig;
+            # Print takes a shot of the monitor that currently has focus.
+            screenshotOutput = {
+                bind = "Print";
+                packages = with pkgs; [ grim jq wl-clipboard ];
+                text = ''
+                    output=$(${lib.getExe' config.package "niri"} msg --json focused-output | jq -r .name)
+                    grim -o "$output" - | wl-copy
+                '';
+            };
         };
     };
 }

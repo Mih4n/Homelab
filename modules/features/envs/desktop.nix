@@ -63,6 +63,7 @@
             zed-editor
             devenv
             deploy-rs
+            godot-mono
 
             # --- Compilers & Runtimes ---
             # Rust
