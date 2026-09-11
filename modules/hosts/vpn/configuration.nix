@@ -38,6 +38,7 @@
             self.nixosModules.hostVpnBoot
             self.nixosModules.hostVpnTraefik
             self.nixosModules.hostVpnHeadscale
+            self.nixosModules.hostVpnNetbird
             self.nixosModules.hostVpnNetworking
         ];
 

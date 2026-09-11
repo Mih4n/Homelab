@@ -23,6 +23,7 @@
             self.nixosModules.shell
             self.nixosModules.locale
             self.nixosModules.tailscale
+            self.nixosModules.netbird
             self.nixosModules.bootEngine
             self.nixosModules.networking
             self.nixosModules.noPasswordSudo
@@ -55,6 +56,7 @@
                 ];
                 authKeyFile = secrets."headscale/bytes".path;
             };
+            netbird.setupKeyFile = secrets."netbird/setup-key".path;
         };
 
         system.stateVersion = "25.05";

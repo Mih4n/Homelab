@@ -48,7 +48,31 @@
                         tls.certResolver = "letsencrypt";
                         service = "headscale";
                         entrypoints = "websecure";
-                    }; 
+                    };
+                    netbird-signal = {
+                        rule = "Host(`netbird.mih4n.xyz`) && PathPrefix(`/signalexchange.SignalExchange/`)";
+                        tls.certResolver = "letsencrypt";
+                        service = "netbird-signal";
+                        entrypoints = "websecure";
+                    };
+                    netbird-management-grpc = {
+                        rule = "Host(`netbird.mih4n.xyz`) && PathPrefix(`/management.ManagementService/`)";
+                        tls.certResolver = "letsencrypt";
+                        service = "netbird-management";
+                        entrypoints = "websecure";
+                    };
+                    netbird-management-api = {
+                        rule = "Host(`netbird.mih4n.xyz`) && PathPrefix(`/api`)";
+                        tls.certResolver = "letsencrypt";
+                        service = "netbird-management";
+                        entrypoints = "websecure";
+                    };
+                    netbird-dashboard = {
+                        rule = "Host(`netbird.mih4n.xyz`)";
+                        tls.certResolver = "letsencrypt";
+                        service = "netbird-dashboard";
+                        entrypoints = "websecure";
+                    };
                     nextcloud = {
                         rule = "Host(`cloud.mih4n.xyz`)";
                         entrypoints = "websecure";
@@ -97,6 +121,9 @@
                         serversTransport = "proxmox-transport";
                     };
                     headscale.loadBalancer.servers = [{ url = "http://localhost:3009"; }];
+                    netbird-signal.loadBalancer.servers = [{ url = "h2c://127.0.0.1:8012"; }];
+                    netbird-management.loadBalancer.servers = [{ url = "h2c://127.0.0.1:8011"; }];
+                    netbird-dashboard.loadBalancer.servers = [{ url = "http://127.0.0.1:8095"; }];
                     nextcloud.loadBalancer.servers = [{ url = "http://nextcloud.bytes:80"; }];
                     portfolio.loadBalancer.servers = [{ url = "http://polygon.bytes:3002"; }];
                     takeapunch.loadBalancer.servers = [{ url = "http://polygon.bytes:3001"; }];

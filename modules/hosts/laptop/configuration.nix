@@ -5,7 +5,9 @@
         ];
     };
 
-    flake.nixosModules.hostLaptop = { pkgs, ... }: {
+    flake.nixosModules.hostLaptop = { pkgs, config, ... }: let
+        secrets = config.sops.secrets;
+    in {
         imports = [
             self.nixosModules.base
 
@@ -24,6 +26,7 @@
             self.nixosModules.shell
             self.nixosModules.locale
             self.nixosModules.tailscale
+            self.nixosModules.netbird
             self.nixosModules.networking
             self.nixosModules.noPasswordSudo
 
@@ -40,6 +43,16 @@
             nautilus
             polkit_gnome
         ];
+
+        bytes.niri.monitors = {
+            "eDP-1" = {
+                scale = 1.33;
+                mode = "2256x1504@59.999";
+                position = { x = 0; y = 0; };
+            };
+        };
+
+        bytes.netbird.setupKeyFile = secrets."netbird/setup-key".path;
 
         virtualisation.podman.enable = true;
         virtualisation.docker.enable = true;

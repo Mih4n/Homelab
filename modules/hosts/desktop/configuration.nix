@@ -5,7 +5,8 @@
         ];
     };
 
-    flake.nixosModules.hostDesktop = { pkgs, ... }: let 
+    flake.nixosModules.hostDesktop = { pkgs, config, ... }: let
+        secrets = config.sops.secrets;
     in {
         imports = [
             self.nixosModules.base
@@ -27,6 +28,7 @@
             self.nixosModules.shell
             self.nixosModules.locale
             self.nixosModules.tailscale
+            self.nixosModules.netbird
             self.nixosModules.networking
             self.nixosModules.noPasswordSudo
 
@@ -52,6 +54,8 @@
                 position = { x = 2560; y = -420; };
             };
         };
+
+        bytes.netbird.setupKeyFile = secrets."netbird/setup-key".path;
 
         environment.systemPackages = with pkgs; [
             ollama-rocm
