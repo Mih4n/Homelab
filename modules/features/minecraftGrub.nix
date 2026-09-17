@@ -7,7 +7,7 @@
         boot.loader.grub = {
             enable = true;
             device = "nodev";
-            useOSProber = true;
+            useOSProber = false;
             gfxmodeEfi = "1920x1080";
             minegrub-world-sel = {
                 enable = true;

@@ -1,5 +1,12 @@
 { self, inputs, ... }: {
-    flake.nixosModules.desktopEnv = { pkgs, ... }: {
+    flake.nixosModules.desktopEnv = { pkgs, ... }: let
+        selfpkgs = self.packages.${pkgs.stdenv.hostPlatform.system};
+
+        dotnetSdks = with pkgs.dotnetCorePackages; combinePackages [
+            sdk_9_0
+            sdk_10_0
+        ];
+    in {
         imports = [
             self.nixosModules.ld
             self.nixosModules.nh
@@ -37,6 +44,10 @@
             nerd-fonts.jetbrains-mono
         ];
 
+        # Roslyn's apphost (used by Zed's C# extension) can't find the runtime
+        # without this: there is no /usr/share/dotnet on NixOS.
+        environment.sessionVariables.DOTNET_ROOT = "${dotnetSdks}/share/dotnet";
+
         environment.systemPackages = with pkgs; [
             # --- Communication & Social ---
             vesktop
@@ -56,7 +67,7 @@
             # --- Development Tools (General) ---
             git
             wget
-            kitty
+            selfpkgs.kitty
             direnv
             dbeaver-bin
             vscode-fhs
@@ -73,10 +84,7 @@
             jdk
             maven
             # .NET
-            (with dotnetCorePackages; combinePackages [
-                sdk_9_0
-                sdk_10_0
-            ])
+            dotnetSdks
             dotnet-ef
             # Node.js
             nodejs

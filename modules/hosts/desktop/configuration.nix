@@ -5,6 +5,21 @@
         ];
     };
 
+    # Staged migration, see docs/desktop-migration.md.
+    flake.nixosConfigurations.desktop-stage-main = inputs.nixpkgs.lib.nixosSystem {
+        modules = [
+            self.nixosModules.hostDesktop
+            { bytes.disks.manage = [ "main" ]; }
+        ];
+    };
+
+    flake.nixosConfigurations.desktop-stage-data = inputs.nixpkgs.lib.nixosSystem {
+        modules = [
+            self.nixosModules.hostDesktop
+            { bytes.disks.manage = [ "data" "archive" ]; }
+        ];
+    };
+
     flake.nixosModules.hostDesktop = { pkgs, config, ... }: let
         secrets = config.sops.secrets;
     in {
@@ -25,6 +40,7 @@
             self.nixosModules.nix
             self.nixosModules.qmk
             self.nixosModules.sops
+            self.nixosModules.preservation
             self.nixosModules.shell
             self.nixosModules.locale
             self.nixosModules.tailscale
@@ -33,6 +49,7 @@
             self.nixosModules.noPasswordSudo
 
             # host hardware
+            self.nixosModules.hostDesktopDisko
             self.nixosModules.hostDesktopHardware
             self.nixosModules.hostDesktopGraphics
         ];
@@ -57,6 +74,25 @@
 
         bytes.netbird.setupKeyFile = secrets."netbird/setup-key".path;
 
+        bytes.impermanence = {
+            enable = true;
+            device = "/dev/disk/by-label/system";
+
+            directories = [
+                "/var/lib/containers"
+                "/var/lib/docker"
+                "/var/lib/libvirt"
+                "/var/lib/netbird-default"
+                "/var/lib/sddm"
+                "/var/lib/waydroid"
+            ];
+
+            ephemeralHome.mih4n = [
+                ".cache"
+                ".local/share/Trash"
+            ];
+        };
+
         environment.systemPackages = with pkgs; [
             ollama-rocm
             roslyn
@@ -64,7 +100,6 @@
             spotify
             yubioath-flutter
             lmstudio
-            winboat
             polkit_gnome 
             nautilus
         ];
