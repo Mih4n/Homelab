@@ -5,21 +5,6 @@
         ];
     };
 
-    # Staged migration, see docs/desktop-migration.md.
-    flake.nixosConfigurations.desktop-stage-main = inputs.nixpkgs.lib.nixosSystem {
-        modules = [
-            self.nixosModules.hostDesktop
-            { bytes.disks.manage = [ "main" ]; }
-        ];
-    };
-
-    flake.nixosConfigurations.desktop-stage-data = inputs.nixpkgs.lib.nixosSystem {
-        modules = [
-            self.nixosModules.hostDesktop
-            { bytes.disks.manage = [ "data" "archive" ]; }
-        ];
-    };
-
     flake.nixosModules.hostDesktop = { pkgs, config, ... }: let
         secrets = config.sops.secrets;
     in {

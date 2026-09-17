@@ -1,7 +1,5 @@
 { inputs, ... }: {
-    flake.nixosModules.hostDesktopDisko = { lib, config, ... }: let
-        cfg = config.bytes.disks;
-
+    flake.nixosModules.hostDesktopDisko = { lib, ... }: let
         # Directories of the data disk that are mounted into the home directory.
         dataDirectories = {
             "@games" = "Games";
@@ -18,13 +16,7 @@
             inputs.disko.nixosModules.default
         ];
 
-        options.bytes.disks.manage = lib.mkOption {
-            type = lib.types.listOf (lib.types.enum [ "main" "data" "archive" ]);
-            default = [ "main" "data" "archive" ];
-            description = "Disks that disko partitions and that this host mounts.";
-        };
-
-        config.disko.devices.disk = lib.getAttrs cfg.manage {
+        disko.devices.disk = {
             main = {
                 type = "disk";
                 device = "/dev/disk/by-id/nvme-KINGSTON_SKC3000S1024G_50026B7686AFCE2C";
@@ -145,7 +137,7 @@
         };
 
         # Fresh subvolumes belong to root.
-        config.systemd.tmpfiles.settings.data-disk = lib.listToAttrs (map (path:
+        systemd.tmpfiles.settings.data-disk = lib.listToAttrs (map (path:
             lib.nameValuePair path { d = { user = "mih4n"; group = "users"; mode = "0755"; }; }
         ) (map homeOf (lib.attrValues dataDirectories) ++ [ "/mnt/data" "/mnt/archive" ]));
     };
