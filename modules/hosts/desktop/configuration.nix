@@ -74,6 +74,10 @@
 
         bytes.netbird.setupKeyFile = secrets."netbird/setup-key".path;
 
+        # sops runs in the activation script, before preservation links
+        # /etc/ssh, so the age key has to be read from the persistent volume.
+        sops.age.sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
+
         bytes.impermanence = {
             enable = true;
             device = "/dev/disk/by-label/system";
