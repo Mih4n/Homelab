@@ -9,6 +9,11 @@
         proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
         vscode-server.url = "github:nix-community/nixos-vscode-server";
 
+        openlogi = {
+            url = "github:AprilNEA/OpenLogi";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+
         stylix = {
             url = "github:nix-community/stylix";
             inputs.nixpkgs.follows = "nixpkgs";
@@ -38,6 +43,8 @@
             url = "github:nix-community/disko";
             inputs.nixpkgs.follows = "nixpkgs";
         };
+
+        preservation.url = "github:nix-community/preservation";
 
         homeManager = {
             url = "github:nix-community/home-manager";
