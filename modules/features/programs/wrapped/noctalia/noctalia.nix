@@ -12,7 +12,9 @@
             });
 
             env = {
-                "NOCTALIA_CACHE_DIR" = "/tmp/noctalia-wrapped-cache/";
+                # Not /tmp: the chosen wallpaper lives in shell-state.json here,
+                # and /tmp is wiped on every boot.
+                "NOCTALIA_CACHE_DIR" = "/home/mih4n/.local/state/noctalia/";
             };
 
             colors = {
