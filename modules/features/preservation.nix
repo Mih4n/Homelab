@@ -1,8 +1,6 @@
 { inputs, ... }: {
-    flake.nixosModules.preservation = { config, lib, pkgs, utils, ... }: let
+    flake.nixosModules.preservation = { config, lib, ... }: let
         cfg = config.bytes.impermanence;
-
-        deviceUnit = "${utils.escapeSystemdPath cfg.device}.device";
 
         # Not read from `users.users`: `fileSystems` is evaluated earlier and
         # would end up in an infinite recursion.
@@ -15,13 +13,7 @@
         ];
 
         options.bytes.impermanence = {
-            enable = lib.mkEnableOption "wiping the btrfs root subvolume on every boot";
-
-            device = lib.mkOption {
-                type = lib.types.str;
-                example = "/dev/disk/by-label/system";
-                description = "btrfs filesystem that holds the root subvolume.";
-            };
+            enable = lib.mkEnableOption "keeping only declared state on a volatile root";
 
             ephemeralHome = lib.mkOption {
                 type = lib.types.attrsOf (lib.types.listOf lib.types.str);
@@ -46,34 +38,8 @@
         config = lib.mkIf cfg.enable {
             boot.initrd.systemd.enable = true;
             boot.initrd.supportedFilesystems.btrfs = true;
-            boot.initrd.systemd.initrdBin = [ pkgs.btrfs-progs ];
 
-            boot.initrd.systemd.services.rollback = {
-                description = "Rollback the root subvolume to a blank state";
-                wantedBy = [ "initrd.target" ];
-                requires = [ deviceUnit ];
-                after = [ deviceUnit ];
-                before = [ "sysroot.mount" ];
-                unitConfig.DefaultDependencies = "no";
-                serviceConfig.Type = "oneshot";
-                script = ''
-                    mkdir -p /btrfs
-                    mount -t btrfs -o subvol=/ ${cfg.device} /btrfs
-
-                    if [ -e /btrfs/@root ]; then
-                        btrfs subvolume list -o /btrfs/@root | cut -f9 -d' ' | while read -r subvolume; do
-                            btrfs subvolume delete "/btrfs/$subvolume"
-                        done
-
-                        btrfs subvolume delete /btrfs/@root
-                    fi
-
-                    btrfs subvolume snapshot /btrfs/@root-blank /btrfs/@root
-                    umount /btrfs
-                '';
-            };
-
-            # /etc/shadow does not survive the rollback.
+            # /etc/shadow lives on the volatile root.
             users.mutableUsers = false;
 
             fileSystems = lib.mkMerge [

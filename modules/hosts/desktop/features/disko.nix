@@ -16,6 +16,11 @@
             inputs.disko.nixosModules.default
         ];
 
+        disko.devices.nodev."/" = {
+            fsType = "tmpfs";
+            mountOptions = [ "size=25%" "mode=755" ];
+        };
+
         disko.devices.disk = {
             main = {
                 type = "disk";
@@ -42,11 +47,6 @@
                                 extraArgs = [ "-f" "-L" "system" ];
 
                                 subvolumes = {
-                                    "@root" = {
-                                        mountpoint = "/";
-                                        mountOptions = compressed;
-                                    };
-
                                     "@nix" = {
                                         mountpoint = "/nix";
                                         mountOptions = compressed;
@@ -72,18 +72,19 @@
                                         mountOptions = [ "noatime" ];
                                         swap.swapfile.size = "32G";
                                     };
+
+                                    # Kept on disk so that large temporary files do
+                                    # not end up in the tmpfs root.
+                                    "@tmp" = {
+                                        mountpoint = "/tmp";
+                                        mountOptions = compressed;
+                                    };
+
+                                    "@vartmp" = {
+                                        mountpoint = "/var/tmp";
+                                        mountOptions = compressed;
+                                    };
                                 };
-
-                                # The initrd restores @root from this snapshot on every boot.
-                                postCreateHook = ''
-                                    MNTPOINT=$(mktemp -d)
-                                    mount "$device" "$MNTPOINT" -o subvol=/
-                                    trap 'umount "$MNTPOINT"; rm -rf "$MNTPOINT"' EXIT
-
-                                    if ! btrfs subvolume show "$MNTPOINT/@root-blank" > /dev/null 2>&1; then
-                                        btrfs subvolume snapshot -r "$MNTPOINT/@root" "$MNTPOINT/@root-blank"
-                                    fi
-                                '';
                             };
                         };
                     };
