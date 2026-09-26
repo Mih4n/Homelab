@@ -31,6 +31,7 @@
             self.nixosModules.noPasswordSudo
 
             # host hardware
+            self.nixosModules.amdAi
             self.nixosModules.hostLaptopHardware
             inputs.hardware.nixosModules.framework-amd-ai-300-series
         ];
@@ -42,17 +43,20 @@
             scilab-bin
             nautilus
             polkit_gnome
+            distrobox
         ];
 
         bytes.niri.monitors = {
             "eDP-1" = {
-                scale = 1.33;
+                scale = 1.66;
                 mode = "2256x1504@59.999";
                 position = { x = 0; y = 0; };
             };
         };
 
-        bytes.netbird.setupKeyFile = secrets."netbird/setup-key".path;
+        nix.package = pkgs.lixPackageSets.stable.lix;
+
+        # bytes.netbird.setupKeyFile = secrets."netbird/setup-key".path;
 
         virtualisation.podman.enable = true;
         virtualisation.docker.enable = true;
@@ -76,6 +80,8 @@
         };
 
         boot.plymouth.enable = true;
+        boot.kernelPackages = pkgs.linuxPackages_zen;
+        boot.kernelModules = [ "bridge" "tun" "nft_chain_nat_ipv4" ];
 
         hardware.bluetooth.enable = true;
         hardware.cpu.amd.updateMicrocode = true;
