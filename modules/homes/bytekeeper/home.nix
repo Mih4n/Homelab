@@ -10,8 +10,8 @@
     flake.homeModules.userBytekeeper = { ... }: {
         imports = [
             self.homeModules.shell
-            self.homeModules.zeditor
             self.homeModules.vscodeServer
+            self.homeModules.zeditorServer
         ];
 
         home = {
