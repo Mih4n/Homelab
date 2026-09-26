@@ -12,6 +12,7 @@
                 "Mod+T".spawn = "kitty";
                 "Mod+Return".spawn = "kitty";
                 "Mod+D".spawn-sh = "${noctalia} ipc call launcher toggle";
+                "Mod+W".spawn-sh = "${noctalia} ipc call wallpaper toggle";
 
                 "Mod+Q".close-window = action;
                 "Mod+O".toggle-overview = action;
