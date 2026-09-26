@@ -7,13 +7,18 @@
         millennium.url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
         proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
         vscode-server.url = "github:nix-community/nixos-vscode-server";
-        
+
+        openlogi = {
+            url = "github:AprilNEA/OpenLogi";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+
         stylix = {
             url = "github:nix-community/stylix";
             inputs.nixpkgs.follows = "nixpkgs";
         };
 
-        hardware = { 
+        hardware = {
             url = "github:NixOS/nixos-hardware/master";
             inputs.nixpkgs.follows = "nixpkgs";
         };
@@ -22,7 +27,7 @@
             url = "github:youwen5/zen-browser-flake";
             inputs.nixpkgs.follows = "nixpkgs";
         };
-        
+
         minegrub-world-sel-theme = {
             url = "github:Lxtharia/minegrub-world-sel-theme";
             inputs.nixpkgs.follows = "nixpkgs";
@@ -56,7 +61,7 @@
         wrappers.url = "github:Lassulus/wrappers";
         wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
     };
- 
+
     outputs = inputs: let
         inherit (inputs.nixpkgs) lib;
         inherit (lib.fileset) toList fileFilter;

@@ -9,6 +9,7 @@
         secrets = config.sops.secrets;
     in {
         imports = [
+            inputs.openlogi.nixosModules.default
             self.nixosModules.base
 
             # users
@@ -89,7 +90,7 @@
             spotify
             yubioath-flutter
             lmstudio
-            polkit_gnome 
+            polkit_gnome
             nautilus
         ];
 
@@ -101,6 +102,7 @@
         users.extraGroups.vboxusers.members = [ "mih4n" ];
 
         programs.nh.flake =  "/home/mih4n/NixOs";
+        programs.openlogi.enable = true;
 
         services = {
             flatpak.enable = true;

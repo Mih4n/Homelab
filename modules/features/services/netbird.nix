@@ -19,7 +19,11 @@
             services.netbird.enable = true;
 
             services.netbird.clients.default = {
-                config.ManagementURL = cfg.managementUrl;
+                # netbird keeps ManagementURL in config.json as a serialised url.URL
+                # object, so a plain string written through `config` makes the daemon
+                # die on startup; passed as an env var it is the `netbird up` flag
+                # instead, and the cli persists it in the format the daemon expects
+                environment.NB_MANAGEMENT_URL = cfg.managementUrl;
 
                 login.enable = cfg.setupKeyFile != null;
                 login.setupKeyFile = cfg.setupKeyFile;

@@ -51,7 +51,6 @@
         environment.systemPackages = with pkgs; [
             # --- Communication & Social ---
             vesktop
-            discord
             obs-studio
             thunderbird
             telegram-desktop
@@ -62,6 +61,7 @@
             super-productivity
             libreoffice-qt6-fresh
             gimp
+            onlyoffice-desktopeditors
             mission-center # System monitor
 
             # --- Development Tools (General) ---

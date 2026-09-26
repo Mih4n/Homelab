@@ -5,6 +5,7 @@ keys:
   - &desktop age1r008nwmhjes00zc5v3m8jzwl82mqlwv6txu5r6zuhff084ehygjqw5f2zm
   - &secondary age14qvn30w0486hvxds2yn6wpwkt0w8vz8cswrw6sh38qu4pukl6pfscxhuhl
   - &nextcloud age152sv326zlf937m0w9l7c5hyea9vk8ua6e2f4cxvgnwct30ptrgtquwqp7v
+  - &framework age1jk36y6nap4v23hkztjc8l6atfguukdnst6hxhfazrx47c7zjzpmqyglxmr
 
 creation_rules:
   - path_regex: secrets/.*\.ya?ml$
@@ -16,3 +17,4 @@ creation_rules:
         - *desktop
         - *secondary
         - *nextcloud
+        - *framework

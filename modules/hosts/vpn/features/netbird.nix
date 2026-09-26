@@ -1,7 +1,16 @@
 { ... }: {
     flake.nixosModules.hostVpnNetbird = { config, ... }: let
         domain = "netbird.mih4n.xyz";
-        authIssuer = "https://auth.mih4n.xyz/application/o/netbird/";
+
+        authDomain = "https://auth.mih4n.xyz";
+        authIssuer = "${authDomain}/application/o/netbird/";
+        authAuthorizeEndpoint = "${authDomain}/application/o/authorize/";
+        authTokenEndpoint = "${authDomain}/application/o/token/";
+
+        oidcClientId = "aKraceQ4fr5SalyFxaexZf2FViHaSSpd4VyLpMMP";
+        oidcScopes = "openid profile email offline_access entitlements goauthentik.io/api";
+
+        idpUsername = "netbird";
     in {
         services.netbird.server = {
             enable = true;
@@ -18,16 +27,44 @@
                 settings = {
                     DataStoreEncryptionKey._secret = config.sops.secrets."netbird/data-store-encryption-key".path;
                     TURNConfig.Secret._secret = config.sops.secrets."netbird/turn-secret".path;
+
+                    HttpConfig.AuthAudience = oidcClientId;
+
+                    IdpManagerConfig = {
+                        ManagerType = "authentik";
+
+                        ClientConfig = {
+                            Issuer = authIssuer;
+                            TokenEndpoint = authTokenEndpoint;
+                            ClientID = oidcClientId;
+                            GrantType = "client_credentials";
+                        };
+
+                        ExtraConfig = {
+                            Username = idpUsername;
+                            Password._secret = config.sops.secrets."netbird/idp-service-account-password".path;
+                        };
+                    };
+
+                    PKCEAuthorizationFlow.ProviderConfig = {
+                        Audience = oidcClientId;
+                        ClientID = oidcClientId;
+                        AuthorizationEndpoint = authAuthorizeEndpoint;
+                        TokenEndpoint = authTokenEndpoint;
+                        Scope = oidcScopes;
+                        RedirectURLs = [ "http://localhost:53000" ];
+                        UseIDToken = false;
+                        DisablePromptLogin = true;
+                    };
                 };
             };
 
-            # served through the vpn host's traefik instead of netbird's own nginx,
-            # except for the static dashboard bundle, which still needs a file server
             dashboard.enableNginx = true;
             dashboard.settings = {
                 AUTH_AUTHORITY = authIssuer;
-                AUTH_CLIENT_ID = "netbird";
-                AUTH_SUPPORTED_SCOPES = "openid profile email";
+                AUTH_AUDIENCE = oidcClientId;
+                AUTH_CLIENT_ID = oidcClientId;
+                AUTH_SUPPORTED_SCOPES = oidcScopes;
             };
         };
 
