@@ -2,6 +2,7 @@
     # Keybinds and startup programs.
     flake.wrappedModules.niriBinds = { lib, pkgs, ... }: let
         noctalia = lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctaliaShell;
+        brightness = lib.getExe pkgs.brightnessctl;
 
         action = _: { };
     in {
@@ -52,6 +53,9 @@
 
                 "XF86AudioRaiseVolume".spawn = [ "wpctl" "set-volume" "-l" "1.4" "@DEFAULT_AUDIO_SINK@" "5%+" ];
                 "XF86AudioLowerVolume".spawn = [ "wpctl" "set-volume" "-l" "1.4" "@DEFAULT_AUDIO_SINK@" "5%-" ];
+
+                "XF86MonBrightnessUp".spawn = [ "${brightness}" "set" "+5%" ];
+                "XF86MonBrightnessDown".spawn = [ "${brightness}" "set" "5%-" ];
 
                 "Mod+WheelScrollUp".focus-column-right = action;
                 "Mod+WheelScrollDown".focus-column-left = action;

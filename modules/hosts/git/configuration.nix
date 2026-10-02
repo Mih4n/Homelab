@@ -1,21 +1,25 @@
-{ self, inputs, ... }: {
-    flake.nixosConfigurations.bytes = inputs.nixpkgs.lib.nixosSystem {
+{ inputs, self, ... }: {
+    flake.nixosConfigurations.git = inputs.nixpkgs.lib.nixosSystem {
         modules = [
-            self.nixosModules.hostBytes
+            self.nixosModules.hostGit
         ];
     };
 
-    flake.nixosModules.hostBytes = { config, ... }: let
+    flake.nixosModules.hostGit =  { config, ... }: let
         secrets = config.sops.secrets;
     in {
         imports = [
             self.nixosModules.base
 
             # users
+            self.nixosModules.userByteshaker
             self.nixosModules.userBytekeeper
 
             # environment
             self.nixosModules.basicEnv
+
+            # disks
+            self.nixosModules.diskoStandard
 
             # shared features
             self.nixosModules.nix
@@ -27,34 +31,27 @@
             self.nixosModules.bootEngine
             self.nixosModules.networking
             self.nixosModules.noPasswordSudo
+            self.nixosModules.localNetworking
 
             # host hardware
-            self.nixosModules.hostBytesHardware
+            self.nixosModules.hostGitHardware
 
             # host specific features
-            self.nixosModules.authentik
-            self.nixosModules.hostBytesBoot
-            self.nixosModules.hostBytesDhcp
-            self.nixosModules.hostBytesProxmox
-            self.nixosModules.hostBytesNetworking
+            self.nixosModules.git
         ];
 
-        theme.hostIcon = "󰒋";
-        networking.hostName = "bytes";
-
-        swapDevices = [{
-            device = "/swapfile";
-            size = 8 * 1024;
-        }];
+        theme.hostIcon = "";
+        networking.hostName = "git";
 
         bytes = {
             boot.mode = "uefi-systemd-boot";
+
+            networking.local = {
+                ip = "192.168.192.13";
+            };
+
             tailscale = {
-                isExiteNode = true;
-                subnetRoutes = [
-                    "192.168.192.0/24"
-                ];
-                authKeyFile = secrets."headscale/bytes".path;
+                authKeyFile = secrets."headscale/git".path;
             };
         };
 
