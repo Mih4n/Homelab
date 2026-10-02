@@ -43,6 +43,8 @@
         theme.hostIcon = "";
         networking.hostName = "git";
 
+        virtualisation.podman.enable = true;
+
         bytes = {
             boot.mode = "uefi-systemd-boot";
 
