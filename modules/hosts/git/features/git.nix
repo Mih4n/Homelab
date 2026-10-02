@@ -28,7 +28,7 @@
                 name = "monolith";
                 url = "https://git.example.com";
 
-                tokenFile = config.age.secrets."forgejo/runner/token".path;
+                tokenFile = secrets."forgejo/runner/token".path;
                 labels = [
                   "ubuntu-latest:docker://node:16-bullseye"
                   "ubuntu-22.04:docker://node:16-bullseye"
