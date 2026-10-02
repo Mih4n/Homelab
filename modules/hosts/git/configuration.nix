@@ -37,7 +37,7 @@
             self.nixosModules.hostGitHardware
 
             # host specific features
-            self.nixosModules.git
+            self.nixosModules.gitServer
         ];
 
         theme.hostIcon = "";
