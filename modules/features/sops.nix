@@ -24,6 +24,14 @@
         sops.secrets."authentik/secret-key" = {};
         sops.secrets."authentik/email-password" = {};
 
+        sops.secrets."forgejo/runner/token" = {
+            owner = "forgejo";
+        };
+
+        sops.secrets."forgejo/adminpass" = {
+            owner = "forgejo";
+        };
+
         sops.templates."authentik.env".content = ''
             AUTHENTIK_SECRET_KEY=${config.sops.placeholder."authentik/secret-key"}
             AUTHENTIK_EMAIL__PASSWORD=${config.sops.placeholder."authentik/email-password"}

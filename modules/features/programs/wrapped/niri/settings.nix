@@ -53,6 +53,17 @@
                     clip-to-geometry = true;
                     geometry-corner-radius = 10;
                 }
+                {
+                    matches = [
+                        {
+                            app-id = "^openlogi-action-ring$";
+                        }
+                    ];
+                    open-floating = true;
+                    open-focused = true;
+                    focus-ring.off = exist;
+                    border.off = exist;
+                }
             ];
 
             xwayland-satellite.path = xwayland;

@@ -30,7 +30,6 @@
                 '';
             };
 
-            # Print takes a shot of the monitor that currently has focus.
             screenshotOutput = {
                 bind = "Print";
                 packages = with pkgs; [ grim jq wl-clipboard ];
