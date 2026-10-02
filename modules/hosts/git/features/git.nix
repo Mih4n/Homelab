@@ -1,5 +1,5 @@
 { ... }: {
-    flake.nixosModules.git = { lib, pkgs, config, ... }: let
+    flake.nixosModules.gitServer = { lib, pkgs, config, ... }: let
         secrets = config.sops.secrets;
     in {
         services.forgejo = {
