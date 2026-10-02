@@ -26,7 +26,7 @@
             instances.default = {
                 enable = true;
                 name = "monolith";
-                url = "https://git.example.com";
+                url = "https://git.mih4n.xyz";
 
                 tokenFile = secrets."forgejo/runner/token".path;
                 labels = [
