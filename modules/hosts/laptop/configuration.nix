@@ -25,8 +25,8 @@
             self.nixosModules.sops
             self.nixosModules.shell
             self.nixosModules.locale
+            self.nixosModules.yubikey
             self.nixosModules.tailscale
-            self.nixosModules.netbird
             self.nixosModules.networking
             self.nixosModules.noPasswordSudo
 
