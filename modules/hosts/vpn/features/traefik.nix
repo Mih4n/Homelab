@@ -104,6 +104,12 @@
                         service = "portfolio";
                         entrypoints = "websecure";
                     };
+                    git = {
+                        rule = "Host(`git.mih4n.xyz`)";
+                        tls.certResolver = "letsencrypt";
+                        service = "git";
+                        entrypoints = "websecure";
+                    };
                 };
 
                 http.middlewares = {
@@ -120,6 +126,7 @@
                         servers = [{ url = "https://bytes.bytes:8006"; }];
                         serversTransport = "proxmox-transport";
                     };
+                    git.loadBalancer.servers = [{ url = "http://git.bytes:3000"; }];
                     headscale.loadBalancer.servers = [{ url = "http://localhost:3009"; }];
                     netbird-signal.loadBalancer.servers = [{ url = "h2c://127.0.0.1:8012"; }];
                     netbird-management.loadBalancer.servers = [{ url = "h2c://127.0.0.1:8011"; }];

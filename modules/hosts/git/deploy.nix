@@ -1,10 +1,10 @@
 { inputs, self, ... }: {
     flake = {
-        deploy.nodes.desktop = {
+        deploy.nodes.git = {
             hostname = "git.bytes";
             profiles.system = {
-                user = "mih4n";
-                sshUser = "mih4n";
+                user = "bytekeeper";
+                sshUser = "bytekeeper";
                 interactiveSudo = true;
 
                 path =
@@ -12,12 +12,12 @@
                     self.nixosConfigurations.git;
             };
             profiles.home = {
-                user = "mih4n";
-                sshUser = "mih4n";
+                user = "bytekeeper";
+                sshUser = "bytekeeper";
 
                 path =
                     inputs.deploy.lib.x86_64-linux.activate.home-manager
-                    self.homeConfigurations.mih4n;
+                    self.homeConfigurations.bytekeeper;
             };
         };
     };

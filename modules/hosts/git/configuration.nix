@@ -46,6 +46,7 @@
         virtualisation.podman.enable = true;
 
         bytes = {
+            disk.type = "sda";
             boot.mode = "uefi-systemd-boot";
 
             networking.local = {

@@ -1,10 +1,10 @@
 { inputs, self, ... }: {
     flake = {
         deploy.nodes.vpn = {
-            hostname = "vpn.bytes";
+            hostname = "mih4n.xyz";
             profiles.system = {
-                user = "byteshaker";
-                sshUser = "byteshaker";
+                user = "bytekeeper";
+                sshUser = "bytekeeper";
                 interactiveSudo = true;
 
                 path =

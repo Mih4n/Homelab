@@ -1,0 +1,273 @@
+/* Gruvbox light medium поверх стоковой светлой темы Forgejo */
+@import "./theme-forgejo-light.css";
+@import "./gruvbox-common.css";
+
+:root {
+    /* палитра портфолио (html без .dark) */
+    --gb-bg: #fbf1c7;
+    --gb-bg-0h: #f9f5d7;
+    --gb-bg1: #ebdbb2;
+    --gb-bg2: #d5c4a1;
+    --gb-bg3: #bdae93;
+    --gb-bg4: #a89984;
+    --gb-fg0: #282828;
+    --gb-fg1: #3c3836;
+    --gb-fg2: #504945;
+    --gb-fg3: #665c54;
+    --gb-fg4: #7c6f64;
+    --gb-gray: #928374;
+    --gb-border: #ebdbb2;
+    --gb-border-strong: #d5c4a1;
+
+    --gb-red: #cc241d;
+    --gb-blue: #458588;
+    --gb-aqua: #689d6a;
+    --gb-green: #98971a;
+    --gb-purple: #b16286;
+    --gb-yellow: #d79921;
+    --gb-orange: #d65d0e;
+
+    --gb-bright-red: #9d0006;
+    --gb-bright-blue: #076678;
+    --gb-bright-aqua: #427b58;
+    --gb-bright-green: #79740e;
+    --gb-bright-purple: #8f3f71;
+    --gb-bright-yellow: #b57614;
+    --gb-bright-orange: #af3a03;
+
+    --gb-selection: #d5c4a1;
+    --gb-scrollbar: #665c5430;
+
+    /* primary: синий акцент шапки; в светлой теме dark-N темнее, light-N светлее */
+    --color-primary: var(--gb-blue);
+    --color-primary-contrast: var(--gb-on-accent);
+    --color-primary-dark-1: #3c7679;
+    --color-primary-dark-2: #34686b;
+    --color-primary-dark-3: #2c5a5d;
+    --color-primary-dark-4: #254c4e;
+    --color-primary-dark-5: #1f3f41;
+    --color-primary-dark-6: #193335;
+    --color-primary-dark-7: #142829;
+    --color-primary-light-1: #569193;
+    --color-primary-light-2: #6a9c9a;
+    --color-primary-light-3: #83a598;
+    --color-primary-light-4: #a3bcb0;
+    --color-primary-light-5: #c3d3c3;
+    --color-primary-light-6: #dde5d2;
+    --color-primary-light-7: #eef0d6;
+    --color-primary-alpha-10: #45858819;
+    --color-primary-alpha-20: #45858833;
+    --color-primary-alpha-30: #4585884b;
+    --color-primary-alpha-40: #45858866;
+    --color-primary-alpha-50: #45858880;
+    --color-primary-alpha-60: #45858899;
+    --color-primary-alpha-70: #458588b3;
+    --color-primary-alpha-80: #458588cc;
+    --color-primary-alpha-90: #458588e1;
+    --color-primary-hover: var(--color-primary-dark-1);
+    --color-primary-active: var(--color-primary-dark-2);
+
+    /* secondary — это в первую очередь бордеры */
+    --color-secondary: var(--gb-border);
+    --color-secondary-dark-1: var(--gb-bg2);
+    --color-secondary-dark-2: var(--gb-bg3);
+    --color-secondary-dark-3: var(--gb-bg4);
+    --color-secondary-dark-4: var(--gb-gray);
+    --color-secondary-dark-5: var(--gb-fg4);
+    --color-secondary-dark-6: var(--gb-fg3);
+    --color-secondary-dark-7: var(--gb-fg2);
+    --color-secondary-dark-8: var(--gb-fg1);
+    --color-secondary-dark-9: var(--gb-fg0);
+    --color-secondary-dark-10: var(--gb-fg0);
+    --color-secondary-dark-11: var(--gb-fg0);
+    --color-secondary-dark-12: var(--gb-fg0);
+    --color-secondary-dark-13: var(--gb-fg0);
+    --color-secondary-light-1: #f2e5bc;
+    --color-secondary-light-2: var(--gb-bg);
+    --color-secondary-light-3: var(--gb-bg-0h);
+    --color-secondary-light-4: var(--gb-bg-0h);
+    --color-secondary-alpha-10: #ebdbb219;
+    --color-secondary-alpha-20: #ebdbb233;
+    --color-secondary-alpha-30: #ebdbb24b;
+    --color-secondary-alpha-40: #ebdbb266;
+    --color-secondary-alpha-50: #ebdbb280;
+    --color-secondary-alpha-60: #ebdbb299;
+    --color-secondary-alpha-70: #ebdbb2b3;
+    --color-secondary-alpha-80: #ebdbb2cc;
+    --color-secondary-alpha-90: #ebdbb2e1;
+
+    /* консоль Actions оставляем тёмной, как терминал */
+    --color-console-fg: #ebdbb2;
+    --color-console-fg-subtle: #a89984;
+    --color-console-bg: #282828;
+    --color-console-border: #3c3836;
+    --color-console-hover-bg: #ffffff10;
+    --color-console-active-bg: #504945;
+    --color-console-menu-bg: #3c3836;
+    --color-console-menu-border: #665c54;
+
+    --color-red: var(--gb-red);
+    --color-orange: var(--gb-orange);
+    --color-yellow: var(--gb-yellow);
+    --color-olive: var(--gb-green);
+    --color-green: var(--gb-green);
+    --color-teal: var(--gb-aqua);
+    --color-blue: var(--gb-blue);
+    --color-violet: var(--gb-purple);
+    --color-purple: var(--gb-purple);
+    --color-pink: #d3869b;
+    --color-brown: #a87e4f;
+    --color-grey: var(--gb-gray);
+    --color-black: var(--gb-fg0);
+    --color-red-light: #fb4934;
+    --color-orange-light: #fe8019;
+    --color-yellow-light: #fabd2f;
+    --color-olive-light: #b8bb26;
+    --color-green-light: #b8bb26;
+    --color-teal-light: #8ec07c;
+    --color-blue-light: #83a598;
+    --color-violet-light: #d3869b;
+    --color-purple-light: #d3869b;
+    --color-pink-light: #e2a6b6;
+    --color-brown-light: #c09060;
+    --color-grey-light: var(--gb-bg4);
+    --color-black-light: var(--gb-fg1);
+    --color-red-dark-1: var(--gb-bright-red);
+    --color-orange-dark-1: var(--gb-bright-orange);
+    --color-yellow-dark-1: var(--gb-bright-yellow);
+    --color-olive-dark-1: var(--gb-bright-green);
+    --color-green-dark-1: var(--gb-bright-green);
+    --color-teal-dark-1: var(--gb-bright-aqua);
+    --color-blue-dark-1: var(--gb-bright-blue);
+    --color-violet-dark-1: var(--gb-bright-purple);
+    --color-purple-dark-1: var(--gb-bright-purple);
+    --color-gold: var(--gb-bright-yellow);
+
+    --color-ansi-black: #282828;
+    --color-ansi-red: #cc241d;
+    --color-ansi-green: #98971a;
+    --color-ansi-yellow: #d79921;
+    --color-ansi-blue: #458588;
+    --color-ansi-magenta: #b16286;
+    --color-ansi-cyan: #689d6a;
+    --color-ansi-bright-black: #928374;
+    --color-ansi-bright-red: #fb4934;
+    --color-ansi-bright-green: #b8bb26;
+    --color-ansi-bright-yellow: #fabd2f;
+    --color-ansi-bright-blue: #83a598;
+    --color-ansi-bright-magenta: #d3869b;
+    --color-ansi-bright-cyan: #8ec07c;
+
+    --color-diff-removed-word-bg: #f5b5a8;
+    --color-diff-added-word-bg: #dcdc9a;
+    --color-diff-removed-row-bg: #fbdcc9;
+    --color-diff-moved-row-bg: #f8e2a6;
+    --color-diff-added-row-bg: #eeeab8;
+    --color-diff-removed-row-border: #f5b5a8;
+    --color-diff-moved-row-border: #e8c46c;
+    --color-diff-added-row-border: #dcdc9a;
+    --color-diff-inactive: var(--gb-bg1);
+
+    --color-error-border: #e8a597;
+    --color-error-bg: #fbdcc9;
+    --color-error-bg-active: #f5b5a8;
+    --color-error-bg-hover: #f8c9b8;
+    --color-error-text: var(--gb-bright-red);
+    --color-success-border: #c9c77a;
+    --color-success-bg: #eeeab8;
+    --color-success-text: var(--gb-bright-green);
+    --color-warning-border: #e8c46c;
+    --color-warning-bg: #f8e2a6;
+    --color-warning-text: var(--gb-bright-yellow);
+    --color-info-border: #9ebfb6;
+    --color-info-bg: #dfe6cf;
+    --color-info-text: var(--gb-bright-blue);
+
+    --color-red-badge: var(--gb-bright-red);
+    --color-red-badge-bg: #9d000622;
+    --color-red-badge-hover-bg: #9d000644;
+    --color-green-badge: var(--gb-bright-green);
+    --color-green-badge-bg: #79740e22;
+    --color-green-badge-hover-bg: #79740e44;
+    --color-yellow-badge: var(--gb-bright-yellow);
+    --color-yellow-badge-bg: #b5761422;
+    --color-yellow-badge-hover-bg: #b5761444;
+    --color-orange-badge: var(--gb-bright-orange);
+    --color-orange-badge-bg: #af3a0322;
+    --color-orange-badge-hover-bg: #af3a0344;
+
+    --color-body: var(--gb-bg);
+    --color-box-header: var(--gb-bg-0h);
+    --color-box-body: var(--gb-bg);
+    --color-box-body-highlight: #f2e5bc;
+    --color-text-dark: var(--gb-fg0);
+    --color-text: var(--gb-fg0);
+    --color-text-light: var(--gb-fg1);
+    --color-text-light-1: var(--gb-fg2);
+    --color-text-light-2: var(--gb-fg3);
+    --color-text-light-3: var(--gb-fg4);
+    --color-footer: var(--gb-bg);
+    --color-timeline: var(--gb-bg2);
+    --color-input-text: var(--gb-fg0);
+    --color-input-background: var(--gb-bg-0h);
+    --color-input-toggle-background: var(--gb-bg1);
+    --color-input-border: var(--gb-border-strong);
+    --color-input-border-hover: var(--gb-bg3);
+    --color-header-wrapper: var(--gb-bg-0h);
+    --color-header-wrapper-transparent: #f9f5d700;
+    --color-light-border: #0000001c;
+    --color-hover: #f2e5bc;
+    --color-active: var(--gb-bg1);
+    --color-menu: var(--gb-bg);
+    --color-card: var(--gb-bg);
+    --fancy-card-bg: var(--gb-bg-0h);
+    --fancy-card-border: var(--gb-border-strong);
+    --color-markup-table-row: #00000006;
+    --color-markup-code-block: var(--gb-bg-0h);
+    --color-markup-code-inline: var(--gb-bg1);
+    --color-button: var(--gb-bg-0h);
+    --color-code-bg: var(--gb-bg-0h);
+    --color-shadow: #00000020;
+    --color-secondary-bg: #f2e5bc;
+    --color-text-focus: var(--gb-fg0);
+    --color-expand-button: var(--gb-bg1);
+    --color-editor-line-highlight: #f2e5bc;
+    --color-reaction-bg: #0000000a;
+    --color-tooltip-text: var(--gb-bg);
+    --color-tooltip-bg: #282828f0;
+    --color-nav-bg: var(--gb-bg);
+    --color-nav-hover-bg: var(--gb-bg-0h);
+    --color-label-text: var(--gb-fg0);
+    --color-label-bg: var(--gb-bg1);
+    --color-label-hover-bg: var(--gb-bg2);
+    --color-label-active-bg: var(--gb-bg3);
+    --color-label-bg-alt: var(--gb-bg2);
+    --color-accent: var(--gb-bright-blue);
+    --color-small-accent: var(--color-primary-light-6);
+    --color-highlight-fg: var(--gb-bright-yellow);
+    --color-highlight-bg: #d7992133;
+    --color-overlay-backdrop: #282828a0;
+    --color-selection-bg: var(--gb-bg2);
+    --color-selection-fg: var(--gb-fg0);
+}
+
+/* Подсветка кода: VSCode Gruvbox Light Medium с правками портфолио */
+.chroma .c, .chroma .c1, .chroma .ch, .chroma .cm, .chroma .cs, .chroma .cp, .chroma .cpf { color: var(--gb-gray); font-style: italic; }
+.chroma .k, .chroma .kc, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr, .chroma .ow { color: var(--gb-bright-red); }
+.chroma .kt, .chroma .nc, .chroma .nn, .chroma .ne { color: var(--gb-bright-yellow); }
+.chroma .nf, .chroma .fm, .chroma .nt { color: var(--gb-bright-aqua); }
+.chroma .nb, .chroma .bp { color: var(--gb-bright-orange); }
+.chroma .na, .chroma .nv, .chroma .vc, .chroma .vg, .chroma .vi, .chroma .nl { color: var(--gb-bright-blue); }
+.chroma .no, .chroma .m, .chroma .mb, .chroma .mf, .chroma .mh, .chroma .mi, .chroma .mo, .chroma .il, .chroma .ss { color: var(--gb-bright-purple); }
+.chroma .s, .chroma .s1, .chroma .s2, .chroma .sb, .chroma .sc, .chroma .sd, .chroma .sh, .chroma .sx, .chroma .dl, .chroma .sa { color: var(--gb-bright-green); }
+.chroma .se, .chroma .si, .chroma .sr { color: var(--gb-bright-orange); }
+.chroma .nd, .chroma .ni { color: var(--gb-bright-aqua); }
+.chroma .nx, .chroma .o, .chroma .p { color: var(--gb-fg1); }
+.chroma .w { color: var(--gb-bg2); }
+.chroma .gd { color: var(--gb-bright-red); background-color: var(--color-diff-removed-row-bg); }
+.chroma .gi { color: var(--gb-bright-green); background-color: var(--color-diff-added-row-bg); }
+.chroma .gh, .chroma .gu { color: var(--gb-bright-blue); }
+.chroma .ge { font-style: italic; }
+.chroma .gs { font-weight: 700; }
+.chroma .gr, .chroma .gt, .chroma .err { color: var(--gb-bright-red); }
+.chroma .go, .chroma .gp { color: var(--gb-fg4); }

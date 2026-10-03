@@ -1,5 +1,6 @@
 keys:
   - &vpn age16sd2xtln9c04e9t4jl0wc30f3xzjhxy8nwlmlnkktuammsg92ftsrpsvn7
+  - &git age19s49jrypld44m37h3l63sj73cu04xq578h4dd38u5ccw6tuf6q6qpxc25s
   - &polygon age1pcw060v5x3609588v8d72dg47hv9ysujj7wpu44aquqtv2zpmv2qtrpsty
   - &primary age14sn3gpjdncq6st6ypuagzk3p3zjgxwkkj07kkqqmaqhan7jn4y9seluagz
   - &desktop age1r008nwmhjes00zc5v3m8jzwl82mqlwv6txu5r6zuhff084ehygjqw5f2zm
@@ -12,6 +13,7 @@ creation_rules:
     key_groups:
       - age:
         - *vpn
+        - *git
         - *polygon
         - *primary
         - *desktop

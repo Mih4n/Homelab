@@ -3,7 +3,7 @@
         services.nextcloud = {
             enable = true;
             https = true;
-            package = pkgs.nextcloud32;
+            package = pkgs.nextcloud35;
             hostName = "localhost";
             configureRedis = true;
             config = {
