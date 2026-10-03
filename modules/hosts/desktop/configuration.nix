@@ -67,7 +67,6 @@
                 "/var/lib/containers"
                 "/var/lib/docker"
                 "/var/lib/libvirt"
-                "/var/lib/netbird"
                 "/var/lib/sddm"
                 "/var/lib/waydroid"
             ];

@@ -1,4 +1,6 @@
-{ self, inputs, ... }: {
+{ self, inputs, ... }:let
+    s = self.settings;
+in {
     flake.nixosConfigurations.nextcloud = inputs.nixpkgs.lib.nixosSystem {
         modules = [
             self.nixosModules.hostNextcloud
@@ -27,7 +29,6 @@
             self.nixosModules.shell
             self.nixosModules.locale
             self.nixosModules.tailscale
-            self.nixosModules.netbird
             self.nixosModules.bootEngine
             self.nixosModules.networking
             self.nixosModules.noPasswordSudo
@@ -47,7 +48,7 @@
             boot.mode = "uefi-systemd-boot";
 
             networking.local = {
-                ip = "192.168.192.11";
+                ip = s.net.ips.nextcloud;
             };
 
             tailscale = {

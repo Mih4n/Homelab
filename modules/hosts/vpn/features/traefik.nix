@@ -1,7 +1,7 @@
-{ ... }: {
-    flake.nixosModules.hostVpnTraefik = { config, ... }: let
-        gitSshPort = 2222;
-    in {
+{ self, ... }: let
+    s = self.settings;
+in {
+    flake.nixosModules.hostVpnTraefik = { config, ... }: {
         services.traefik = {
             enable = true;
 
@@ -22,7 +22,7 @@
                         http.tls.certResolver = "letsencrypt";
                     };
 
-                    gitssh.address = ":${toString gitSshPort}";
+                    gitssh.address = ":${toString s.ports.forgejoSsh}";
                 };
 
                 log = {
@@ -32,7 +32,7 @@
                 };
 
                 certificatesResolvers.letsencrypt.acme = {
-                    email = "lmih4nl@gmail.com";
+                    email = s.emails.acme;
                     storage = "${config.services.traefik.dataDir}/acme.json";
                     httpChallenge.entryPoint = "web";
                 };
@@ -42,74 +42,50 @@
             dynamicConfigOptions = {
                 http.routers = {
                     home = {
-                        rule = "Host(`home.mih4n.xyz`)";
+                        rule = "Host(`${s.domains.home}`)";
                         tls.certResolver = "letsencrypt";
                         service = "homeassistant";
                         entrypoints = "websecure";
                     };
                     headscale = {
-                        rule = "Host(`vpn.mih4n.xyz`)";
+                        rule = "Host(`${s.domains.vpn}`)";
                         tls.certResolver = "letsencrypt";
                         service = "headscale";
                         entrypoints = "websecure";
                     };
-                    netbird-signal = {
-                        rule = "Host(`netbird.mih4n.xyz`) && PathPrefix(`/signalexchange.SignalExchange/`)";
-                        tls.certResolver = "letsencrypt";
-                        service = "netbird-signal";
-                        entrypoints = "websecure";
-                    };
-                    netbird-management-grpc = {
-                        rule = "Host(`netbird.mih4n.xyz`) && PathPrefix(`/management.ManagementService/`)";
-                        tls.certResolver = "letsencrypt";
-                        service = "netbird-management";
-                        entrypoints = "websecure";
-                    };
-                    netbird-management-api = {
-                        rule = "Host(`netbird.mih4n.xyz`) && PathPrefix(`/api`)";
-                        tls.certResolver = "letsencrypt";
-                        service = "netbird-management";
-                        entrypoints = "websecure";
-                    };
-                    netbird-dashboard = {
-                        rule = "Host(`netbird.mih4n.xyz`)";
-                        tls.certResolver = "letsencrypt";
-                        service = "netbird-dashboard";
-                        entrypoints = "websecure";
-                    };
                     nextcloud = {
-                        rule = "Host(`cloud.mih4n.xyz`)";
+                        rule = "Host(`${s.domains.cloud}`)";
                         entrypoints = "websecure";
                         middlewares = ["nextcloud-redirectregex"];
                         service = "nextcloud";
                         tls.certResolver = "letsencrypt";
                     };
                     proxmox = {
-                        rule = "Host(`proxmox.mih4n.xyz`)";
+                        rule = "Host(`${s.domains.proxmox}`)";
                         tls.certResolver = "letsencrypt";
                         service = "proxmox";
                         entrypoints = "websecure";
                     };
                     auth = {
-                        rule = "Host(`auth.mih4n.xyz`)";
+                        rule = "Host(`${s.domains.auth}`)";
                         tls.certResolver = "letsencrypt";
                         service = "auth";
                         entrypoints = "websecure";
                     };
                     takeapunch = {
-                        rule = "Host(`takeapunch.mih4n.xyz`)";
+                        rule = "Host(`${s.domains.takeapunch}`)";
                         tls.certResolver = "letsencrypt";
                         service = "takeapunch";
                         entrypoints = "websecure";
                     };
                     portfolio = {
-                        rule = "Host(`mih4n.xyz`)";
+                        rule = "Host(`${s.domains.root}`)";
                         tls.certResolver = "letsencrypt";
                         service = "portfolio";
                         entrypoints = "websecure";
                     };
                     git = {
-                        rule = "Host(`git.mih4n.xyz`)";
+                        rule = "Host(`${s.domains.git}`)";
                         tls.certResolver = "letsencrypt";
                         service = "git";
                         entrypoints = "websecure";
@@ -125,20 +101,17 @@
                 };
 
                 http.services = {
-                    auth.loadBalancer.servers = [{ url = "http://bytes.bytes:9000"; }];
+                    auth.loadBalancer.servers = [{ url = "http://${s.hosts.bytes}:9000"; }];
                     proxmox.loadBalancer = {
-                        servers = [{ url = "https://bytes.bytes:8006"; }];
+                        servers = [{ url = "https://${s.hosts.bytes}:8006"; }];
                         serversTransport = "proxmox-transport";
                     };
-                    git.loadBalancer.servers = [{ url = "http://git.bytes:3000"; }];
-                    headscale.loadBalancer.servers = [{ url = "http://localhost:3009"; }];
-                    netbird-signal.loadBalancer.servers = [{ url = "h2c://127.0.0.1:8012"; }];
-                    netbird-management.loadBalancer.servers = [{ url = "h2c://127.0.0.1:8011"; }];
-                    netbird-dashboard.loadBalancer.servers = [{ url = "http://127.0.0.1:8095"; }];
-                    nextcloud.loadBalancer.servers = [{ url = "http://nextcloud.bytes:80"; }];
-                    portfolio.loadBalancer.servers = [{ url = "http://polygon.bytes:3002"; }];
-                    takeapunch.loadBalancer.servers = [{ url = "http://polygon.bytes:3001"; }];
-                    homeassistant.loadBalancer.servers = [{ url = "http://192.168.192.10:8123"; }];
+                    git.loadBalancer.servers = [{ url = "http://${s.hosts.git}:${toString s.ports.forgejoHttp}"; }];
+                    headscale.loadBalancer.servers = [{ url = "http://localhost:${toString s.ports.headscale}"; }];
+                    nextcloud.loadBalancer.servers = [{ url = "http://${s.hosts.nextcloud}:80"; }];
+                    portfolio.loadBalancer.servers = [{ url = "http://${s.hosts.polygon}:3002"; }];
+                    takeapunch.loadBalancer.servers = [{ url = "http://${s.hosts.polygon}:3001"; }];
+                    homeassistant.loadBalancer.servers = [{ url = "http://${s.net.ips.homeassistant}:8123"; }];
                 };
 
                 http.serversTransports.proxmox-transport = {
@@ -153,10 +126,10 @@
                     entrypoints = "gitssh";
                 };
 
-                tcp.services.git-ssh.loadBalancer.servers = [{ address = "git.bytes:22"; }];
+                tcp.services.git-ssh.loadBalancer.servers = [{ address = "${s.hosts.git}:22"; }];
             };
         };
 
-        networking.firewall.allowedTCPPorts = [ gitSshPort ];
+        networking.firewall.allowedTCPPorts = [ s.ports.forgejoSsh ];
     };
 }

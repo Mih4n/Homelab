@@ -1,4 +1,6 @@
-{ self, inputs, ... }: {
+{ self, inputs, ... }:let
+    s = self.settings;
+in {
     flake.nixosConfigurations.bytes = inputs.nixpkgs.lib.nixosSystem {
         modules = [
             self.nixosModules.hostBytes
@@ -23,7 +25,6 @@
             self.nixosModules.shell
             self.nixosModules.locale
             self.nixosModules.tailscale
-            self.nixosModules.netbird
             self.nixosModules.bootEngine
             self.nixosModules.networking
             self.nixosModules.noPasswordSudo
@@ -52,7 +53,7 @@
             tailscale = {
                 isExiteNode = true;
                 subnetRoutes = [
-                    "192.168.192.0/24"
+                    s.net.subnet
                 ];
                 authKeyFile = secrets."headscale/bytes".path;
             };

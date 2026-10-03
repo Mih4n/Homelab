@@ -1,4 +1,6 @@
-{ self, inputs, ... }: {
+{ self, inputs, ... }: let
+    s = self.settings;
+in {
     flake.homeConfigurations.bytekeeper = inputs.homeManager.lib.homeManagerConfiguration {
 		pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
 
@@ -15,9 +17,9 @@
         ];
 
         home = {
-            username = "bytekeeper";
+            username = s.users.keeper;
             stateVersion = "25.05";
-            homeDirectory = "/home/bytekeeper";
+            homeDirectory = "/home/${s.users.keeper}";
         };
     };
 }

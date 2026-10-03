@@ -1,4 +1,6 @@
-{ ... }: {
+{ self, ... }: let
+    s = self.settings;
+in {
     flake.nixosModules.hostBytesNetworking = { config, ... }: let 
         cfg = config.bytes.networking.local;
     in {
@@ -26,7 +28,7 @@
             vmbrlo = {
                 ipv4.addresses = [
                     {
-                        address = "192.168.192.5";
+                        address = s.net.ips.bytes;
                         prefixLength = cfg.mask;
                     }
                 ];

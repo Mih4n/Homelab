@@ -1,4 +1,6 @@
-{ ... }: {
+{ self, ... }: let
+    s = self.settings;
+in {
     flake.nixosModules.hostVpnHeadscale = { lib, config, pkgs, ... }: {
         options.bytes.headscale = {
             adminUser = lib.mkOption {
@@ -58,12 +60,12 @@
         in {
             services.headscale = {
                 enable = true;
-                port = 3009;
+                port = s.ports.headscale;
                 settings = {
-                    listen_addr = "0.0.0.0:3009";
-                    server_url = "https://vpn.mih4n.xyz";
+                    listen_addr = "0.0.0.0:${toString s.ports.headscale}";
+                    server_url = "https://${s.domains.vpn}";
                     dns = {
-                        base_domain = "bytes";
+                        base_domain = s.localDomain;
                         nameservers.global = [ "8.8.8.8" "1.1.1.1" ];
                     };
                     policy.path = "${aclFile}";

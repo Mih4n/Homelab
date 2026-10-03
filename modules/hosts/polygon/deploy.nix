@@ -1,10 +1,12 @@
-{ inputs, self, ... }: {
+{ inputs, self, ... }: let
+    s = self.settings;
+in {
     flake = {
         deploy.nodes.polygon = {
-            hostname = "polygon.bytes";
+            hostname = s.hosts.polygon;
             profiles.system = {
-                user = "byteshaker";
-                sshUser = "byteshaker";
+                user = s.users.shaker;
+                sshUser = s.users.shaker;
                 interactiveSudo = true;
 
                 path =
@@ -12,12 +14,12 @@
                     self.nixosConfigurations.polygon;
             };
             profiles.home = {
-                user = "bytekeeper";
-                sshUser = "bytekeeper";
+                user = s.users.keeper;
+                sshUser = s.users.keeper;
 
                 path =
                     inputs.deploy.lib.x86_64-linux.activate.home-manager
-                    self.homeConfigurations.bytekeeper;
+                    self.homeConfigurations.${s.users.keeper};
             };
         };
     };
