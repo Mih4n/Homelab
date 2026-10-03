@@ -1,7 +1,14 @@
-{ ... }: {
+{ inputs, ... }: {
     flake.nixosModules.gitServer = { lib, pkgs, config, ... }: let
         secrets = config.sops.secrets;
     in {
+        imports = [
+            inputs.sops.nixosModules.sops
+        ];
+
+        sops.secrets."forgejo/adminpass".owner = "forgejo";
+        sops.secrets."forgejo/runner/token".owner = "forgejo";
+
         services.forgejo = {
             enable = true;
             lfs.enable = true;
@@ -18,8 +25,20 @@
                     ENABLED = true;
                     DEFAULT_ACTIONS_URL = "github";
                 };
+                ui = {
+                    DEFAULT_THEME = "gruvbox-auto";
+                    THEMES = lib.concatStringsSep "," [
+                        "gruvbox-auto" "gruvbox-light" "gruvbox-dark"
+                        "forgejo-auto" "forgejo-light" "forgejo-dark"
+                    ];
+                };
             };
         };
+
+        # Тема в духе mih4n.xyz: CSS, шрифты и логотип из ./theme кладутся в custom/public
+        systemd.tmpfiles.rules = [
+            "L+ '${config.services.forgejo.customDir}/public' - - - - ${./theme}"
+        ];
 
         services.gitea-actions-runner = {
             package = pkgs.forgejo-runner;
@@ -28,7 +47,7 @@
                 name = "monolith";
                 url = "https://git.mih4n.xyz";
 
-                tokenFile = secrets."forgejo/runner/token".path;
+                tokenFile = config.sops.templates."forgejo-runner.env".path;
                 labels = [
                   "ubuntu-latest:docker://node:16-bullseye"
                   "ubuntu-22.04:docker://node:16-bullseye"
@@ -44,7 +63,6 @@
             adminCmd = "${lib.getExe config.services.forgejo.package} admin user";
         in ''
           ${adminCmd} create --admin --email "selfish@mih4n.xyz" --username ${user} --password "$(tr -d '\n' < ${pwd.path})" || true
-          ## uncomment this line to change an admin user which was already created
           # ${adminCmd} change-password --username ${user} --password "$(tr -d '\n' < ${pwd.path})" || true
         '';
     };

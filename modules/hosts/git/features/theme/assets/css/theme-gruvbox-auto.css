@@ -1,0 +1,3 @@
+/* Gruvbox: светлая или тёмная по системной настройке, как переключатель на портфолио */
+@import "./theme-gruvbox-light.css" (prefers-color-scheme: light);
+@import "./theme-gruvbox-dark.css" (prefers-color-scheme: dark);

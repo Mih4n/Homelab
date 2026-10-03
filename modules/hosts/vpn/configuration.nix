@@ -5,8 +5,8 @@
         ];
     };
 
-    flake.nixosModules.hostVpn = { config, ... }: let 
-        secrets = config.sops.secrets;  
+    flake.nixosModules.hostVpn = { config, ... }: let
+        secrets = config.sops.secrets;
     in {
         imports = [
             self.nixosModules.base
@@ -38,7 +38,6 @@
             self.nixosModules.hostVpnBoot
             self.nixosModules.hostVpnTraefik
             self.nixosModules.hostVpnHeadscale
-            self.nixosModules.hostVpnNetbird
             self.nixosModules.hostVpnNetworking
         ];
 
@@ -54,12 +53,12 @@
                     "bytes"
                 ];
             };
-            
+
             tailscale = {
                 isExiteNode = true;
                 authKeyFile = secrets."headscale/vpn".path;
             };
-        }; 
+        };
 
         system.stateVersion = "25.05";
     };

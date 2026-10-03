@@ -1,0 +1,171 @@
+/*
+ * Общая часть темы gruvbox: шрифты и раскладка в духе mih4n.xyz.
+ * Палитра (--gb-*) задаётся в theme-gruvbox-light.css / theme-gruvbox-dark.css.
+ */
+
+@font-face {
+    font-family: "jetBrains-mono";
+    src: url("../fonts/JetBrainsMono.ttf") format("truetype");
+    font-weight: 100 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Inconsolate";
+    src: url("../fonts/Inconsolata.ttf") format("truetype");
+    font-weight: 200 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --fonts-proportional: "jetBrains-mono", ui-monospace, monospace;
+    --fonts-monospace: "jetBrains-mono", ui-monospace, monospace, var(--fonts-emoji);
+    --fonts-override: var(--fonts-proportional);
+
+    /* разделители и акценты в духе редактора кода */
+    --gb-border-width: 1px;
+    --gb-marker-width: 3px;
+
+    /* текст поверх заливки акцентным цветом; не зависит от темы, как и сама заливка */
+    --gb-on-accent: #fbf1c7;
+
+    --border-radius: 0;
+    --border-radius-medium: 0;
+}
+
+/* Шрифт навязываем и CJK-локалям, иначе они перебивают --fonts-override */
+:root :lang(zh-CN),
+:root :lang(zh-TW),
+:root :lang(zh-HK),
+:root :lang(ja),
+:root :lang(ko) {
+    --fonts-override: var(--fonts-proportional);
+}
+
+h1, h2, h3, h4, h5, h6,
+.ui.header,
+.ui.button,
+.ui.menu .item,
+.ui.label,
+strong, b {
+    font-weight: 700;
+}
+
+/* ---------- шапка: как header на портфолио ---------- */
+
+#navbar {
+    background-color: var(--gb-bg);
+    border-bottom: var(--gb-border-width) solid var(--gb-border);
+    border-left: var(--gb-marker-width) solid var(--gb-blue);
+    border-right: var(--gb-marker-width) solid var(--gb-blue);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.04));
+}
+
+/* Вместо картинки — надпись Mih4n шрифтом Inconsolata, как логотип на сайте */
+#navbar-logo img {
+    display: none;
+}
+
+#navbar-logo::after {
+    content: "Mih4n";
+    font-family: "Inconsolate", monospace;
+    font-weight: 900;
+    font-size: 26px;
+    line-height: 1;
+    color: var(--gb-fg0);
+}
+
+#navbar .item {
+    border-radius: 0;
+}
+
+/* ---------- подвал: фиолетовые маркеры, как footer на портфолио ---------- */
+
+.page-footer {
+    background-color: var(--gb-bg);
+    border-top: var(--gb-border-width) solid var(--gb-border);
+    border-left: var(--gb-marker-width) solid var(--gb-purple);
+    border-right: var(--gb-marker-width) solid var(--gb-purple);
+}
+
+/* ---------- маркеры в гуттере: активные пункты меню ---------- */
+
+.ui.vertical.menu .active.item,
+.ui.secondary.vertical.menu .active.item {
+    border-left: var(--gb-marker-width) solid var(--color-primary);
+    border-radius: 0 !important;
+}
+
+.ui.secondary.pointing.menu .active.item,
+.ui.tabular.menu .active.item {
+    border-color: var(--color-primary);
+}
+
+/* ---------- углы: всё прямоугольное ---------- */
+
+.ui.button,
+.ui.buttons,
+.ui.input > input,
+.ui.form input,
+.ui.form textarea,
+.ui.dropdown,
+.ui.selection.dropdown,
+.ui.segment,
+.ui.segments,
+.ui.attached.segment,
+.ui.attached.header,
+.ui.card,
+.ui.cards > .card,
+.ui.modal,
+.ui.menu,
+.ui.label,
+.ui.message,
+.flex-container-sidebar .flex-list,
+.repo-file-list,
+.file-header,
+.tippy-box,
+input,
+textarea,
+select {
+    border-radius: 0 !important;
+}
+
+/* ---------- мелочи ---------- */
+
+::selection {
+    background-color: var(--gb-selection);
+    color: var(--gb-fg0);
+}
+
+* {
+    scrollbar-color: var(--gb-scrollbar) transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--gb-scrollbar);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: var(--gb-bg3);
+}
+
+code,
+pre,
+.markup code,
+.markup pre,
+.code-view,
+.lines-code,
+.lines-num {
+    font-family: var(--fonts-monospace);
+}

@@ -14,6 +14,7 @@
         sops.secrets."bytes" = {};
 
         sops.secrets."headscale/vpn" = {};
+        sops.secrets."headscale/git" = {};
         sops.secrets."headscale/bytes" = {};
         sops.secrets."headscale/polygon" = {};
         sops.secrets."headscale/nextcloud" = {};
@@ -31,6 +32,10 @@
         sops.templates."authentik.env".content = ''
             AUTHENTIK_SECRET_KEY=${config.sops.placeholder."authentik/secret-key"}
             AUTHENTIK_EMAIL__PASSWORD=${config.sops.placeholder."authentik/email-password"}
+        '';
+
+        sops.templates."forgejo-runner.env".content = ''
+            TOKEN=${config.sops.placeholder."forgejo/runner/token"}
         '';
     };
 }

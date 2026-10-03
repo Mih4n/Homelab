@@ -5,8 +5,8 @@
         ];
     };
 
-    flake.nixosModules.hostPolygon = { config, ... }: let 
-        secrets = config.sops.secrets;  
+    flake.nixosModules.hostPolygon = { config, ... }: let
+        secrets = config.sops.secrets;
     in {
         imports = [
             self.nixosModules.base
@@ -60,7 +60,6 @@
             tailscale = {
                 authKeyFile = secrets."headscale/polygon".path;
             };
-            netbird.setupKeyFile = secrets."netbird/setup-key".path;
         };
 
         system.stateVersion = "25.05";

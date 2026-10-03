@@ -5,7 +5,7 @@
         ];
     };
 
-    flake.nixosModules.hostNextcloud = { config, ... }: let 
+    flake.nixosModules.hostNextcloud = { config, ... }: let
         secrets = config.sops.secrets;
     in {
         imports = [
@@ -53,7 +53,6 @@
             tailscale = {
                 authKeyFile = secrets."headscale/nextcloud".path;
             };
-            netbird.setupKeyFile = secrets."netbird/setup-key".path;
         };
 
         system.stateVersion = "25.05";
