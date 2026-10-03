@@ -1,5 +1,7 @@
 { ... }: {
-    flake.nixosModules.hostVpnTraefik = { config, ... }: {
+    flake.nixosModules.hostVpnTraefik = { config, ... }: let
+        gitSshPort = 2222;
+    in {
         services.traefik = {
             enable = true;
 
@@ -19,6 +21,8 @@
                         asDefault = true;
                         http.tls.certResolver = "letsencrypt";
                     };
+
+                    gitssh.address = ":${toString gitSshPort}";
                 };
 
                 log = {
@@ -140,7 +144,19 @@
                 http.serversTransports.proxmox-transport = {
                     insecureSkipVerify = true;
                 };
+
+                # HostSNI(`*`) - обязательный catch-all для TCP-роутера без TLS:
+                # в голом SSH нет SNI, поэтому различать хосты можно только по порту.
+                tcp.routers.git-ssh = {
+                    rule = "HostSNI(`*`)";
+                    service = "git-ssh";
+                    entrypoints = "gitssh";
+                };
+
+                tcp.services.git-ssh.loadBalancer.servers = [{ address = "git.bytes:22"; }];
             };
         };
+
+        networking.firewall.allowedTCPPorts = [ gitSshPort ];
     };
 }
