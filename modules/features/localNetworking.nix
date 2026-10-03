@@ -1,4 +1,6 @@
-{ ... }: {
+{ self, ... }: let
+    s = self.settings;
+in {
     flake.nixosModules.localNetworking = { lib, config, ... }: let 
         cfg = config.bytes.networking.local;
     in {
@@ -17,9 +19,9 @@
                 ];
             };
 
-            nameservers = [ "192.168.192.5" ];
+            nameservers = [ s.net.dns ];
 
-            defaultGateway = "192.168.192.5";
+            defaultGateway = s.net.gateway;
         };
     };
 }

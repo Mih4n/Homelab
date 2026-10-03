@@ -1,10 +1,12 @@
-{ inputs, self, ... }: {
+{ inputs, self, ... }: let
+    s = self.settings;
+in {
     flake = {
         deploy.nodes.laptop = {
-            hostname = "laptop.bytes";
+            hostname = s.hosts.laptop;
             profiles.system = {
-                user = "mih4n";
-                sshUser = "mih4n";
+                user = s.users.main;
+                sshUser = s.users.main;
                 interactiveSudo = true;
 
                 path =
@@ -12,12 +14,12 @@
                     self.nixosConfigurations.laptop;
             };
             profiles.home = {
-                user = "mih4n";
-                sshUser = "mih4n";
+                user = s.users.main;
+                sshUser = s.users.main;
 
                 path =
                     inputs.deploy.lib.x86_64-linux.activate.home-manager
-                    self.homeConfigurations.mih4n;
+                    self.homeConfigurations.${s.users.main};
             };
         };
     };

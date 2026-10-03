@@ -1,4 +1,6 @@
-{ ... }: {
+{ self, ... }: let
+    s = self.settings;
+in {
     flake.nixosModules.tailscale = { lib, config, pkgs, ... }: {
         options.bytes.tailscale = {
             isExiteNode = lib.mkEnableOption "exit node";
@@ -8,7 +10,7 @@
             };
             loginServer = lib.mkOption {
                 type = lib.types.str;
-                default = "https://vpn.mih4n.xyz";
+                default = "https://${s.domains.vpn}";
             };
             authKeyFile = lib.mkOption {
                 type = lib.types.nullOr lib.types.path;

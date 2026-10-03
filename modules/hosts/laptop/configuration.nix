@@ -56,8 +56,6 @@
 
         nix.package = pkgs.lixPackageSets.stable.lix;
 
-        # bytes.netbird.setupKeyFile = secrets."netbird/setup-key".path;
-
         virtualisation.podman.enable = true;
         virtualisation.docker.enable = true;
         virtualisation.virtualbox.host.enable = true;

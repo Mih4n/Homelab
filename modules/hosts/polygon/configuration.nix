@@ -1,4 +1,6 @@
-{ self, inputs, ... }: {
+{ self, inputs, ... }:let
+    s = self.settings;
+in {
     flake.nixosConfigurations.polygon = inputs.nixpkgs.lib.nixosSystem {
         modules = [
             self.nixosModules.hostPolygon
@@ -27,7 +29,6 @@
             self.nixosModules.shell
             self.nixosModules.locale
             self.nixosModules.tailscale
-            self.nixosModules.netbird
             self.nixosModules.bootEngine
             self.nixosModules.networking
             self.nixosModules.noPasswordSudo
@@ -54,7 +55,7 @@
             boot.mode = "uefi-systemd-boot";
 
             networking.local = {
-                ip = "192.168.192.12";
+                ip = s.net.ips.polygon;
             };
 
             tailscale = {

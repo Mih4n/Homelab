@@ -1,4 +1,6 @@
-{ inputs, ... }: {
+{ inputs, self, ... }: let
+    s = self.settings;
+in {
     flake.nixosModules.gitServer = { lib, pkgs, config, ... }: let
         secrets = config.sops.secrets;
     in {
@@ -16,11 +18,11 @@
 
             settings = {
                 server = {
-                    DOMAIN = "git.mih4n.xyz";
-                    ROOT_URL = "https://git.mih4n.xyz";
-                    SSH_PORT = 2222;
-                    HTTP_PORT = 3000;
-                    SSH_DOMAIN = "git.mih4n.xyz";
+                    DOMAIN = s.domains.git;
+                    ROOT_URL = "https://${s.domains.git}";
+                    SSH_PORT = s.ports.forgejoSsh;
+                    HTTP_PORT = s.ports.forgejoHttp;
+                    SSH_DOMAIN = s.domains.git;
                     SSH_LISTEN_PORT = lib.head config.services.openssh.ports;
                 };
                 actions = {
@@ -47,7 +49,7 @@
             instances.default = {
                 enable = true;
                 name = "monolith";
-                url = "https://git.mih4n.xyz";
+                url = "https://${s.domains.git}";
 
                 tokenFile = config.sops.templates."forgejo-runner.env".path;
                 labels = [
@@ -60,11 +62,11 @@
         };
 
         systemd.services.forgejo.preStart = let
-            user = "mih4n";
+            user = s.users.main;
             pwd = secrets."forgejo/adminpass";
             adminCmd = "${lib.getExe config.services.forgejo.package} admin user";
         in ''
-          ${adminCmd} create --admin --email "selfish@mih4n.xyz" --username ${user} --password "$(tr -d '\n' < ${pwd.path})" || true
+          ${adminCmd} create --admin --email "${s.emails.forgejo}" --username ${user} --password "$(tr -d '\n' < ${pwd.path})" || true
           # ${adminCmd} change-password --username ${user} --password "$(tr -d '\n' < ${pwd.path})" || true
         '';
     };

@@ -1,4 +1,6 @@
-{ inputs, self, ... }: {
+{ inputs, self, ... }:let
+    s = self.settings;
+in {
     flake.nixosConfigurations.git = inputs.nixpkgs.lib.nixosSystem {
         modules = [
             self.nixosModules.hostGit
@@ -27,7 +29,6 @@
             self.nixosModules.shell
             self.nixosModules.locale
             self.nixosModules.tailscale
-            self.nixosModules.netbird
             self.nixosModules.bootEngine
             self.nixosModules.networking
             self.nixosModules.noPasswordSudo
@@ -50,7 +51,7 @@
             boot.mode = "uefi-systemd-boot";
 
             networking.local = {
-                ip = "192.168.192.13";
+                ip = s.net.ips.git;
             };
 
             tailscale = {
