@@ -31,8 +31,10 @@
     /* текст поверх заливки акцентным цветом; не зависит от темы, как и сама заливка */
     --gb-on-accent: #fbf1c7;
 
-    --border-radius: 0;
-    --border-radius-medium: 0;
+    /* именно 0px: Forgejo складывает радиус с длинами в calc(),
+       и безразмерный 0 делает такой calc() невалидным — отступы обнуляются */
+    --border-radius: 0px;
+    --border-radius-medium: 0px;
 }
 
 /* Шрифт навязываем и CJK-локалям, иначе они перебивают --fonts-override */
@@ -60,12 +62,7 @@ strong, b {
     border-bottom: var(--gb-border-width) solid var(--gb-border);
     border-left: var(--gb-marker-width) solid var(--gb-blue);
     border-right: var(--gb-marker-width) solid var(--gb-blue);
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.04));
-}
-
-/* Вместо картинки — надпись Mih4n шрифтом Inconsolata, как логотип на сайте */
-#navbar-logo img {
-    display: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
 }
 
 #navbar-logo::after {
@@ -79,6 +76,10 @@ strong, b {
 
 #navbar .item {
     border-radius: 0;
+}
+
+#navbar .content {
+    z-index: 10;
 }
 
 /* ---------- подвал: фиолетовые маркеры, как footer на портфолио ---------- */
