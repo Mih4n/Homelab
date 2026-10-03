@@ -26,12 +26,12 @@
             self.nixosModules.nix
             self.nixosModules.qmk
             self.nixosModules.sops
-            self.nixosModules.preservation
             self.nixosModules.shell
             self.nixosModules.locale
+            self.nixosModules.yubikey
             self.nixosModules.tailscale
-            self.nixosModules.netbird
             self.nixosModules.networking
+            self.nixosModules.preservation
             self.nixosModules.noPasswordSudo
 
             # host hardware
