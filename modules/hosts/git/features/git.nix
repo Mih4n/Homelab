@@ -18,8 +18,10 @@
                 server = {
                     DOMAIN = "git.mih4n.xyz";
                     ROOT_URL = "https://git.mih4n.xyz";
+                    SSH_PORT = 2222;
                     HTTP_PORT = 3000;
-                    SSH_PORT = lib.head config.services.openssh.ports;
+                    SSH_DOMAIN = "git.mih4n.xyz";
+                    SSH_LISTEN_PORT = lib.head config.services.openssh.ports;
                 };
                 actions = {
                     ENABLED = true;
