@@ -2,7 +2,7 @@
   "settings": {
     "settingsVersion": 59,
     "bar": {
-      "barType": "framed",
+      "barType": "floating",
       "position": "bottom",
       "monitors": [],
       "density": "spacious",
@@ -16,10 +16,10 @@
       "enableExclusionZoneInset": true,
       "backgroundOpacity": 0.93,
       "useSeparateOpacity": false,
-      "marginVertical": 4,
-      "marginHorizontal": 4,
-      "frameThickness": 10,
-      "frameRadius": 15,
+      "marginVertical": 10,
+      "marginHorizontal": 10,
+      "frameThickness": 8,
+      "frameRadius": 4,
       "outerCorners": true,
       "hideOnOverview": true,
       "displayMode": "always_visible",
@@ -30,6 +30,7 @@
         "left": [
           {
             "colorizeSystemIcon": "none",
+            "colorizeSystemText": "none",
             "customIconPath": "",
             "enableColorization": true,
             "icon": "rocket",
@@ -136,8 +137,8 @@
       "showScreenCorners": false,
       "forceBlackScreenCorners": false,
       "scaleRatio": 1,
-      "radiusRatio": 1,
-      "iRadiusRatio": 1,
+      "radiusRatio": 0,
+      "iRadiusRatio": 0,
       "boxRadiusRatio": 1,
       "screenRadiusRatio": 0,
       "animationSpeed": 0.7000000000000001,
@@ -148,7 +149,7 @@
       "showSessionButtonsOnLockScreen": true,
       "showHibernateOnLockScreen": false,
       "enableLockScreenMediaControls": false,
-      "enableShadows": true,
+      "enableShadows": false,
       "enableBlurBehind": true,
       "shadowDirection": "center",
       "shadowOffsetX": 0,
@@ -193,11 +194,12 @@
           "Del"
         ]
       },
-      "reverseScroll": false
+      "reverseScroll": false,
+      "smoothScrollEnabled": true
     },
     "ui": {
-      "fontDefault": "Noto Sans",
-      "fontFixed": "monospace",
+      "fontDefault": "JetBrainsMono Nerd Font",
+      "fontFixed": "JetBrainsMonoNL Nerd Font",
       "fontDefaultScale": 1,
       "fontFixedScale": 1,
       "tooltipsEnabled": true,
@@ -206,13 +208,14 @@
       "panelBackgroundOpacity": 1,
       "translucentWidgets": false,
       "panelsAttachedToBar": true,
-      "settingsPanelMode": "attached",
+      "settingsPanelMode": "window",
       "settingsPanelSideBarCardStyle": true
     },
     "location": {
       "name": "Гомель, RU",
       "weatherEnabled": true,
       "weatherShowEffects": true,
+      "weatherTaliaMascotAlways": false,
       "useFahrenheit": false,
       "use12hourFormat": false,
       "showWeekNumberInCalendar": false,
@@ -221,7 +224,8 @@
       "analogClockInCalendar": false,
       "firstDayOfWeek": -1,
       "hideWeatherTimezone": false,
-      "hideWeatherCityName": false
+      "hideWeatherCityName": false,
+      "autoLocate": false
     },
     "calendar": {
       "cards": [
@@ -262,8 +266,9 @@
       ],
       "enableMultiMonitorDirectories": false,
       "showHiddenFiles": false,
-      "viewMode": "single",
+      "viewMode": "recursive",
       "setWallpaperOnAllMonitors": true,
+      "linkLightAndDarkWallpapers": true,
       "fillMode": "crop",
       "fillColor": "#000000",
       "useSolidColor": false,
@@ -417,7 +422,7 @@
     },
     "dock": {
       "enabled": true,
-      "position": "top",
+      "position": "bottom",
       "displayMode": "auto_hide",
       "dockType": "attached",
       "backgroundOpacity": 1,
@@ -429,7 +434,7 @@
       "colorizeIcons": false,
       "showLauncherIcon": true,
       "launcherPosition": "end",
-      "launcherUseDistroLogo": false,
+      "launcherUseDistroLogo": true,
       "launcherIcon": "",
       "launcherIconColor": "none",
       "pinnedStatic": false,
@@ -443,11 +448,10 @@
       "sitOnFrame": false,
       "showDockIndicator": false,
       "indicatorThickness": 3,
-      "indicatorColor": "tertiary",
+      "indicatorColor": "none",
       "indicatorOpacity": 1
     },
     "network": {
-      "airplaneModeEnabled": false,
       "bluetoothRssiPollingEnabled": false,
       "bluetoothRssiPollIntervalMs": 60000,
       "networkPanelView": "wifi",
@@ -551,7 +555,7 @@
         "lowSoundFile": "",
         "excludedApps": "discord,firefox,chrome,chromium,edge"
       },
-      "enableMediaToast": true,
+      "enableMediaToast": false,
       "enableKeyboardLayoutToast": true,
       "enableBatteryToast": true
     },
@@ -594,7 +598,8 @@
       "manualSunrise": "06:30",
       "manualSunset": "18:30",
       "generationMethod": "vibrant",
-      "monitorForColors": ""
+      "monitorForColors": "",
+      "syncGsettings": true
     },
     "templates": {
       "activeTemplates": [],
@@ -647,6 +652,10 @@
       "monitorWidgets": [
         {
           "name": "winit",
+          "widgets": []
+        },
+        {
+          "name": "DP-2",
           "widgets": []
         }
       ]

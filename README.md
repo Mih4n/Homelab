@@ -29,15 +29,17 @@ deploy .#git --dry-activate   # собрать и залить, но не акт
 
 | Нужно | Файл |
 |---|---|
-| домен, юзер, IP, порт, email, ssh-ключ | `settings.nix` |
-| цвета | `palette.nix` |
-| публичный поддомен | `settings.nix` + роутер в `modules/hosts/vpn/features/traefik.nix` |
+| домен, юзер, IP, порт, email, ssh-ключ | `settings/settings.nix` |
+| цвета | `settings/palette.nix` |
+| шрифты | `settings/fonts.nix` |
+| тема (stylix, GTK, Qt / KDE-приложения) | `modules/features/theme/` |
+| публичный поддомен | `settings/settings.nix` + роутер в `modules/hosts/vpn/features/traefik.nix` |
 | секрет | `secrets/secrets.yaml` + объявление в `modules/features/sops.nix` |
 | новый хост | `modules/hosts/<имя>/{configuration,hardware,deploy}.nix` |
 | общая фича | `modules/features/` → подключить в `imports` хоста |
 | пер-хостовая опция | `modules/features/options/` (пространство `bytes.*`) |
 
-## settings.nix
+## settings/settings.nix
 
 Общие константы, доступны как `self.settings` — в nixosModules, homeConfigurations, deploy.nodes и perSystem:
 

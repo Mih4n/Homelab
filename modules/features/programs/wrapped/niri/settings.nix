@@ -11,9 +11,14 @@
             layout = {
                 gaps = 10;
 
-                focus-ring = {
-                    width = 2;
+                # Like the 3px accent markers on the portfolio. A border, not a
+                # focus ring: it is drawn around every window and takes the same
+                # space on all of them, so only the color tells the focused one.
+                focus-ring.off = exist;
+                border = {
+                    width = 3;
                     active-color = p.blue;
+                    inactive-color = p.bg;
                 };
             };
 
@@ -23,7 +28,9 @@
             };
 
             input = {
-                focus-follows-mouse = exist;
+                # Only focus windows that are already fully on screen, so
+                # touching the screen edge doesn't scroll to the next column.
+                focus-follows-mouse = _: { props.max-scroll-amount = "0%"; };
 
                 keyboard = {
                     xkb = {
@@ -51,7 +58,7 @@
             window-rules = [
                 {
                     clip-to-geometry = true;
-                    geometry-corner-radius = 10;
+                    geometry-corner-radius = 0;
                 }
                 {
                     matches = [

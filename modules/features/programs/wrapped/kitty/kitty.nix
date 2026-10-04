@@ -42,16 +42,16 @@
                 cursor = p.gray;
                 cursor_text_color = "background";
 
-                selection_foreground = p.bg_med;
-                selection_background = p.fg;
+                selection_foreground = p.on_accent;
+                selection_background = p.blue;
 
                 url_color = p.bright_blue;
 
                 visual_bell_color = p.bright_aqua;
                 bell_border_color = p.bright_aqua;
 
-                active_border_color = p.bright_purple;
-                inactive_border_color = p.bg_med;
+                active_border_color = p.blue;
+                inactive_border_color = p.border;
 
                 active_tab_foreground = p.fg_bright;
                 active_tab_background = p.bg_med;

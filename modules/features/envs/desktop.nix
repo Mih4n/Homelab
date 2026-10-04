@@ -12,6 +12,7 @@
             self.nixosModules.nh
             self.nixosModules.git
             self.nixosModules.gtk
+            self.nixosModules.qt
             self.nixosModules.gnupg
             self.nixosModules.gaming
             self.nixosModules.xserver

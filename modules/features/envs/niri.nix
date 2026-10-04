@@ -158,15 +158,9 @@
                 config.common.default = "*";
             };
 
-            qt = {
-                enable = true;
-                platformTheme = lib.mkForce "gnome";
-            };
-
             environment.systemPackages = [
                 niri
                 selfpkgs.noctaliaShell
-                pkgs.qgnomeplatform
             ];
 
             services = {
@@ -179,7 +173,6 @@
             environment.sessionVariables = {
                 NIXOS_OZON_WL = "1";
                 XDG_CURRENT_DESKTOP = "niri";
-                QT_QPA_PLATFORMTHEME = "gnome";
             };
 
             services.gnome.gnome-keyring.enable = true;

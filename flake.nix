@@ -29,6 +29,11 @@
             inputs.nixpkgs.follows = "nixpkgs";
         };
 
+        noctalia-plugins = {
+            url = "github:noctalia-dev/noctalia-plugins";
+            flake = false;
+        };
+
         minegrub-world-sel-theme = {
             url = "github:Lxtharia/minegrub-world-sel-theme";
             inputs.nixpkgs.follows = "nixpkgs";

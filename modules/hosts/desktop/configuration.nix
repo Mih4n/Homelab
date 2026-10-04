@@ -84,7 +84,6 @@
             spotify
             yubioath-flutter
             lmstudio
-            polkit_gnome
             nautilus
         ];
 

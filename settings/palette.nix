@@ -26,6 +26,14 @@
         bright_purple = "#d3869b";
         bright_aqua   = "#8ec07c";
         bright_orange = "#fe8019";
+
+        # Tokens of the portfolio (~/Work/Portfolio, assets/css/main.less):
+        # surfaces stay neutral, things are separated by thin borders and
+        # colour lives only in 3px accent markers and text.
+        bg4           = "#7c6f64";
+        border        = "#3c3836";
+        border_strong = "#504945";
+        on_accent     = "#fbf1c7";
     };
 
     stripHash = str:

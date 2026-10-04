@@ -829,6 +829,22 @@
         "type": "github"
       }
     },
+    "noctalia-plugins": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784742359,
+        "narHash": "sha256-M+7SLW+wI3KvDMj8dSrW/uUmpPiYhsXA2jpbbgL5imk=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia-plugins",
+        "rev": "ea21cb63d063075bc0acd72d8b946ce2c5eef00d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "noctalia-plugins",
+        "type": "github"
+      }
+    },
     "nur": {
       "inputs": {
         "flake-parts": [
@@ -1011,6 +1027,7 @@
         "millennium": "millennium",
         "minegrub-world-sel-theme": "minegrub-world-sel-theme",
         "nixpkgs": "nixpkgs_5",
+        "noctalia-plugins": "noctalia-plugins",
         "nvf": "nvf",
         "openlogi": "openlogi",
         "parts": "parts",

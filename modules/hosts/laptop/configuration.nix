@@ -39,10 +39,12 @@
         theme.hostIcon = " ";
         networking.hostName = "laptop";
 
+        # noctalia reads the battery through UPower, without it the widget hides.
+        services.upower.enable = true;
+
         environment.systemPackages = with pkgs; [
             scilab-bin
             nautilus
-            polkit_gnome
             distrobox
         ];
 
