@@ -1,4 +1,5 @@
 { self, ... }: let
+    ignore = self.nextcloud.ignore;
     s = self.settings;
 in {
     flake.nixosModules.nextcloudServer = { config, pkgs, ... }: {
@@ -16,6 +17,9 @@ in {
             # 100.64.0.8 — tailnet-адрес git-хоста, у nextcloud 100.64.0.4;
             # оставлено как было, менять вслепую не стал
             settings.trusted_domains = [ s.domains.cloud s.net.ips.nextcloud "100.64.0.8" ];
+            # .htaccess — значение по умолчанию, список его заменяет, а не дополняет
+            settings.forbidden_filenames = [ ".htaccess" ] ++ ignore.names;
+            settings.forbidden_filename_extensions = [ ".filepart" ] ++ ignore.extensions;
         };
     };
 }
