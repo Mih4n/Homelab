@@ -5,7 +5,7 @@ in {
         deploy.nodes.polygon = {
             hostname = s.hosts.polygon;
             profiles.system = {
-                user = s.users.shaker;
+                user = "root";
                 sshUser = s.users.shaker;
                 interactiveSudo = true;
 

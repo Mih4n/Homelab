@@ -5,7 +5,7 @@ in {
         deploy.nodes.nextcloud = {
             hostname = s.hosts.nextcloud;
             profiles.system = {
-                user = s.users.keeper;
+                user = "root";
                 sshUser = s.users.keeper;
                 interactiveSudo = true;
 

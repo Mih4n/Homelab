@@ -5,7 +5,7 @@ in {
         deploy.nodes.laptop = {
             hostname = s.hosts.laptop;
             profiles.system = {
-                user = s.users.main;
+                user = "root";
                 sshUser = s.users.main;
                 interactiveSudo = true;
 

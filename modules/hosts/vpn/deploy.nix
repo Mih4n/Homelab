@@ -5,7 +5,7 @@ in {
         deploy.nodes.vpn = {
             hostname = s.domains.root;
             profiles.system = {
-                user = s.users.keeper;
+                user = "root";
                 sshUser = s.users.keeper;
                 interactiveSudo = true;
 

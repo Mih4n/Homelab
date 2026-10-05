@@ -5,7 +5,7 @@ in {
         deploy.nodes.git = {
             hostname = s.hosts.git;
             profiles.system = {
-                user = s.users.keeper;
+                user = "root";
                 sshUser = s.users.keeper;
                 interactiveSudo = true;
 

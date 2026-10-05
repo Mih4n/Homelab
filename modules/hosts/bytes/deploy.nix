@@ -5,7 +5,7 @@ in {
         deploy.nodes.bytes = {
             hostname = s.hosts.bytes;
             profiles.system = {
-                user = s.users.shaker;
+                user = "root";
                 sshUser = s.users.shaker;
                 interactiveSudo = true;
 
