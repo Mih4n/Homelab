@@ -3,6 +3,7 @@
 in {
     flake = {
         deploy.nodes.vpn = {
+            groups = [ "homelab" ];
             hostname = s.domains.root;
             profiles.system = {
                 user = "root";

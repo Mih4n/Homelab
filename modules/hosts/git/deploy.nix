@@ -3,6 +3,7 @@
 in {
     flake = {
         deploy.nodes.git = {
+            groups = [ "homelab" ];
             hostname = s.hosts.git;
             profiles.system = {
                 user = "root";

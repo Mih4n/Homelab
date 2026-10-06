@@ -3,6 +3,7 @@
 in {
     flake = {
         deploy.nodes.polygon = {
+            groups = [ "homelab" ];
             hostname = s.hosts.polygon;
             profiles.system = {
                 user = "root";
