@@ -1,11 +1,14 @@
 { self, ... }: let
     s = self.settings;
 in {
-    flake.nixosModules.userByteshaker = { ... }: {
+    flake.nixosModules.userByteshaker = { config, ... }: {
+        # Decrypted before the users are created.
+        sops.secrets."users/${s.users.shaker}".neededForUsers = true;
+
         users.users.${s.users.shaker} = {
             isNormalUser = true;
             description = "shakes the bytes";
-            hashedPassword = "$6$bvLqmJC9EkyWW3OO$tBffaJnR4W299C8PR8hdfohBaVZLT9cBqzXsCM133uKFOy/GjeFOQ/ZY3sZv58rBr4CF3qH.zsioXe3T29mS11";
+            hashedPasswordFile = config.sops.secrets."users/${s.users.shaker}".path;
             extraGroups = [ "networkmanager" "wheel" ];
             openssh.authorizedKeys.keys = s.sshKeys.yubikeys ++ [
                 s.sshKeys.bytes

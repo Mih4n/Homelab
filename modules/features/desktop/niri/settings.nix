@@ -1,5 +1,4 @@
 { self, ... }: {
-    # Host independent part of the niri config (former config.kdl).
     flake.wrappedModules.niriSettings = { config, lib, ... }: let
         p = self.palette;
         exist = _: {};
@@ -11,9 +10,6 @@
             layout = {
                 gaps = 10;
 
-                # Like the 3px accent markers on the portfolio. A border, not a
-                # focus ring: it is drawn around every window and takes the same
-                # space on all of them, so only the color tells the focused one.
                 focus-ring.off = exist;
                 border = {
                     width = 3;
@@ -22,14 +18,7 @@
                 };
             };
 
-            cursor = {
-                xcursor-theme = "capitaine-cursors";
-                xcursor-size = 32;
-            };
-
             input = {
-                # Only focus windows that are already fully on screen, so
-                # touching the screen edge doesn't scroll to the next column.
                 focus-follows-mouse = _: { props.max-scroll-amount = "0%"; };
 
                 keyboard = {

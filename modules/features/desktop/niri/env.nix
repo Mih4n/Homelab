@@ -35,6 +35,12 @@
                     settings = lib.mkMerge [
                         cfg.settings
                         { outputs = lib.mapAttrs (_: mkOutput) cfg.monitors; }
+                        {
+                            cursor = {
+                                xcursor-theme = config.stylix.cursor.name;
+                                xcursor-size = config.stylix.cursor.size;
+                            };
+                        }
                     ];
                 }
             ];

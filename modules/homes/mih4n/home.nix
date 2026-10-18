@@ -13,6 +13,7 @@ in {
 		imports = [
 			self.homeModules.shell
 			self.homeModules.nextcloudClient
+			self.homeModules.opencode
 		];
 
 		home = {

@@ -1,23 +1,18 @@
 { self, inputs, ... }: {
     flake.nixosModules.desktopEnv = { pkgs, ... }: let
         selfpkgs = self.packages.${pkgs.stdenv.hostPlatform.system};
-
-        dotnetSdks = with pkgs.dotnetCorePackages; combinePackages [
-            sdk_9_0
-            sdk_10_0
-        ];
     in {
         imports = [
             self.nixosModules.ld
-            self.nixosModules.nh
-            self.nixosModules.git
             self.nixosModules.gtk
             self.nixosModules.qt
             self.nixosModules.gnupg
             self.nixosModules.gaming
             self.nixosModules.xserver
-            self.nixosModules.openssh
 
+            self.nixosModules.lsp
+            self.nixosModules.toolchains
+            self.nixosModules.cliTools
             self.nixosModules.basicEnv
         ];
 
@@ -30,6 +25,7 @@
             alsa.enable = true;
             alsa.support32Bit = true;
             pulse.enable = true;
+            jack.enable = true;
         };
 
         services = {
@@ -44,10 +40,6 @@
             vista-fonts
             nerd-fonts.jetbrains-mono
         ];
-
-        # Roslyn's apphost (used by Zed's C# extension) can't find the runtime
-        # without this: there is no /usr/share/dotnet on NixOS.
-        environment.sessionVariables.DOTNET_ROOT = "${dotnetSdks}/share/dotnet";
 
         environment.systemPackages = with pkgs; [
             # --- Communication & Social ---
@@ -66,8 +58,6 @@
             mission-center # System monitor
 
             # --- Development Tools (General) ---
-            git
-            wget
             selfpkgs.kitty
             direnv
             dbeaver-bin
@@ -77,45 +67,20 @@
             deploy-rs
             godot-mono
 
-            # --- Compilers & Runtimes ---
-            # Rust
-            cargo
-            rustc
-            # Java
-            jdk
-            maven
-            # .NET
-            dotnetSdks
-            dotnet-ef
-            # Node.js
-            nodejs
-            # python
-            uv
-            python314
-
-            # --- Document Processing (Typst) ---
-            typst
-            typship
-            tinymist
-            plantuml
-
             # --- Compatibility & Virtualization ---
             docker
             # bottles
             steam-run # Run binaries not compiled for NixOS
 
-            # --- Archive & Fonts ---
+            # --- Archive ---
             zip
             unzip
-            corefonts
-            vista-fonts
-            nerd-fonts.jetbrains-mono
 
             # --- Browser & Media ---
             inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+            inputs.bedrock-on-linux.packages.x86_64-linux.default
 
-            # --- Empty category for future use ---
-            pandoc
+            # --- KDE ---
             kdePackages.ark
             kdePackages.elisa
             kdePackages.okular

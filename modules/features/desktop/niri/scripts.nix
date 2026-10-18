@@ -1,6 +1,4 @@
 { ... }: {
-    # Adds a `scripts` option to the niri wrapper: every entry becomes a real
-    # shell program in the store and (optionally) gets bound to a key.
     flake.wrappedModules.niriScripts = { config, lib, pkgs, ... }: {
         options.scripts = lib.mkOption {
             default = { };

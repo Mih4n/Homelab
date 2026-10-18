@@ -1,6 +1,5 @@
 {
     inputs = {
-        nvf.url = "github:notashelf/nvf";
         amd-ai.url = "github:noamsto/nix-amd-ai";
         deploy.url = "github:serokell/deploy-rs";
         nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -11,6 +10,11 @@
 
         openlogi = {
             url = "github:AprilNEA/OpenLogi";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+
+        bedrock-on-linux = {
+            url = "github:Wyze3306/BedrockOnLinux";
             inputs.nixpkgs.follows = "nixpkgs";
         };
 
@@ -31,6 +35,11 @@
 
         noctalia-plugins = {
             url = "github:noctalia-dev/noctalia-plugins";
+            flake = false;
+        };
+
+        ponytail = {
+            url = "github:DietrichGebert/ponytail";
             flake = false;
         };
 

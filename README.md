@@ -32,12 +32,12 @@ deploy .#git --dry-activate   # собрать и залить, но не акт
 | домен, юзер, IP, порт, email, ssh-ключ | `settings/settings.nix` |
 | цвета | `settings/palette.nix` |
 | шрифты | `settings/fonts.nix` |
-| тема (stylix, GTK, Qt / KDE-приложения) | `modules/features/theme/` |
+| тема (stylix, GTK, Qt / KDE-приложения) | `modules/features/desktop/theme/` |
 | публичный поддомен | `settings/settings.nix` + роутер в `modules/hosts/vpn/features/traefik.nix` |
-| секрет | `secrets/secrets.yaml` + объявление в `modules/features/sops.nix` |
+| секрет | `secrets/secrets.yaml` + объявление в `modules/features/core/sops.nix` |
 | новый хост | `modules/hosts/<имя>/{configuration,hardware,deploy}.nix` |
-| общая фича | `modules/features/` → подключить в `imports` хоста |
-| пер-хостовая опция | `modules/features/options/` (пространство `bytes.*`) |
+| общая фича | `modules/features/<область>/` (core, boot, network, security, desktop, dev, gaming) → подключить в `imports` хоста |
+| пер-хостовая опция | `modules/features/core/options/` (пространство `bytes.*`) |
 
 ## settings/settings.nix
 
@@ -67,7 +67,7 @@ vpn:2222  →  git.bytes:22  →  forced command forgejo
 
 Отсюда `ssh://forgejo@git.mih4n.xyz:2222/<owner>/<repo>.git`. Порт 22 на этом домене — это sshd самого vpn, forgejo там нет.
 
-Ключи — резидентные FIDO2 с `verify-required`, так что при пуше запрашивается PIN и касание. Хэндлы лежат в `modules/features/yubikey/keys/` и подключаются через `IdentityFile`; приватного материала в них нет, подпись делает только железка. `ssh-add -K` не поможет: в `SSH_AUTH_SOCK` сидит gpg-agent, а он `sk-*` не умеет.
+Ключи — резидентные FIDO2 с `verify-required`, так что при пуше запрашивается PIN и касание. Хэндлы лежат в `modules/features/security/yubikey/keys/` и подключаются через `IdentityFile`; приватного материала в них нет, подпись делает только железка. `ssh-add -K` не поможет: в `SSH_AUTH_SOCK` сидит gpg-agent, а он `sk-*` не умеет.
 
 ## Sops
 

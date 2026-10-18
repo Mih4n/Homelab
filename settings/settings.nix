@@ -70,6 +70,8 @@
             headscale = 3009;
             forgejoSsh = 2222;
             forgejoHttp = 3000;
+            llama = 8080;
+            searx = 8888;
         };
 
         sshKeys = sshKeys // {

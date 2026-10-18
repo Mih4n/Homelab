@@ -46,8 +46,8 @@
             };
 
             cursor = {
-                name = "capitaine-cursors";
-                package = pkgs.capitaine-cursors;
+                name = "Simp1e-Gruvbox-Dark";
+                package = pkgs.simp1e-cursors;
                 size = 24;
             };
 
@@ -71,7 +71,10 @@
                 Inherits=${cursor.name}
             '';
 
-            sessionVariables.XCURSOR_THEME = cursor.name;
+            sessionVariables = {
+                XCURSOR_THEME = cursor.name;
+                XCURSOR_SIZE = toString cursor.size;
+            };
 
             systemPackages = [
                 cursor.package

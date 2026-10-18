@@ -16,7 +16,6 @@
             self.nixosModules.userMih4n
 
             # environment
-            self.nixosModules.nvf
             self.nixosModules.niriEnv
             self.nixosModules.basicEnv
             self.nixosModules.desktopEnv
@@ -28,6 +27,7 @@
             self.nixosModules.sops
             self.nixosModules.shell
             self.nixosModules.locale
+            self.nixosModules.localAi
             self.nixosModules.yubikey
             self.nixosModules.tailscale
             self.nixosModules.networking
@@ -38,10 +38,13 @@
             self.nixosModules.hostDesktopDisko
             self.nixosModules.hostDesktopHardware
             self.nixosModules.hostDesktopGraphics
+            self.nixosModules.hostDesktopIdle
         ];
 
         theme.hostIcon = "󰟀";
         networking.hostName = "desktop";
+
+        bytes.localAi.server = true;
 
         bytes.niri.monitors = {
             "DP-1" = {
@@ -112,7 +115,7 @@
 
         services.printing = {
             enable = true;
-            drivers = [ pkgs.canon-cups-ufr2 pkgs.gutenprintBin ]; # Добавляет фильтры в пути CUPS
+            drivers = [ pkgs.canon-cups-ufr2 pkgs.gutenprintBin ];
         };
 
         boot.plymouth.enable = true;
