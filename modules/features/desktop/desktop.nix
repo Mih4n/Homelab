@@ -45,6 +45,7 @@
             # --- Communication & Social ---
             vesktop
             obs-studio
+            easyeffects
             thunderbird
             telegram-desktop
 
