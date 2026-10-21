@@ -80,6 +80,8 @@
             keybindings = {
                 "ctrl+c" = "copy_or_interrupt";
                 "ctrl+v" = "paste_from_clipboard";
+                "ctrl+с" = "copy_or_interrupt";
+                "ctrl+м" = "paste_from_clipboard";
             };
         };
     };
