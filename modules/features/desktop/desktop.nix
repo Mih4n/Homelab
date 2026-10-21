@@ -78,7 +78,11 @@
 
             # --- Browser & Media ---
             inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-            inputs.bedrock-on-linux.packages.x86_64-linux.default
+            inputs.bedrock-on-linux.packages.${pkgs.stdenv.hostPlatform.system}.default
+
+            # -- Gnome --
+            nautilus
+            sushi
 
             # --- KDE ---
             kdePackages.ark
