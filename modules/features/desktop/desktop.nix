@@ -49,6 +49,7 @@
             telegram-desktop
 
             # --- Productivity & Office ---
+            blender
             claude-code
             obsidian
             super-productivity
