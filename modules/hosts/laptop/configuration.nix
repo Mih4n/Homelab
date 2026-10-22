@@ -58,8 +58,6 @@
             };
         };
 
-        nix.package = pkgs.lixPackageSets.stable.lix;
-
         zramSwap.enable = true;
 
         virtualisation.podman.enable = true;
