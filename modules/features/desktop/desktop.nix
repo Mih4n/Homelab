@@ -9,6 +9,7 @@
             self.nixosModules.gnupg
             self.nixosModules.gaming
             self.nixosModules.xserver
+            self.nixosModules.preferences
 
             self.nixosModules.lsp
             self.nixosModules.toolchains
@@ -83,8 +84,12 @@
             inputs.bedrock-on-linux.packages.${pkgs.stdenv.hostPlatform.system}.default
 
             # -- Gnome --
+            loupe
             nautilus
             sushi
+
+            # --- Media ---
+            mpv
 
             # --- KDE ---
             kdePackages.ark
