@@ -44,22 +44,22 @@ in {
             "L+ '${config.services.forgejo.customDir}/public' - - - - ${./theme}"
         ];
 
-        services.gitea-actions-runner = {
-            package = pkgs.forgejo-runner;
-            instances.default = {
-                enable = true;
-                name = "monolith";
-                url = "https://${s.domains.git}";
+        # services.forgejo-runner = {
+        #     instances.default = {
+        #         enable = true;
+        #         url = "https://${s.domains.git}";
 
-                tokenFile = config.sops.templates."forgejo-runner.env".path;
-                labels = [
-                  "ubuntu-latest:docker://node:16-bullseye"
-                  "ubuntu-22.04:docker://node:16-bullseye"
-                  "ubuntu-20.04:docker://node:16-bullseye"
-                  "ubuntu-18.04:docker://node:16-buster"
-                ];
-            };
-        };
+        #         secrets.server.connections.default.token_url = config.sops.secrets."forgejo/runner/token";
+        #         settings.server.connections.default.uuid = "";
+
+        #         labels = [
+        #           "ubuntu-latest:docker://node:22-bookworm"
+        #           "ubuntu-22.04:docker://node:22-bookworm"
+        #           "ubuntu-20.04:docker://node:22-bookworm"
+        #           "ubuntu-18.04:docker://node:22-bookworm"
+        #         ];
+        #     };
+        # };
 
         systemd.services.forgejo.preStart = let
             user = s.users.main;

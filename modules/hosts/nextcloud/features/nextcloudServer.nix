@@ -11,7 +11,7 @@ in {
             configureRedis = true;
             config = {
                 dbtype = "sqlite";
-                adminpassFile = config.sops.secrets."nextcloud/adminpass".path;
+                # adminpassFile = config.sops.secrets."nextcloud/adminpass".path;
             };
             datadir = "/byteshaker/media/nextcloud";
             # 100.64.0.8 — tailnet-адрес git-хоста, у nextcloud 100.64.0.4;
