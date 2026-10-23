@@ -17,6 +17,8 @@
             self.nixosModules.basicEnv
         ];
 
+        programs.zoxide.enable = true;
+
         networking.networkmanager.enable = true;
 
         services.pulseaudio.enable = false;
