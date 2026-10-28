@@ -36,7 +36,6 @@
         };
 
         config = lib.mkIf cfg.enable {
-            boot.initrd.systemd.enable = true;
             boot.initrd.supportedFilesystems.btrfs = true;
 
             # /etc/shadow lives on the volatile root.

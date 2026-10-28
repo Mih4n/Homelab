@@ -27,7 +27,6 @@
             self.nixosModules.sops
             self.nixosModules.shell
             self.nixosModules.locale
-            self.nixosModules.localAi
             self.nixosModules.yubikey
             self.nixosModules.tailscale
             self.nixosModules.networking
@@ -43,8 +42,6 @@
 
         theme.hostIcon = "󰟀";
         networking.hostName = "desktop";
-
-        bytes.localAi.server = true;
 
         bytes.niri.monitors = {
             "DP-1" = {

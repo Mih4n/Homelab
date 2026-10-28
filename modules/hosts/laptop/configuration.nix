@@ -25,8 +25,6 @@
             self.nixosModules.sops
             self.nixosModules.shell
             self.nixosModules.locale
-            # client of the desktop's model and search, through the tailnet
-            self.nixosModules.localAi
             self.nixosModules.yubikey
             self.nixosModules.tailscale
             self.nixosModules.networking

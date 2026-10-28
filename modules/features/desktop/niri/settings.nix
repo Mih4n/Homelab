@@ -11,10 +11,11 @@
                 gaps = 10;
 
                 focus-ring.off = exist;
+
                 border = {
-                    width = 3;
+                    width = 1;
                     active-color = p.blue;
-                    inactive-color = p.bg;
+                    inactive-color = p.border;
                 };
             };
 

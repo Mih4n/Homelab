@@ -12,8 +12,8 @@
             binds = {
                 "Mod+T".spawn = "kitty";
                 "Mod+Return".spawn = "kitty";
-                "Mod+D".spawn-sh = "${noctalia} ipc call launcher toggle";
-                "Mod+W".spawn-sh = "${noctalia} ipc call wallpaper toggle";
+                "Mod+D".spawn-sh = "${noctalia} msg panel-toggle launcher";
+                "Mod+W".spawn-sh = "${noctalia} msg panel-toggle wallpaper";
 
                 "Mod+Q".close-window = action;
                 "Mod+O".toggle-overview = action;
