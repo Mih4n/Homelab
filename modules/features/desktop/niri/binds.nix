@@ -10,8 +10,10 @@
             spawn-at-startup = [ noctalia ];
 
             binds = {
-                "Mod+T".spawn = "kitty";
-                "Mod+Return".spawn = "kitty";
+                "Mod+B".spawn = "zen";
+                "Mod+E".spawn = "nautilus";
+                "Mod+T".spawn = "moose";
+                "Mod+Return".spawn = "moose";
                 "Mod+D".spawn-sh = "${noctalia} msg panel-toggle launcher";
                 "Mod+W".spawn-sh = "${noctalia} msg panel-toggle wallpaper";
 

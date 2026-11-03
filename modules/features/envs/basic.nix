@@ -1,5 +1,7 @@
 { self, ... }: {
-    flake.nixosModules.basicEnv = { pkgs, ... }: {
+    flake.nixosModules.basicEnv = { pkgs, ... }: let
+        selfpkgs = self.packages.${pkgs.stdenv.hostPlatform.system};
+    in {
         imports = [
             self.nixosModules.nh
             self.nixosModules.git
@@ -9,7 +11,7 @@
         environment.systemPackages = with pkgs; [ 
             vim
             wget
-            btop
+            selfpkgs.btop
             nil
             nixd
             sops

@@ -566,6 +566,24 @@
         "type": "github"
       }
     },
+    "moose": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_5"
+      },
+      "locked": {
+        "lastModified": 1793714043,
+        "narHash": "sha256-n1FYYUyUxkpUuMTGi2Kq2VGSIPoS1k7dzZ8mxSiKVuQ=",
+        "owner": "mih4n",
+        "repo": "Moose",
+        "rev": "38b32d0ea3f41c2b2876a629079966916e5d2187",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mih4n",
+        "repo": "Moose",
+        "type": "github"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -773,6 +791,22 @@
     },
     "nixpkgs_5": {
       "locked": {
+        "lastModified": 1793341285,
+        "narHash": "sha256-Y1CiZ4SoBUjLQyQM/pY+rS2dXD3CHLPstF0lmOc73D4=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "1c89083e451e891152365b799595cf7790a43325",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_6": {
+      "locked": {
         "lastModified": 1792773339,
         "narHash": "sha256-rZLrzrC6i+jnTAlvPZHogKDulY7WWDEv9hJeHieO7Zw=",
         "owner": "NixOS",
@@ -787,7 +821,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_6": {
+    "nixpkgs_7": {
       "locked": {
         "lastModified": 1792506237,
         "narHash": "sha256-Q/8KLB6jNfpaUN1HAedE/u/Et9feE/zYSsutBLKrCFk=",
@@ -803,7 +837,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_7": {
+    "nixpkgs_8": {
       "locked": {
         "lastModified": 1787498568,
         "narHash": "sha256-9i/VTdusq/+NM/tz+J1Re+ojkMB8MBf0QshnYfzHz30=",
@@ -1033,7 +1067,8 @@
         "import-tree": "import-tree",
         "millennium": "millennium",
         "minegrub-world-sel-theme": "minegrub-world-sel-theme",
-        "nixpkgs": "nixpkgs_5",
+        "moose": "moose",
+        "nixpkgs": "nixpkgs_6",
         "noctalia-plugins": "noctalia-plugins",
         "openlogi": "openlogi",
         "parts": "parts",
@@ -1368,7 +1403,7 @@
     },
     "wrapper-modules": {
       "inputs": {
-        "nixpkgs": "nixpkgs_6"
+        "nixpkgs": "nixpkgs_7"
       },
       "locked": {
         "lastModified": 1793125706,
@@ -1386,7 +1421,7 @@
     },
     "wrappers": {
       "inputs": {
-        "nixpkgs": "nixpkgs_7"
+        "nixpkgs": "nixpkgs_8"
       },
       "locked": {
         "lastModified": 1792487907,

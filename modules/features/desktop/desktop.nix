@@ -55,6 +55,7 @@
             # --- Productivity & Office ---
             blender
             claude-code
+            bottles
             obsidian
             super-productivity
             libreoffice-qt6-fresh
@@ -64,6 +65,7 @@
 
             # --- Development Tools (General) ---
             selfpkgs.kitty
+            inputs.moose.packages.${pkgs.stdenv.hostPlatform.system}.default
             direnv
             dbeaver-bin
             vscode-fhs
