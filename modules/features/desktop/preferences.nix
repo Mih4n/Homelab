@@ -47,6 +47,17 @@
                 "image/svg+xml"
             ];
 
+            "gnome-software-local-file-flatpak.desktop" = [
+                "application/vnd.flatpak"
+                "application/vnd.flatpak.ref"
+                "application/vnd.flatpak.repo"
+            ];
+
+            "it.mijorus.gearlever.desktop" = [
+                "application/vnd.appimage"
+                "application/x-iso9660-appimage"
+            ];
+
             "mpv.desktop" = [
                 "video/mp4"
                 "video/webm"

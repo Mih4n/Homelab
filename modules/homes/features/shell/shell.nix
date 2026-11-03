@@ -24,10 +24,19 @@
             '';
 
             shellAliases = {
-                lf = "lfcd";
                 os = "nh os";
                 home = "nh home";
             };
+        };
+
+        xdg.configFile."fish" = {
+            source = ./fish;
+            recursive = true;
+        };
+
+        programs.fzf = {
+            enable = true;
+            enableFishIntegration = true;
         };
 
         programs.oh-my-posh = {

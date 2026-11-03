@@ -2,6 +2,7 @@
     flake.nixosModules.lsp = { pkgs, ... }: {
         environment.systemPackages = with pkgs; [
             # --- .NET / JVM / native ---
+            roslyn-ls
             csharp-ls
             jdt-language-server
             rust-analyzer

@@ -88,6 +88,7 @@
                         "/var/lib/cups"
                         "/var/lib/flatpak"
                         "/var/lib/fwupd"
+                        "/var/lib/yubico"
                     ] ++ cfg.directories;
 
                     files = [

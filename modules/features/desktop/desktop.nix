@@ -17,7 +17,15 @@
             self.nixosModules.basicEnv
         ];
 
-        programs.zoxide.enable = true;
+        programs.zoxide = {
+            enable = true;
+            flags = [ "--cmd cd" ];
+        };
+
+        programs.appimage = {
+            enable = true;
+            binfmt = true;
+        };
 
         networking.networkmanager.enable = true;
 
@@ -91,6 +99,7 @@
             loupe
             nautilus
             sushi
+            gnome-software
 
             # --- Media ---
             mpv
