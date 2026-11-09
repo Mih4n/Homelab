@@ -10,6 +10,7 @@ in {
 
         sops.secrets."forgejo/adminpass".owner = "forgejo";
         sops.secrets."forgejo/runner/token".owner = "forgejo";
+        sops.secrets."forgejo/oidc-client-secret".owner = "forgejo";
 
         services.forgejo = {
             enable = true;
@@ -28,6 +29,10 @@ in {
                 actions = {
                     ENABLED = true;
                     DEFAULT_ACTIONS_URL = "github";
+                };
+                oauth2_client = {
+                    ENABLE_AUTO_REGISTRATION = true;
+                    OPENID_CONNECT_SCOPES = "email profile";
                 };
                 ui = {
                     DEFAULT_THEME = "gruvbox-auto";
@@ -69,5 +74,39 @@ in {
           ${adminCmd} create --admin --email "${s.emails.forgejo}" --username ${user} --password "$(tr -d '\n' < ${pwd.path})" || true
           # ${adminCmd} change-password --username ${user} --password "$(tr -d '\n' < ${pwd.path})" || true
         '';
+
+        # The OAuth2 client secret must not end up in the Nix store, so the
+        # source is created through the Forgejo CLI after the service starts.
+        systemd.services.forgejo-oidc = {
+            description = "Configure Forgejo Authentik OIDC source";
+            after = [ "forgejo.service" ];
+            requires = [ "forgejo.service" ];
+            wantedBy = [ "multi-user.target" ];
+
+            serviceConfig = {
+                Type = "oneshot";
+                User = config.services.forgejo.user;
+                Group = config.services.forgejo.group;
+                WorkingDirectory = config.services.forgejo.stateDir;
+                Environment = [ "FORGEJO_WORK_DIR=${config.services.forgejo.stateDir}" ];
+            };
+
+            script = let
+                forgejo = lib.getExe config.services.forgejo.package;
+            in ''
+                set -eu
+                if ${forgejo} admin auth list 2>/dev/null | grep -q authentik; then
+                    echo "Authentik auth source already exists"
+                    exit 0
+                fi
+                ${forgejo} admin auth add-oauth \
+                    --provider=openidConnect \
+                    --name=authentik \
+                    --key=${s.oidc.forgejo.clientId} \
+                    --secret="$(cat ${secrets."forgejo/oidc-client-secret".path})" \
+                    --auto-discover-url="https://${s.domains.auth}/application/o/forgejo/.well-known/openid-configuration" \
+                    --scopes="openid email profile"
+            '';
+        };
     };
 }

@@ -29,6 +29,7 @@
             self.nixosModules.tailscale
             self.nixosModules.networking
             self.nixosModules.noPasswordSudo
+            self.nixosModules.ai
 
             # host hardware
             self.nixosModules.amdAi

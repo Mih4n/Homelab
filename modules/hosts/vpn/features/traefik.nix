@@ -53,12 +53,45 @@ in {
                         service = "headscale";
                         entrypoints = "websecure";
                     };
+                    # Longer rule wins over the plain headscale router, so /admin lands here.
+                    headplane = {
+                        rule = "Host(`${s.domains.vpn}`) && PathPrefix(`/admin`)";
+                        tls.certResolver = "letsencrypt";
+                        service = "headplane";
+                        entrypoints = "websecure";
+                    };
                     nextcloud = {
                         rule = "Host(`${s.domains.cloud}`)";
                         entrypoints = "websecure";
                         middlewares = ["nextcloud-redirectregex"];
                         service = "nextcloud";
                         tls.certResolver = "letsencrypt";
+                    };
+                    # Webhooks, forms and the public API must stay reachable
+                    # without an Authentik session.
+                    n8n-public = {
+                        rule = "Host(`${s.domains.n8n}`) && (PathPrefix(`/webhook`) || PathPrefix(`/api/v1`) || PathPrefix(`/form`) || PathPrefix(`/healthz`))";
+                        tls.certResolver = "letsencrypt";
+                        service = "n8n";
+                        entrypoints = "websecure";
+                        priority = 100;
+                    };
+                    # The outpost callback and start endpoints must be served
+                    # by Authentik itself, not by n8n.
+                    n8n-outpost = {
+                        rule = "Host(`${s.domains.n8n}`) && PathPrefix(`/outpost.goauthentik.io`)";
+                        tls.certResolver = "letsencrypt";
+                        service = "authentik-outpost";
+                        entrypoints = "websecure";
+                        priority = 200;
+                    };
+                    n8n = {
+                        rule = "Host(`${s.domains.n8n}`)";
+                        tls.certResolver = "letsencrypt";
+                        service = "n8n";
+                        entrypoints = "websecure";
+                        middlewares = [ "authentik" ];
+                        priority = 10;
                     };
                     proxmox = {
                         rule = "Host(`${s.domains.proxmox}`)";
@@ -71,6 +104,7 @@ in {
                         tls.certResolver = "letsencrypt";
                         service = "auth";
                         entrypoints = "websecure";
+                        middlewares = [ "auth-headers" ];
                     };
                     takeapunch = {
                         rule = "Host(`${s.domains.takeapunch}`)";
@@ -98,6 +132,27 @@ in {
                         regex = "https://(.*)/.well-known/(?:card|cal)dav";
                         replacement = "https://\${1}/remote.php/dav";
                     };
+                    auth-headers.headers.customRequestHeaders = {
+                        "X-Forwarded-Proto" = "https";
+                        "X-Forwarded-Port" = "443";
+                    };
+                    authentik.forwardAuth = {
+                        address = "http://127.0.0.1:9005/outpost.goauthentik.io/auth/traefik";
+                        trustForwardHeader = true;
+                        authResponseHeaders = [
+                            "X-authentik-username"
+                            "X-authentik-groups"
+                            "X-authentik-email"
+                            "X-authentik-name"
+                            "X-authentik-uid"
+                            "X-authentik-jwt"
+                            "X-authentik-meta-jwks"
+                            "X-authentik-meta-outpost"
+                            "X-authentik-meta-provider"
+                            "X-authentik-meta-app"
+                            "X-authentik-meta-version"
+                        ];
+                    };
                 };
 
                 http.services = {
@@ -108,7 +163,10 @@ in {
                     };
                     git.loadBalancer.servers = [{ url = "http://${s.hosts.git}:${toString s.ports.forgejoHttp}"; }];
                     headscale.loadBalancer.servers = [{ url = "http://localhost:${toString s.ports.headscale}"; }];
+                    headplane.loadBalancer.servers = [{ url = "http://localhost:${toString s.ports.headplane}"; }];
+                    authentik-outpost.loadBalancer.servers = [{ url = "http://127.0.0.1:9005"; }];
                     nextcloud.loadBalancer.servers = [{ url = "http://${s.hosts.nextcloud}:80"; }];
+                    n8n.loadBalancer.servers = [{ url = "http://${s.hosts.n8n}:${toString s.ports.n8n}"; }];
                     portfolio.loadBalancer.servers = [{ url = "http://${s.hosts.polygon}:3002"; }];
                     takeapunch.loadBalancer.servers = [{ url = "http://${s.hosts.polygon}:3001"; }];
                     homeassistant.loadBalancer.servers = [{ url = "http://${s.net.ips.homeassistant}:8123"; }];

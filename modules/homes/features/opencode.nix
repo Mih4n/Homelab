@@ -1,5 +1,5 @@
 { ... }: {
-    # The rest of opencode is configured system wide in the localAi feature,
+    # The rest of opencode is configured system wide in the ai feature,
     # the TUI only reads its settings from the user's config directory.
     flake.homeModules.opencode = { ... }: {
         xdg.configFile."opencode/tui.json".text = builtins.toJSON {

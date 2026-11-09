@@ -1,10 +1,14 @@
-{ inputs, ... }: {
-    flake.nixosModules.localAiOpencode = { lib, config, pkgs, ... }: let
-        cfg = config.bytes.localAi;
+{ inputs, self, ... }: {
+    flake.nixosModules.aiOpencode = { lib, config, pkgs, ... }: let
+        s = self.settings;
+        cfg = config.bytes.ai;
         model = cfg.model;
 
-        provider = "llama-cpp";
-        main = "${provider}/${model.id}";
+        localProvider = "llama-cpp";
+        goProvider = "opencode-go";
+        localModel = "${localProvider}/${model.id}";
+        thinkingModel = if cfg.provider == "llama-cpp" then localModel else cfg.models.thinking;
+        executionModel = if cfg.provider == "llama-cpp" then localModel else cfg.models.execution;
 
         md = ./md;
         prompt = files: lib.concatMapStringsSep "\n\n" (f: builtins.readFile "${md}/${f}") files;
@@ -48,7 +52,7 @@
             nixos = local [ (lib.getExe pkgs.mcp-nixos) ];
             context7 = local [ (lib.getExe pkgs.context7-mcp) ];
             searxng = local [ (lib.getExe pkgs.mcp-searxng) ] // {
-                environment.SEARXNG_URL = "http://${cfg.host}:${toString cfg.searxPort}";
+                environment.SEARXNG_URL = cfg.searxUrl;
             };
             markitdown = local [ (lib.getExe pkgs.markitdown-mcp) ];
             # Not in nixpkgs. The notes are plain markdown in ~/basic-memory.
@@ -71,7 +75,7 @@
         opencodeConfig = (pkgs.formats.json { }).generate "opencode.json" {
             "$schema" = "https://opencode.ai/config.json";
 
-            provider.${provider} = {
+            provider.${localProvider} = {
                 npm = "@ai-sdk/openai-compatible";
                 name = "llama.cpp";
                 options.baseURL = "http://${cfg.host}:${toString cfg.port}/v1";
@@ -90,8 +94,48 @@
                 };
             };
 
-            model = main;
-            small_model = main;
+            provider.${goProvider} = {
+                npm = "@ai-sdk/openai-compatible";
+                name = "OpenCode Go";
+                options = {
+                    baseURL = "https://opencode.ai/inference/go/openai/v1";
+                    apiKey = "{env:OPENCODE_GO_API_KEY}";
+                };
+                models = {
+                    "deepseek-v4-pro" = {
+                        name = "DeepSeek V4 Pro";
+                        attachment = false;
+                        reasoning = true;
+                        tool_call = true;
+                        modalities = {
+                            input = [ "text" ];
+                            output = [ "text" ];
+                        };
+                        limit = {
+                            context = 128000;
+                            output = 16384;
+                        };
+                    };
+                    "deepseek-v4.1-flash" = {
+                        name = "DeepSeek V4.1 Flash";
+                        attachment = false;
+                        reasoning = true;
+                        tool_call = true;
+                        modalities = {
+                            input = [ "text" ];
+                            output = [ "text" ];
+                        };
+                        limit = {
+                            context = 128000;
+                            output = 16384;
+                        };
+                    };
+                };
+            };
+
+            # Heavy model for thinking, cheap model for execution.
+            model = thinkingModel;
+            small_model = executionModel;
 
             instructions = [ "${md}/instructions.md" ];
 
@@ -122,6 +166,7 @@
                 # @builder and @reader.
                 writer = {
                     mode = "primary";
+                    model = thinkingModel;
                     description = "Reports and documents in Typst: structure, text, formatting by GOST and guide 4334.";
                     prompt = prompt [ "agents/writer.md" "documents.md" ];
                     permission = {
@@ -138,50 +183,50 @@
                     };
                 };
 
-                builder = subagent "builder"
+                builder = (subagent "builder"
                     "Builds documents: compiles Typst, converts to docx and PDF, renders diagrams and charts. Reports errors with file and line."
-                    (editAgent documentTools);
+                    (editAgent documentTools)) // { model = executionModel; };
 
-                reader = subagent "reader"
+                reader = (subagent "reader"
                     "Extracts text, tables and figures from PDF, scans, images and office files into markdown."
-                    (editAgent documentTools // mcpTools [ "markitdown" ]);
+                    (editAgent documentTools // mcpTools [ "markitdown" ])) // { model = executionModel; };
 
-                proofreader = subagent "proofreader"
+                proofreader = (subagent "proofreader"
                     "Checks a document against GOST and guide 4334: formatting, numbering, references, spelling. Reports, does not edit."
-                    (readOnlyAgent (spelling // { "typst *" = "allow"; }));
+                    (readOnlyAgent (spelling // { "typst *" = "allow"; }))) // { model = executionModel; };
 
-                planner = subagent "planner"
+                planner = (subagent "planner"
                     "Splits a task into ordered steps with the files to touch and how to verify each step. Does not edit."
-                    (readOnlyAgent { });
+                    (readOnlyAgent { })) // { model = thinkingModel; };
 
-                reviewer = subagent "reviewer"
+                reviewer = (subagent "reviewer"
                     "Reviews the current diff for bugs, security problems and missed edge cases. Does not edit."
-                    (readOnlyAgent { });
+                    (readOnlyAgent { })) // { model = thinkingModel; };
 
-                researcher = subagent "researcher"
+                researcher = (subagent "researcher"
                     "Searches the web and documentation, answers with sources formatted by GOST 7.1."
-                    (readOnlyAgent { } // mcpTools [ "searxng" "context7" ]);
+                    (readOnlyAgent { } // mcpTools [ "searxng" "context7" ])) // { model = thinkingModel; };
 
-                memory = subagent "memory"
+                memory = (subagent "memory"
                     "Long-term notes in ~/basic-memory: saves facts about the user and projects, finds what was saved before."
-                    (readOnlyAgent { } // mcpTools [ "basic-memory" ]);
+                    (readOnlyAgent { } // mcpTools [ "basic-memory" ])) // { model = executionModel; };
 
-                debugger = subagent "debugger"
+                debugger = (subagent "debugger"
                     "Reproduces a bug, finds the root cause and applies the smallest fix."
-                    (editAgent { });
+                    (editAgent { })) // { model = executionModel; };
 
-                tester = subagent "tester"
+                tester = (subagent "tester"
                     "Writes and runs tests for the given code and reports failures."
-                    (editAgent { });
+                    (editAgent { })) // { model = executionModel; };
 
-                web = subagent "web"
+                web = (subagent "web"
                     "Opens the web app in a browser with Playwright, checks layout on screenshots and console errors."
-                    (editAgent { } // mcpTools [ "playwright" ]);
+                    (editAgent { } // mcpTools [ "playwright" ])) // { model = executionModel; };
 
-                nix = subagent "nix"
+                nix = (subagent "nix"
                     "NixOS and flake work: options, packages, modules of this configuration."
                     (editAgent (allow [ "nix eval *" "nix search *" "nix flake show*" "nix flake check*" ])
-                        // mcpTools [ "nixos" ]);
+                        // mcpTools [ "nixos" ])) // { model = executionModel; };
             };
         };
         # Set in the wrapper, not in environment.variables: those only reach
@@ -197,6 +242,7 @@
             postBuild = ''
                 wrapProgram $out/bin/opencode \
                     --set OPENCODE_CONFIG ${opencodeConfig} \
+                    --run 'if [ -r /run/secrets/opencode/go-api-key ]; then export OPENCODE_GO_API_KEY="$(cat /run/secrets/opencode/go-api-key)"; fi' \
                     --set OPENCODE_DISABLE_LSP_DOWNLOAD true \
                     --set OPENCODE_DISABLE_CLAUDE_CODE_PROMPT true \
                     --set OPENCODE_DISABLE_CLAUDE_CODE_SKILLS true
@@ -204,6 +250,12 @@
             inherit (pkgs.opencode) meta;
         };
     in {
+        # OpenCode Go API key, read by the wrapper above.
+        sops.secrets."opencode/go-api-key" = {
+            owner = s.users.main;
+            mode = "0400";
+        };
+
         environment.systemPackages = [ opencode ];
     };
 }

@@ -19,6 +19,8 @@
         sops.secrets."headscale/polygon" = {};
         sops.secrets."headscale/nextcloud" = {};
 
+        sops.secrets."n8n/encryption-key" = {};
+
         sops.secrets."nextcloud/adminname" = {};
         sops.secrets."nextcloud/adminpass" = {};
 

@@ -1,7 +1,7 @@
-{ ... }: {
-    flake.nixosModules.localAiSearx = { lib, config, pkgs, ... }: let
-        cfg = config.bytes.localAi;
-
+{ self, ... }: let
+    s = self.settings;
+in {
+    flake.nixosModules.searx = { config, pkgs, ... }: let
         # Everything else is dropped: fewer engines, less noise in the
         # results the model has to read.
         engines = [
@@ -23,8 +23,8 @@
             "nixos wiki"
             "mdn"
         ];
-    in lib.mkIf cfg.server {
-        sops.secrets."searx/secret-key" = { };
+    in {
+        sops.secrets."searx/secret-key" = {};
         sops.templates."searx.env".content = ''
             SEARX_SECRET_KEY=${config.sops.placeholder."searx/secret-key"}
         '';
@@ -42,7 +42,7 @@
 
                 server = {
                     bind_address = "0.0.0.0";
-                    port = cfg.searxPort;
+                    port = s.ports.searx;
                     secret_key = "$SEARX_SECRET_KEY";
                     limiter = false;
                 };

@@ -21,6 +21,7 @@
             root = domain;
 
             git = getPublicDomain "git";
+            n8n = getPublicDomain "n8n";
             vpn = getPublicDomain "vpn";
             auth = getPublicDomain "auth";
             home = getPublicDomain "home";
@@ -37,6 +38,7 @@
             desktop = getInternalDomain "desktop";
             polygon = getInternalDomain "polygon";
             nextcloud = getInternalDomain "nextcloud";
+            n8n = getInternalDomain "n8n";
         };
 
         net = {
@@ -50,6 +52,7 @@
                 polygon = "192.168.192.12";
                 nextcloud = "192.168.192.11";
                 homeassistant = "192.168.192.10";
+                n8n = "192.168.192.14";
             };
         };
 
@@ -66,8 +69,17 @@
             authentik = "bytes@${domain}";
         };
 
+        # OIDC clients in Authentik. Secrets live in sops; only IDs are public.
+        oidc = {
+            headplane.clientId = "206c252938e252e8b8b4bf04d1e75ff0";
+            forgejo.clientId = "f55fa0b489d6074fa8aafb1bd2124029";
+            nextcloud.clientId = "87c080bbe9a28fc57eb23ed4216f39ae";
+        };
+
         ports = {
             headscale = 3009;
+            headplane = 3010;
+            n8n = 5678;
             forgejoSsh = 2222;
             forgejoHttp = 3000;
             llama = 8080;

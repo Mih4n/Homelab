@@ -1,19 +1,42 @@
 { self, ... }: let
     s = self.settings;
 in {
-    flake.nixosModules.localAi = { lib, config, ... }: let
-        cfg = config.bytes.localAi;
+    flake.nixosModules.ai = { lib, config, ... }: let
+        cfg = config.bytes.ai;
     in {
         imports = [
-            self.nixosModules.localAiServer
-            self.nixosModules.localAiSearx
-            self.nixosModules.localAiOpencode
+            self.nixosModules.aiServer
+            self.nixosModules.aiOpencode
         ];
 
-        options.bytes.localAi = {
-            server = lib.mkEnableOption "the llama.cpp and SearXNG servers on this host";
+        # Pulled in by one of the MCP servers used by OpenCode; it is marked
+        # broken in nixpkgs but works for our use.
+        config.nixpkgs.config.problems.handlers."fastmcp-slim".broken = "warn";
 
-            # Clients reach the servers through the tailnet.
+        options.bytes.ai = {
+            server = lib.mkEnableOption "the local llama.cpp server on this host";
+
+            provider = lib.mkOption {
+                type = lib.types.enum [ "opencode-go" "llama-cpp" ];
+                default = "opencode-go";
+                description = "Default provider for OpenCode.";
+            };
+
+            models = {
+                thinking = lib.mkOption {
+                    type = lib.types.str;
+                    default = "opencode-go/deepseek-v4-pro";
+                    description = "Model for planning and review.";
+                };
+
+                execution = lib.mkOption {
+                    type = lib.types.str;
+                    default = "opencode-go/deepseek-v4.1-flash";
+                    description = "Cheaper model for subagents and routine work.";
+                };
+            };
+
+            # Clients reach a local server through the tailnet.
             host = lib.mkOption {
                 type = lib.types.str;
                 default = if cfg.server then "127.0.0.1" else s.hosts.desktop;
@@ -24,16 +47,17 @@ in {
                 default = s.ports.llama;
             };
 
-            searxPort = lib.mkOption {
-                type = lib.types.port;
-                default = s.ports.searx;
+            # SearXNG is a separate service on the n8n host.
+            searxUrl = lib.mkOption {
+                type = lib.types.str;
+                default = "http://${s.hosts.n8n}:${toString s.ports.searx}";
             };
 
             model = {
                 id = lib.mkOption {
                     type = lib.types.str;
                     default = "qwen3.8-27b";
-                    description = "Model id in the API and in opencode.";
+                    description = "Model id in the local API and in opencode.";
                 };
 
                 name = lib.mkOption {

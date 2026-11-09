@@ -12,6 +12,7 @@ flake-parts + `import-tree`: любой `.nix` в репозитории под�
 | `bytes` | proxmox, dnsmasq, authentik, роутер сети | `deploy .#bytes` |
 | `git` | forgejo + runner | `deploy .#git` |
 | `nextcloud` | nextcloud | `deploy .#nextcloud` |
+| `n8n` | n8n (SQLite) | `deploy .#n8n` |
 | `polygon` | mysql / postgres / sqlserver / сайты | `deploy .#polygon` |
 
 ## Команды
@@ -75,6 +76,8 @@ vpn:2222  →  git.bytes:22  →  forced command forgejo
 sops secrets/secrets.yaml            # править
 sops updatekeys secrets/secrets.yaml # после добавления получателя в .sops.yaml
 ```
+
+После установки нового хоста его age-ключ нужно добавить получателем в `.sops.yaml` и выполнить `sops updatekeys secrets/secrets.yaml`, иначе хост не сможет расшифровать секреты.
 
 Age-ключ хоста выводится из его ssh host key:
 

@@ -32,6 +32,7 @@
             self.nixosModules.networking
             self.nixosModules.preservation
             self.nixosModules.noPasswordSudo
+            self.nixosModules.ai
 
             # host hardware
             self.nixosModules.hostDesktopDisko

@@ -6,7 +6,6 @@
         authentik.url = "github:nix-community/authentik-nix";
         millennium.url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
         proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
-        vscode-server.url = "github:nix-community/nixos-vscode-server";
         moose.url = "github:mih4n/Moose";
 
         openlogi = {

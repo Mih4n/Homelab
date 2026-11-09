@@ -1,6 +1,6 @@
 { ... }: {
-    flake.nixosModules.localAiServer = { lib, config, options, pkgs, ... }: let
-        cfg = config.bytes.localAi;
+    flake.nixosModules.aiServer = { lib, config, options, pkgs, ... }: let
+        cfg = config.bytes.ai;
         model = cfg.model;
     in lib.mkIf cfg.server (lib.mkMerge [ {
         services.llama-cpp = {

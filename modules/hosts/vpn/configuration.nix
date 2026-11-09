@@ -38,6 +38,8 @@
             self.nixosModules.hostVpnBoot
             self.nixosModules.hostVpnTraefik
             self.nixosModules.hostVpnHeadscale
+            self.nixosModules.hostVpnHeadplane
+            self.nixosModules.hostVpnAuthentikProxy
             self.nixosModules.hostVpnNetworking
         ];
 
