@@ -1,154 +1,100 @@
-{ inputs, self, ... }: {
+{ self, ... }: {
     flake.nixosModules.aiOpencode = { lib, config, pkgs, ... }: let
         s = self.settings;
         cfg = config.bytes.ai;
-        model = cfg.model;
-
-        localProvider = "llama-cpp";
-        goProvider = "opencode-go";
-        localModel = "${localProvider}/${model.id}";
-        thinkingModel = if cfg.provider == "llama-cpp" then localModel else cfg.models.thinking;
-        executionModel = if cfg.provider == "llama-cpp" then localModel else cfg.models.execution;
 
         md = ./md;
         prompt = files: lib.concatMapStringsSep "\n\n" (f: builtins.readFile "${md}/${f}") files;
 
-        allow = patterns: lib.genAttrs patterns (_: "allow");
-
-        # Read-only commands every agent may run without asking.
-        readOnly = allow [
-            "ls*" "cat *" "head *" "tail *" "wc *" "grep *" "rg *" "fd *" "jq *"
-            "git status*" "git diff*" "git log*" "git show*" "git blame*"
-        ];
-
-        # Document tools of @builder and @reader.
-        documentTools = allow [
-            "typst *" "typstyle *" "typlite *" "pandoc *" "soffice *"
-            "pdftotext *" "pdftoppm *" "pdfinfo *" "pdfimages *" "ocrmypdf *"
-            "tesseract *" "markitdown *" "qpdf *" "magick *"
-            "d2 *" "mmdc *" "dot *" "plantuml *" "python3 *" "mkdir *"
-        ];
-
-        spelling = allow [ "hunspell *" "languagetool *" "harper-cli *" ];
-
-        # The last matching rule wins, but Nix sorts the keys: `*` always
-        # ends up first, so the other patterns must not overlap each other.
-        bash = rules: { "*" = "ask"; } // readOnly // rules // {
-            "git push*" = "deny";
-            "git commit*" = "ask";
-            "rm -rf *" = "deny";
-            "sudo *" = "deny";
-        };
-
-        readOnlyAgent = extra: {
-            edit = "deny";
-            bash = { "*" = "deny"; } // readOnly // extra;
-        };
-
-        editAgent = rules: { edit = "allow"; bash = bash rules; };
-
         local = command: { type = "local"; inherit command; };
+
         mcp = {
             nixos = local [ (lib.getExe pkgs.mcp-nixos) ];
             context7 = local [ (lib.getExe pkgs.context7-mcp) ];
             searxng = local [ (lib.getExe pkgs.mcp-searxng) ] // {
                 environment.SEARXNG_URL = cfg.searxUrl;
             };
-            markitdown = local [ (lib.getExe pkgs.markitdown-mcp) ];
-            # Not in nixpkgs. The notes are plain markdown in ~/basic-memory.
-            basic-memory = local [ "${pkgs.uv}/bin/uvx" "basic-memory" "mcp" ];
+            # markitdown = local [ (lib.getExe pkgs.markitdown-mcp) ];  # broken: failing tests in speechrecognition/pdfplumber deps
             playwright = local [ (lib.getExe pkgs.playwright-mcp) ];
+            basic-memory = local [ "${pkgs.uv}/bin/uvx" "basic-memory" "mcp" ];
+            # rag = local [ "${pkgs.uv}/bin/uvx" "mcp-server-qdrant" ] // {
+            #     environment = {
+            #         QDRANT_URL = cfg.rag.qdrantUrl;
+            #         COLLECTION_NAME = cfg.rag.collection;
+            #         EMBEDDING_MODEL = cfg.rag.embeddingModel;
+            #     };
+            # };
         };
 
-        # MCP tools cost ~15k tokens of every request. The primary agents get
-        # none, each subagent only the servers it works with.
-        mcpTools = servers: allow (map (server: "${server}_*") servers);
-        noMcp = lib.mapAttrs (_: _: "deny") (mcpTools (lib.attrNames mcp));
+        bash = {
+            "*" = "allow";
+            "git push*" = "deny";
+            "sudo *" = "deny";
+            "rm -rf*" = "deny";
+            "rm -fr*" = "deny";
+            "mkfs*" = "deny";
+            "dd *" = "deny";
+            "parted*" = "deny";
+            "fdisk*" = "deny";
+            "wipefs*" = "deny";
+            "nixos-rebuild*" = "deny";
+            "deploy*" = "deny";
+            "shutdown*" = "deny";
+            "reboot*" = "deny";
+            "poweroff*" = "deny";
+            "halt*" = "deny";
+        };
 
-        # Without a model a subagent runs on the one of the agent that called it.
-        subagent = name: description: permission: {
+        readOnly = { edit = "deny"; inherit bash; };
+        editAgent = { edit = "allow"; inherit bash; };
+
+        noMcp = lib.genAttrs (map (name: "${name}_*") (lib.attrNames mcp)) (_: "deny");
+        withMcp = names: lib.genAttrs (map (name: "${name}_*") names) (_: "allow");
+
+        subagent = name: model: description: permission: {
             mode = "subagent";
-            inherit description permission;
+            inherit description permission model;
             prompt = prompt [ "agents/${name}.md" ];
+        };
+
+        models = lib.mapAttrs (id: name: {
+            inherit name;
+            attachment = true;
+            reasoning = true;
+            tool_call = true;
+            modalities = {
+                input = [ "text" ];
+                output = [ "text" ];
+            };
+            limit = {
+                context = 128000;
+                output = 16384;
+            };
+        }) {
+            "deepseek-v4-pro" = "DeepSeek V4 Pro";
+            "deepseek-v4.1-flash" = "DeepSeek V4.1 Flash";
         };
 
         opencodeConfig = (pkgs.formats.json { }).generate "opencode.json" {
             "$schema" = "https://opencode.ai/config.json";
 
-            provider.${localProvider} = {
-                npm = "@ai-sdk/openai-compatible";
-                name = "llama.cpp";
-                options.baseURL = "http://${cfg.host}:${toString cfg.port}/v1";
-                models.${model.id} = {
-                    inherit (model) name;
-                    attachment = true;
-                    reasoning = true;
-                    tool_call = true;
-                    modalities = {
-                        input = [ "text" "image" ];
-                        output = [ "text" ];
-                    };
-                    limit = {
-                        inherit (model) context output;
-                    };
-                };
-            };
-
-            provider.${goProvider} = {
+            provider.opencode-go = {
                 npm = "@ai-sdk/openai-compatible";
                 name = "OpenCode Go";
                 options = {
                     baseURL = "https://opencode.ai/inference/go/openai/v1";
                     apiKey = "{env:OPENCODE_GO_API_KEY}";
                 };
-                models = {
-                    "deepseek-v4-pro" = {
-                        name = "DeepSeek V4 Pro";
-                        attachment = false;
-                        reasoning = true;
-                        tool_call = true;
-                        modalities = {
-                            input = [ "text" ];
-                            output = [ "text" ];
-                        };
-                        limit = {
-                            context = 128000;
-                            output = 16384;
-                        };
-                    };
-                    "deepseek-v4.1-flash" = {
-                        name = "DeepSeek V4.1 Flash";
-                        attachment = false;
-                        reasoning = true;
-                        tool_call = true;
-                        modalities = {
-                            input = [ "text" ];
-                            output = [ "text" ];
-                        };
-                        limit = {
-                            context = 128000;
-                            output = 16384;
-                        };
-                    };
-                };
+                inherit models;
             };
 
-            # Heavy model for thinking, cheap model for execution.
-            model = thinkingModel;
-            small_model = executionModel;
+            model = cfg.models.thinking;
+            small_model = cfg.models.execution;
 
             instructions = [ "${md}/instructions.md" ];
 
-            # Only the name and description of a skill sit in the prompt, the
-            # model loads the rest with the skill tool when it needs it.
             skills.paths = [ "${md}/skills" ];
 
-            # From the pinned checkout instead of npm: opencode would fetch the
-            # package at startup. OpenCode 1 takes the file, not the directory.
-            plugin = [ "${inputs.ponytail}/.opencode/plugins/ponytail.mjs" ];
-
-            # Built-in servers, off unless enabled. They use the binaries the
-            # lsp feature puts in PATH.
             lsp = true;
 
             inherit mcp;
@@ -156,17 +102,13 @@
             permission = {
                 edit = "allow";
                 webfetch = "allow";
-                external_directory = "ask";
-                doom_loop = "ask";
-                bash = bash { };
+                inherit bash;
             } // noMcp;
 
             agent = {
-                # Writes the text only, everything that needs a shell goes to
-                # @builder and @reader.
                 writer = {
                     mode = "primary";
-                    model = thinkingModel;
+                    model = cfg.models.thinking;
                     description = "Reports and documents in Typst: structure, text, formatting by GOST and guide 4334.";
                     prompt = prompt [ "agents/writer.md" "documents.md" ];
                     permission = {
@@ -183,62 +125,56 @@
                     };
                 };
 
-                builder = (subagent "builder"
+                builder = subagent "builder" cfg.models.execution
                     "Builds documents: compiles Typst, converts to docx and PDF, renders diagrams and charts. Reports errors with file and line."
-                    (editAgent documentTools)) // { model = executionModel; };
+                    editAgent;
 
-                reader = (subagent "reader"
+                reader = subagent "reader" cfg.models.execution
                     "Extracts text, tables and figures from PDF, scans, images and office files into markdown."
-                    (editAgent documentTools // mcpTools [ "markitdown" ])) // { model = executionModel; };
+                    editAgent;
 
-                proofreader = (subagent "proofreader"
+                proofreader = subagent "proofreader" cfg.models.execution
                     "Checks a document against GOST and guide 4334: formatting, numbering, references, spelling. Reports, does not edit."
-                    (readOnlyAgent (spelling // { "typst *" = "allow"; }))) // { model = executionModel; };
+                    readOnly;
 
-                planner = (subagent "planner"
+                planner = subagent "planner" cfg.models.thinking
                     "Splits a task into ordered steps with the files to touch and how to verify each step. Does not edit."
-                    (readOnlyAgent { })) // { model = thinkingModel; };
+                    readOnly;
 
-                reviewer = (subagent "reviewer"
+                reviewer = subagent "reviewer" cfg.models.thinking
                     "Reviews the current diff for bugs, security problems and missed edge cases. Does not edit."
-                    (readOnlyAgent { })) // { model = thinkingModel; };
+                    readOnly;
 
-                researcher = (subagent "researcher"
-                    "Searches the web and documentation, answers with sources formatted by GOST 7.1."
-                    (readOnlyAgent { } // mcpTools [ "searxng" "context7" ])) // { model = thinkingModel; };
+                researcher = subagent "researcher" cfg.models.thinking
+                    "Searches the web, documentation and the document archive, answers with sources formatted by GOST 7.1."
+                    (readOnly // withMcp [ "searxng" "context7" ]);
 
-                memory = (subagent "memory"
+                memory = subagent "memory" cfg.models.execution
                     "Long-term notes in ~/basic-memory: saves facts about the user and projects, finds what was saved before."
-                    (readOnlyAgent { } // mcpTools [ "basic-memory" ])) // { model = executionModel; };
+                    (readOnly // withMcp [ "basic-memory" ]);
 
-                debugger = (subagent "debugger"
+                debugger = subagent "debugger" cfg.models.execution
                     "Reproduces a bug, finds the root cause and applies the smallest fix."
-                    (editAgent { })) // { model = executionModel; };
+                    editAgent;
 
-                tester = (subagent "tester"
+                tester = subagent "tester" cfg.models.execution
                     "Writes and runs tests for the given code and reports failures."
-                    (editAgent { })) // { model = executionModel; };
+                    editAgent;
 
-                web = (subagent "web"
+                web = subagent "web" cfg.models.execution
                     "Opens the web app in a browser with Playwright, checks layout on screenshots and console errors."
-                    (editAgent { } // mcpTools [ "playwright" ])) // { model = executionModel; };
+                    (editAgent // withMcp [ "playwright" ]);
 
-                nix = (subagent "nix"
+                nix = subagent "nix" cfg.models.execution
                     "NixOS and flake work: options, packages, modules of this configuration."
-                    (editAgent (allow [ "nix eval *" "nix search *" "nix flake show*" "nix flake check*" ])
-                        // mcpTools [ "nixos" ])) // { model = executionModel; };
+                    (editAgent // withMcp [ "nixos" ]);
             };
         };
-        # Set in the wrapper, not in environment.variables: those only reach
-        # shells started after a re-login, and opencode then falls back to
-        # its own cloud model.
+
         opencode = pkgs.symlinkJoin {
             name = "opencode-local";
             paths = [ pkgs.opencode ];
             nativeBuildInputs = [ pkgs.makeWrapper ];
-            # NixOS cannot run the language servers opencode downloads, it
-            # gets ours instead. ~/.claude holds Claude Code's own CLAUDE.md
-            # and skills, ~3.5k tokens that only confuse the local model.
             postBuild = ''
                 wrapProgram $out/bin/opencode \
                     --set OPENCODE_CONFIG ${opencodeConfig} \
@@ -250,7 +186,8 @@
             inherit (pkgs.opencode) meta;
         };
     in {
-        # OpenCode Go API key, read by the wrapper above.
+        # services.qdrant.enable = true;  # broken: qdrant package missing zstd buildInput
+
         sops.secrets."opencode/go-api-key" = {
             owner = s.users.main;
             mode = "0400";

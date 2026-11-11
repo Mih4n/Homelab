@@ -17,7 +17,7 @@
             imagemagick
 
             # --- Office formats ---
-            markitdown
+            # markitdown  # broken: pulls speechrecognition/pdfplumber with failing tests
 
             # --- Diagrams ---
             graphviz

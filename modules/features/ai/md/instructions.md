@@ -1,10 +1,12 @@
 # Environment
 
-You run on a local Qwen3.8 27B with a 64k context on NixOS. Keep tool output
-short: read files in parts, filter command output with `rg`, `head`, `jq`.
+You run on NixOS with OpenCode Go. The context window is large, so read whole
+files and run commands without trimming output to save tokens.
 
 # Subagents
 
+The first one should always be the `@planner` than you delegate all the other work to agents.
+If planner needs info you should use subagents that could provide it.
 Delegate with a self-contained prompt, they do not see this conversation:
 
 - `@planner` splits a large task into steps before you start;
@@ -23,8 +25,7 @@ Tell the user in one line when you delegate.
 
 # Tools
 
-You have the built-in tools and the shell. Other tools are not loaded, to keep
-the context small:
+You have the built-in tools and the shell. Other tools are not loaded:
 
 - skills hold longer instructions, load one with the skill tool when the task
   matches its description;
@@ -38,6 +39,6 @@ the context small:
 
 # Rules
 
-- Never commit or push unless the user asks.
+- Never push unless the user asks. You may create a branch and commit to it.
 - If two attempts at a fix have failed, stop and ask the user instead of
   trying a third variant.

@@ -2,10 +2,9 @@
     s = self.settings;
 in {
     flake.nixosModules.searx = { config, pkgs, ... }: let
-        # Everything else is dropped: fewer engines, less noise in the
-        # results the model has to read.
         engines = [
             # web
+            "google"
             "duckduckgo"
             "brave"
             "wikipedia"
@@ -37,7 +36,6 @@ in {
             settings = {
                 use_default_settings.engines.keep_only = engines;
 
-                # Some of them are disabled upstream, keep_only does not enable them.
                 engines = map (name: { inherit name; disabled = false; }) engines;
 
                 server = {

@@ -5,9 +5,13 @@
         ];
     };
 
-    flake.nixosModules.hostDesktop = { pkgs, config, ... }: let
+    flake.nixosModules.hostDesktop = { pkgs, lib, config, ... }: let
         secrets = config.sops.secrets;
     in {
+        # nixpkgs ships its own `programs.openlogi` module (0.6.x); the flake's
+        # module supersedes it (newer package + agent service + udev rules).
+        disabledModules = [ "programs/openlogi.nix" ];
+
         imports = [
             inputs.openlogi.nixosModules.default
             self.nixosModules.base
@@ -22,6 +26,7 @@
             self.nixosModules.minecraftGrub
 
             # shared features
+            self.nixosModules.ai
             self.nixosModules.nix
             self.nixosModules.qmk
             self.nixosModules.sops
@@ -32,7 +37,6 @@
             self.nixosModules.networking
             self.nixosModules.preservation
             self.nixosModules.noPasswordSudo
-            self.nixosModules.ai
 
             # host hardware
             self.nixosModules.hostDesktopDisko
@@ -68,6 +72,7 @@
                 "/var/lib/containers"
                 "/var/lib/docker"
                 "/var/lib/libvirt"
+                "/var/lib/qdrant"
                 "/var/lib/sddm"
                 "/var/lib/waydroid"
             ];
@@ -96,7 +101,14 @@
         users.extraGroups.vboxusers.members = [ "mih4n" ];
 
         programs.nh.flake =  "/home/mih4n/NixOs";
-        programs.openlogi.enable = true;
+        programs.openlogi = {
+            enable = true;
+            # Upstream's packaging/linux/package.nix is missing `zstd` in
+            # buildInputs while `zstd-sys` needs it; add it via overrideAttrs.
+            package = lib.mkForce (inputs.openlogi.packages.${pkgs.stdenv.hostPlatform.system}.openlogi.overrideAttrs (old: {
+                buildInputs = (old.buildInputs or []) ++ [ pkgs.zstd ];
+            }));
+        };
 
         services = {
             flatpak.enable = true;

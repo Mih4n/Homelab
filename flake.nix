@@ -9,7 +9,7 @@
         moose.url = "github:mih4n/Moose";
 
         openlogi = {
-            url = "github:AprilNEA/OpenLogi";
+            url = "github:AprilNEA/OpenLogi?dir=packaging";
             inputs.nixpkgs.follows = "nixpkgs";
         };
 
@@ -35,11 +35,6 @@
 
         noctalia-plugins = {
             url = "github:noctalia-dev/noctalia-plugins";
-            flake = false;
-        };
-
-        ponytail = {
-            url = "github:DietrichGebert/ponytail";
             flake = false;
         };
 
