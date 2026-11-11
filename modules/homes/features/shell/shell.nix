@@ -1,5 +1,5 @@
 { ... }: {
-    flake.homeModules.shell = { ... }: {
+    flake.homeModules.shell = { pkgs, ... }: {
         programs.fish = {
             enable = true;
 
@@ -26,8 +26,16 @@
             shellAliases = {
                 os = "nh os";
                 home = "nh home";
+                ls = "eza --icons --group-directories-first";
+                cat = "bat";
+                code = "zeditor";
             };
         };
+
+        home.packages = with pkgs; [
+            eza
+            bat
+        ];
 
         xdg.configFile."fish" = {
             source = ./fish;
