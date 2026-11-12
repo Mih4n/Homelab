@@ -57,36 +57,8 @@
             prompt = prompt [ "agents/${name}.md" ];
         };
 
-        models = lib.mapAttrs (id: name: {
-            inherit name;
-            attachment = true;
-            reasoning = true;
-            tool_call = true;
-            modalities = {
-                input = [ "text" ];
-                output = [ "text" ];
-            };
-            limit = {
-                context = 128000;
-                output = 16384;
-            };
-        }) {
-            "deepseek-v4-pro" = "DeepSeek V4 Pro";
-            "deepseek-v4.1-flash" = "DeepSeek V4.1 Flash";
-        };
-
         opencodeConfig = (pkgs.formats.json { }).generate "opencode.json" {
             "$schema" = "https://opencode.ai/config.json";
-
-            provider.opencode-go = {
-                npm = "@ai-sdk/openai-compatible";
-                name = "OpenCode Go";
-                options = {
-                    baseURL = "https://opencode.ai/inference/go/openai/v1";
-                    apiKey = "{env:OPENCODE_GO_API_KEY}";
-                };
-                inherit models;
-            };
 
             model = cfg.models.thinking;
             small_model = cfg.models.execution;
