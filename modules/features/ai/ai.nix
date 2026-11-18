@@ -10,20 +10,6 @@ in {
         config.nixpkgs.config.problems.handlers."fastmcp-slim".broken = "warn";
 
         options.bytes.ai = {
-            models = {
-                thinking = lib.mkOption {
-                    type = lib.types.str;
-                    default = "opencode-go/deepseek-v4-pro";
-                    description = "Model for planning and review.";
-                };
-
-                execution = lib.mkOption {
-                    type = lib.types.str;
-                    default = "opencode-go/deepseek-v4.1-flash";
-                    description = "Cheaper model for subagents and routine work.";
-                };
-            };
-
             searxUrl = lib.mkOption {
                 type = lib.types.str;
                 default = "http://localhost:${toString s.ports.searx}";

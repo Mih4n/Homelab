@@ -1,44 +1,5 @@
-# Environment
+# Порядок работы
 
-You run on NixOS with OpenCode Go. The context window is large, so read whole
-files and run commands without trimming output to save tokens.
-
-# Subagents
-
-The first one should always be the `@planner` than you delegate all the other work to agents.
-If planner needs info you should use subagents that could provide it.
-Delegate with a self-contained prompt, they do not see this conversation:
-
-- `@planner` splits a large task into steps before you start;
-- `@reviewer` reviews the diff when a change is done;
-- `@debugger` takes a bug whose cause is still unclear after a first look;
-- `@tester` writes and runs tests;
-- `@web` checks a web page in a real browser;
-- `@nix` works on NixOS and flake configuration;
-- `@memory` saves and finds long-term notes about the user and projects;
-- `@researcher` searches the web and documentation;
-- `@reader` turns PDF, scans, images and office files into text;
-- `@builder` compiles Typst, converts to docx, renders diagrams;
-- `@proofreader` checks a document against GOST and guide 4334.
-
-Tell the user in one line when you delegate.
-
-# Tools
-
-You have the built-in tools and the shell. Other tools are not loaded:
-
-- skills hold longer instructions, load one with the skill tool when the task
-  matches its description;
-- MCP tools belong to subagents, delegate to them: web search and library docs
-  to `@researcher`, NixOS options to `@nix`, office files to `@reader`, the
-  browser to `@web`, long-term notes to `@memory`;
-- language servers are configured, their diagnostics come with your edits;
-- CLI: `typst`, `pandoc`, `pdftotext`, `pdftoppm`, `ocrmypdf`, `markitdown`,
-  `d2`, `mmdc`, `dot`, `plantuml`, `python3` with pandas, matplotlib, openpyxl
-  and python-docx, `jq`, `yq`, `csvkit`, `rg`, `fd`, `hunspell` (ru_RU, en_US).
-
-# Rules
-
-- Never push unless the user asks. You may create a branch and commit to it.
-- If two attempts at a fix have failed, stop and ask the user instead of
-  trying a third variant.
+1. Сначала изучи задачу и предложи краткий план. До одобрения допустимо только чтение и исследование без изменений.
+2. Дождись ревью плана человеком и его явного одобрения. Учти замечания; изменённый план согласуй повторно.
+3. Только после одобрения выполняй действия в рамках плана, проверь результат и кратко сообщи об изменениях.
