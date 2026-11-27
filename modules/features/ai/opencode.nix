@@ -5,6 +5,8 @@
 
         md = ./md;
 
+        rtkPlugin = pkgs.writeTextDir "index.ts" (builtins.readFile ./plugins/rtk/index.ts);
+
         local = command: { type = "local"; inherit command; };
 
         mcp = {
@@ -23,7 +25,7 @@
         };
 
         blockedCommands = [
-            "git push*" "sudo *" "rm -rf*" "rm -fr*" "mkfs*" "dd *"
+            "sudo *" "rm -rf*" "rm -fr*" "mkfs*" "dd *"
             "parted*" "fdisk*" "wipefs*" "nixos-rebuild*" "deploy*"
             "shutdown*" "reboot*" "poweroff*" "halt*"
         ];
@@ -31,7 +33,13 @@
         opencodeConfig = (pkgs.formats.json { }).generate "opencode.json" {
             "$schema" = "https://opencode.ai/config.json";
 
-            instructions = [ "${md}/instructions.md" ];
+            model = "openai/gpt-6.1-terra";
+
+            default_agent = "plan";
+
+            instructions = [ "${md}/instructions.md" "${md}/tooling.md" ];
+
+            plugins = [ "${rtkPlugin}" "@tarquinen/opencode-dcp@latest" ];
 
             skills = [ "${md}/skills" ];
 
@@ -44,16 +52,35 @@
                 { action = "webfetch"; resource = "*"; effect = "allow"; }
                 { action = "shell"; resource = "*"; effect = "allow"; }
                 { action = "subagent"; resource = "*"; effect = "deny"; }
+            ] ++ map (agent: { action = "subagent"; resource = agent; effect = "allow"; }) [
+                "build" "plan" "general" "explore"
             ] ++ map (resource: { action = "shell"; inherit resource; effect = "deny"; }) blockedCommands;
 
             agents = {
-                general.disabled = true;
-                explore.disabled = true;
+                build = {
+                    mode = "all";
+                    model = "openai/gpt-6-luna";
+                };
+                plan = {
+                    mode = "all";
+                    model = "openai/gpt-6.1-terra";
+                };
+                general = {
+                    mode = "subagent";
+                    model = "openai/gpt-6-luna";
+                };
+                explore = {
+                    mode = "subagent";
+                    model = "openai/gpt-6-luna";
+                };
             };
         };
 
         wrapArgs = ''
             --set OPENCODE_CONFIG ${opencodeConfig} \
+            --set HTTP_PROXY http://100.64.0.1:8888 \
+            --set HTTPS_PROXY http://100.64.0.1:8888 \
+            --set NO_PROXY localhost,127.0.0.1,::1,.bytes \
             --run 'if [ -r /run/secrets/opencode/go-api-key ]; then export OPENCODE_GO_API_KEY="$(cat /run/secrets/opencode/go-api-key)"; fi' \
             --set OPENCODE_DISABLE_LSP_DOWNLOAD true \
             --set OPENCODE_DISABLE_CLAUDE_CODE_PROMPT true \
@@ -85,6 +112,6 @@
             mode = "0400";
         };
 
-        environment.systemPackages = [ opencode opencodeDesktop ];
+        environment.systemPackages = [ opencode opencodeDesktop pkgs.rtk ];
     };
 }

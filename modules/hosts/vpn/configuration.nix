@@ -46,6 +46,28 @@
         theme.hostIcon = "󰖂";
         networking.hostName = "vpn";
 
+        # Listen only on the VPN address; do not expose an open proxy to the
+        # public network. Headscale addresses for the two client machines.
+        services.tinyproxy = {
+            enable = true;
+            settings = {
+                Listen = "100.64.0.1";
+                Port = 8888;
+                Allow = [ "100.64.0.7" "100.64.0.10" ];
+            };
+        };
+
+        # tailscaled can start before its address has been assigned.
+        systemd.services.tinyproxy = {
+            after = [ "tailscaled.service" ];
+            wants = [ "tailscaled.service" ];
+            serviceConfig = {
+                Restart = "on-failure";
+                RestartSec = 10;
+            };
+            unitConfig.StartLimitIntervalSec = 0;
+        };
+
         bytes = {
             disk.type = "sda";
             boot.mode = "legacy-grub";

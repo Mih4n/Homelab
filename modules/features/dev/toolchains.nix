@@ -11,6 +11,7 @@
             (dotnetCorePackages.combinePackages [
                 dotnetCorePackages.sdk_9_0
                 dotnetCorePackages.sdk_10_0
+                dotnetCorePackages.sdk_11_0
             ])
             dotnet-ef
             # Node.js
